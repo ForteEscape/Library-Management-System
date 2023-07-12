@@ -21,7 +21,7 @@
 ## 3. 프로젝트 기능
 
 - 프로젝트 전체 기능 사진
-![](../ERD files/Programming Projects.jpg)
+<img src="https://github.com/ForteEscape/library-management-system/assets/24915062/9dd452a8-89f8-4628-a5c2-e127dad1d731">
 
 
 
