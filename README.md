@@ -94,11 +94,11 @@
 ## 4. ERD
 
 - Entity 다이어그램
-![](../ERD files/LibraryManagementSystem.jpg)
+<img src="https://github.com/ForteEscape/library-management-system/assets/24915062/2b4cc6fd-a045-4354-9d01-7529d15f0467">
 
 
 - E-R 다이어그램
-![](../ERD files/LibraryManagementSystemERD.jpg)
+<img src="https://github.com/ForteEscape/library-management-system/assets/24915062/81f68a29-2765-4164-96f6-777723affc85">
 
 
 ## 5. TroubleShooting
