@@ -19,6 +19,12 @@
 
 
 ## 3. 프로젝트 기능
+
+- 프로젝트 전체 기능 사진
+![](../ERD files/Programming Projects.jpg)
+
+
+
 ### 회원 측 기능
 - 회원은 도서관에 방문하지 않아도 도서의 정보를 간략하게 조회할 수 있습니다.
 
@@ -84,3 +90,16 @@
 
 
 - 도서 대여 반납 처리
+ 
+## 4. ERD
+
+- Entity 다이어그램
+![](../ERD files/LibraryManagementSystem.jpg)
+
+
+- E-R 다이어그램
+![](../ERD files/LibraryManagementSystemERD.jpg)
+
+
+## 5. TroubleShooting
+- README 파일에는 맞닥뜨린 문제에 대한 해결 유무와 방법에 대한 요약만 서술합니다. 상세한 내용은 별도의 디렉토리를 두려고 합니다.
