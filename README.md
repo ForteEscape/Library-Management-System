@@ -15,7 +15,7 @@
 <img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white">
 <br>
 
-- Redis, ElasticSearch 는 프로젝트 전체 구현 완료 이후 여유가 될 시 적용할 예정입니다.
+- ElasticSearch 는 프로젝트 전체 구현 완료 이후 여유가 될 시 적용할 예정입니다.
 
 
 ## 3. 프로젝트 기능
@@ -39,16 +39,15 @@
   - 회원 자신의 패스워드 변경
 
 
-- 회원은 도서관에 운영 개선 요구 또는 신규 도서 반입 요청을 등록할 수 있습니다.
+- 회원은 한달에 5번 도서관에 운영 개선 요구 또는 신규 도서 반입 요청을 등록할 수 있습니다.
 
 ### 도서 조회 기능
 - 도서를 다음과 같은 기준으로 검색이 가능합니다.
   - 도서의 이름
   - 도서의 저자
   - 도서 출판사
-  - isbn
 
-
+  
 - 도서를 다음과 같은 기준으로 정렬이 가능합니다.
   - 대여된 횟수
   - 평점
@@ -83,7 +82,6 @@
 - 연/월 별 통계 조회 기능을 제공하며 다음과 같은 통계 데이터를 조회할 수 있습니다.
   - 대여 수
   - 도서 손/망실 비율
-  - 대여 연체수
 
 
 - 도서 대여 기록 등록
@@ -94,11 +92,11 @@
 ## 4. ERD
 
 - Entity 다이어그램
-<img src="https://github.com/ForteEscape/library-management-system/assets/24915062/2b4cc6fd-a045-4354-9d01-7529d15f0467">
+<img src="https://github.com/ForteEscape/Library-Management-System/assets/24915062/fd371c43-3fde-4391-bca9-f8228925a2c4">
 
 
 - E-R 다이어그램
-<img src="https://github.com/ForteEscape/library-management-system/assets/24915062/81f68a29-2765-4164-96f6-777723affc85">
+<img src="https://github.com/ForteEscape/Library-Management-System/assets/24915062/b4ca6a61-60de-4406-be47-7353d481b90d">
 
 
 ## 5. TroubleShooting
