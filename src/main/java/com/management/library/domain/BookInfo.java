@@ -1,0 +1,33 @@
+package com.management.library.domain;
+
+import javax.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
+public class BookInfo {
+
+  private String title;
+  private String author;
+  private String publisher;
+  private String location;
+  private String isbn;
+  private int publishedYear;
+
+  @Builder
+  public BookInfo(String title, String author, String publisher, String location, String isbn,
+      int publishedYear) {
+    this.title = title;
+    this.author = author;
+    this.publisher = publisher;
+    this.location = location;
+    this.isbn = isbn;
+    this.publishedYear = publishedYear;
+  }
+}
