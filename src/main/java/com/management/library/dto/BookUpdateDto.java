@@ -43,7 +43,7 @@ public class BookUpdateDto {
     public static Response fromEntity(Book book) {
       return Response.builder()
           .author(book.getBookInfo().getAuthor())
-          .title(book.getBookInfo().getAuthor())
+          .title(book.getBookInfo().getTitle())
           .publisher(book.getBookInfo().getPublisher())
           .publishedYear(book.getBookInfo().getPublishedYear())
           .location(book.getBookInfo().getLocation())
