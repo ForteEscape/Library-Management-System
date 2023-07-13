@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -39,4 +40,9 @@ public abstract class Request extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
   private Member member;
+
+  // 요구사항 요청 상태 변경
+  public void changeRequestStatus(RequestStatus requestStatus) {
+    this.requestStatus = requestStatus;
+  }
 }
