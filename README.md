@@ -97,7 +97,7 @@
 
 
 - E-R 다이어그램
-<img src="https://github.com/ForteEscape/Library-Management-System/assets/24915062/7412493e-2e53-4af5-9f81-094fcec5f3fa">
+<img src="https://github.com/ForteEscape/Library-Management-System/assets/24915062/b8b9f431-f730-4e84-b6a5-67fb6954a399">
 
 - 0 or many로 표기된 부분은 0 or 1 or many의 의미입니다.
 ## 5. TroubleShooting
