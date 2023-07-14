@@ -59,7 +59,6 @@ public class Book extends BaseEntity {
         .publisher(request.getPublisher())
         .location(request.getLocation())
         .publishedYear(request.getPublishedYear())
-        .isbn(request.getIsbn())
         .build();
   }
 }
