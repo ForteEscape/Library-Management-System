@@ -17,7 +17,6 @@ public class BookInfo {
   private String author;
   private String publisher;
   private String location;
-  private String isbn;
   private int publishedYear;
 
   @Builder
