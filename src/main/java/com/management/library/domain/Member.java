@@ -1,5 +1,6 @@
 package com.management.library.domain;
 
+import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.dto.MemberUpdateDto;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,10 +31,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Getter
-@Table(name = "members")
+@Table(indexes = @Index(name = "idx__member_code", columnList = "member_code"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Member implements UserDetails {
+public class Member extends BaseEntity implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,26 +47,21 @@ public class Member implements UserDetails {
 
   @Embedded
   private Address address;
+  @Column(name = "member_code")
   private String memberCode;
 
   @Enumerated(EnumType.STRING)
   private MemberRentalStatus memberRentalStatus;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  private List<String> roles;
-
-  @CreatedDate
-  private LocalDateTime createdAt;
-
-  @LastModifiedDate
-  private LocalDateTime lastModifiedAt;
+  @Enumerated(EnumType.STRING)
+  private Authority authority;
 
   // 연체로 인한 대여 불가 상태 지속 날짜
   private LocalDateTime penaltyDate;
 
   @Builder
   public Member(Long id, String name, String password, String birthdayCode, Address address,
-      String memberCode, MemberRentalStatus memberRentalStatus, List<String> roles) {
+      String memberCode, MemberRentalStatus memberRentalStatus, Authority authority) {
     this.id = id;
     this.name = name;
     this.password = password;
@@ -72,11 +69,12 @@ public class Member implements UserDetails {
     this.address = address;
     this.memberCode = memberCode;
     this.memberRentalStatus = memberRentalStatus;
-    this.roles = roles;
+    this.authority = authority;
   }
 
   /**
    * 회원 엔티티 데이터 변경
+   *
    * @param request 변경 정보 DTO
    */
   public void changeMemberData(MemberUpdateDto.Request request) {
