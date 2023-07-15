@@ -47,4 +47,8 @@ public class ManagementRequest extends BaseEntity{
     this.content = content;
     this.requestStatus = requestStatus;
   }
+
+  public void changeRequestStatus(RequestStatus requestStatus){
+    this.requestStatus = requestStatus;
+  }
 }

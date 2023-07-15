@@ -48,4 +48,8 @@ public class NewBookRequest extends BaseEntity {
     this.requestContent = requestContent;
     this.requestStatus = requestStatus;
   }
+
+  public void changeRequestStatus(RequestStatus requestStatus){
+    this.requestStatus = requestStatus;
+  }
 }
