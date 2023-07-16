@@ -17,17 +17,15 @@ public class BookInfo {
   private String author;
   private String publisher;
   private String location;
-  private String isbn;
   private int publishedYear;
 
   @Builder
-  public BookInfo(String title, String author, String publisher, String location, String isbn,
+  public BookInfo(String title, String author, String publisher, String location,
       int publishedYear) {
     this.title = title;
     this.author = author;
     this.publisher = publisher;
     this.location = location;
-    this.isbn = isbn;
     this.publishedYear = publishedYear;
   }
 }

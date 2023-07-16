@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "books")
+@Table(indexes = @Index(name = "index__title__author__publisher", columnList = "title, author, publisher"))
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -59,7 +60,6 @@ public class Book extends BaseEntity {
         .publisher(request.getPublisher())
         .location(request.getLocation())
         .publishedYear(request.getPublishedYear())
-        .isbn(request.getIsbn())
         .build();
   }
 }

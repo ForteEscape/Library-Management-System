@@ -30,7 +30,7 @@ class BookReviewTest {
     em.persist(memberA);
 
     Book book = Book.builder()
-        .bookInfo(new BookInfo("bookA", "author", "publisher", "4f", "isbn", 2002))
+        .bookInfo(new BookInfo("bookA", "author", "publisher", "4f", 2002))
         .bookStatus(BookStatus.AVAILABLE)
         .build();
 
@@ -63,7 +63,7 @@ class BookReviewTest {
     em.persist(memberA);
 
     Book book = Book.builder()
-        .bookInfo(new BookInfo("bookA", "author", "publisher", "4f", "isbn", 2002))
+        .bookInfo(new BookInfo("bookA", "author", "publisher", "4f", 2002))
         .bookStatus(BookStatus.AVAILABLE)
         .build();
 

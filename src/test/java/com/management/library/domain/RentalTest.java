@@ -36,7 +36,7 @@ class RentalTest {
     em.persist(userA);
 
     Book book = Book.builder()
-        .bookInfo(new BookInfo("book", "author", "publisher", "location", "isbn", 2002))
+        .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
         .bookStatus(BookStatus.AVAILABLE)
         .typeCode(835)
         .build();
@@ -73,7 +73,7 @@ class RentalTest {
     em.persist(userA);
 
     Book book = Book.builder()
-        .bookInfo(new BookInfo("book", "author", "publisher", "location", "isbn", 2002))
+        .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
         .bookStatus(BookStatus.AVAILABLE)
         .typeCode(835)
         .build();
@@ -117,7 +117,7 @@ class RentalTest {
     em.persist(userA);
 
     Book book = Book.builder()
-        .bookInfo(new BookInfo("book", "author", "publisher", "location", "isbn", 2002))
+        .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
         .bookStatus(BookStatus.AVAILABLE)
         .typeCode(835)
         .build();

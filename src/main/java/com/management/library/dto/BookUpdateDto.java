@@ -36,7 +36,6 @@ public class BookUpdateDto {
     private String author;
     private String publisher;
     private String location;
-    private String isbn;
     private int publishedYear;
     private int typeCode;
 
@@ -47,7 +46,6 @@ public class BookUpdateDto {
           .publisher(book.getBookInfo().getPublisher())
           .publishedYear(book.getBookInfo().getPublishedYear())
           .location(book.getBookInfo().getLocation())
-          .isbn(book.getBookInfo().getIsbn())
           .typeCode(book.getTypeCode())
           .build();
     }

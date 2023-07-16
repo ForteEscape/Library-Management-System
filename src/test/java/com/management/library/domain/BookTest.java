@@ -25,7 +25,7 @@ class BookTest {
   void bookTest() {
     // given
     Book book = Book.builder()
-        .bookInfo(new BookInfo("book", "author", "publisher", "location", "isbn", 2002))
+        .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
         .typeCode(835)
         .bookStatus(BookStatus.AVAILABLE)
         .build();
@@ -47,7 +47,7 @@ class BookTest {
   void changeBookStatusTest(){
     // given
     Book book = Book.builder()
-        .bookInfo(new BookInfo("book", "author", "publisher", "location", "isbn", 2002))
+        .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
         .typeCode(835)
         .bookStatus(BookStatus.AVAILABLE)
         .build();
@@ -73,7 +73,6 @@ class BookTest {
     assertThat(modifiedBook.getBookInfo().getAuthor()).isEqualTo(book.getBookInfo().getAuthor());
     assertThat(modifiedBook.getBookInfo().getPublishedYear()).isEqualTo(book.getBookInfo().getPublishedYear());
     assertThat(modifiedBook.getBookInfo().getLocation()).isEqualTo(book.getBookInfo().getLocation());
-    assertThat(modifiedBook.getBookInfo().getIsbn()).isEqualTo(book.getBookInfo().getIsbn());
     assertThat(modifiedBook.getTypeCode()).isEqualTo(book.getTypeCode());
   }
 
@@ -82,7 +81,7 @@ class BookTest {
   void changeBookDataTest(){
     // given
     Book book = Book.builder()
-        .bookInfo(new BookInfo("book", "author", "publisher", "location", "isbn", 2002))
+        .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
         .typeCode(835)
         .bookStatus(BookStatus.AVAILABLE)
         .build();
@@ -94,7 +93,6 @@ class BookTest {
         .author("author2")
         .publisher("publisher2")
         .location("location2")
-        .isbn("isbn2")
         .publishedYear(2005)
         .typeCode(835)
         .build();
@@ -111,7 +109,6 @@ class BookTest {
     assertThat(result.getBookInfo().getTitle()).isEqualTo("book2");
     assertThat(result.getBookInfo().getAuthor()).isEqualTo("author2");
     assertThat(result.getBookInfo().getPublisher()).isEqualTo("publisher2");
-    assertThat(result.getBookInfo().getIsbn()).isEqualTo("isbn2");
     assertThat(result.getBookInfo().getPublishedYear()).isEqualTo(2005);
     assertThat(result.getBookInfo().getLocation()).isEqualTo("location2");
     assertThat(result.getTypeCode()).isEqualTo(835);
