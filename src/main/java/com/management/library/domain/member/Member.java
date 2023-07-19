@@ -1,5 +1,6 @@
-package com.management.library.domain;
+package com.management.library.domain.member;
 
+import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.dto.MemberUpdateDto;

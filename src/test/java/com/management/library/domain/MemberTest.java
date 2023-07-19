@@ -2,6 +2,8 @@ package com.management.library.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.management.library.domain.member.Address;
+import com.management.library.domain.member.Member;
 import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.dto.MemberUpdateDto.Request;
 import javax.persistence.EntityManager;

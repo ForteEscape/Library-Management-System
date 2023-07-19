@@ -1,5 +1,7 @@
-package com.management.library.domain;
+package com.management.library.domain.newbook;
 
+import com.management.library.domain.BaseEntity;
+import com.management.library.domain.admin.Administrator;
 import com.management.library.domain.type.RequestStatus;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +10,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,17 +24,18 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class ManagementRequestResult extends BaseEntity{
+public class NewBookRequestResult extends BaseEntity {
 
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "management_reqeust_result_id")
+  @Id
+  @GeneratedValue
+  @Column(name = "new_book_request_result_id")
   private Long id;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "management_request_id")
-  private ManagementRequest managementRequest;
+  @JoinColumn(name = "new_book_request_id")
+  private NewBookRequest newBookRequest;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "administrator_id")
   private Administrator administrator;
 
@@ -44,11 +46,10 @@ public class ManagementRequestResult extends BaseEntity{
   private RequestStatus result;
 
   @Builder
-  public ManagementRequestResult(Long id, ManagementRequest managementRequest,
-      Administrator administrator, String resultPostTitle, String resultPostContent,
-      RequestStatus result) {
+  public NewBookRequestResult(Long id, NewBookRequest newBookRequest, Administrator administrator,
+      String resultPostTitle, String resultPostContent, RequestStatus result) {
     this.id = id;
-    this.managementRequest = managementRequest;
+    this.newBookRequest = newBookRequest;
     this.administrator = administrator;
     this.resultPostTitle = resultPostTitle;
     this.resultPostContent = resultPostContent;

@@ -4,6 +4,11 @@ import static com.management.library.domain.type.RequestStatus.ACCEPTED;
 import static com.management.library.domain.type.RequestStatus.STAND_BY;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.management.library.domain.admin.Administrator;
+import com.management.library.domain.member.Address;
+import com.management.library.domain.member.Member;
+import com.management.library.domain.newbook.NewBookRequest;
+import com.management.library.domain.newbook.NewBookRequestResult;
 import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;

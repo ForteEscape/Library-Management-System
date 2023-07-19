@@ -2,6 +2,10 @@ package com.management.library.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.management.library.domain.book.Book;
+import com.management.library.domain.book.BookInfo;
+import com.management.library.domain.member.Member;
+import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.MemberRentalStatus;
@@ -10,7 +14,6 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

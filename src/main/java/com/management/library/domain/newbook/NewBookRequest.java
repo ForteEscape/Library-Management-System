@@ -1,5 +1,7 @@
-package com.management.library.domain;
+package com.management.library.domain.newbook;
 
+import com.management.library.domain.BaseEntity;
+import com.management.library.domain.member.Member;
 import com.management.library.domain.type.RequestStatus;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,29 +24,30 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class ManagementRequest extends BaseEntity{
+public class NewBookRequest extends BaseEntity {
 
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "management_request_id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "new_book_request_id")
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
   private Member member;
 
-  private String title;
-  private String content;
+  private String requestBookTitle;
+  private String requestContent;
 
   @Enumerated(EnumType.STRING)
   private RequestStatus requestStatus;
 
   @Builder
-  public ManagementRequest(Long id, Member member, String title, String content,
+  public NewBookRequest(Long id, Member member, String requestBookTitle, String requestContent,
       RequestStatus requestStatus) {
     this.id = id;
     this.member = member;
-    this.title = title;
-    this.content = content;
+    this.requestBookTitle = requestBookTitle;
+    this.requestContent = requestContent;
     this.requestStatus = requestStatus;
   }
 

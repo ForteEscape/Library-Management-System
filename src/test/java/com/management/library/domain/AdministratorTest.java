@@ -2,6 +2,7 @@ package com.management.library.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.management.library.domain.admin.Administrator;
 import com.management.library.domain.type.Authority;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

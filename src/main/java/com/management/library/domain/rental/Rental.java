@@ -1,5 +1,8 @@
-package com.management.library.domain;
+package com.management.library.domain.rental;
 
+import com.management.library.domain.BaseEntity;
+import com.management.library.domain.book.Book;
+import com.management.library.domain.member.Member;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
 import java.time.LocalDateTime;

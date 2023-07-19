@@ -1,5 +1,6 @@
-package com.management.library.domain;
+package com.management.library.domain.admin;
 
+import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
 import java.util.Collection;
 import javax.persistence.Column;

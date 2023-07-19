@@ -2,6 +2,10 @@ package com.management.library.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.management.library.domain.book.Book;
+import com.management.library.domain.book.BookInfo;
+import com.management.library.domain.book.BookReview;
+import com.management.library.domain.member.Member;
 import com.management.library.domain.type.BookStatus;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

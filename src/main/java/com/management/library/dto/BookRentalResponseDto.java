@@ -1,6 +1,6 @@
 package com.management.library.dto;
 
-import com.management.library.domain.Rental;
+import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
 import java.time.LocalDateTime;

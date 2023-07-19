@@ -1,4 +1,4 @@
-package com.management.library.domain;
+package com.management.library.domain.member;
 
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
