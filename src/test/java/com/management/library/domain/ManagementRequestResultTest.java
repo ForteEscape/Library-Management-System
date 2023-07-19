@@ -2,6 +2,11 @@ package com.management.library.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.management.library.domain.admin.Administrator;
+import com.management.library.domain.management.ManagementRequest;
+import com.management.library.domain.management.ManagementRequestResult;
+import com.management.library.domain.member.Address;
+import com.management.library.domain.member.Member;
 import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;

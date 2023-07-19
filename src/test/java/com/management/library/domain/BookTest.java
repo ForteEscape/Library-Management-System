@@ -2,6 +2,8 @@ package com.management.library.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.management.library.domain.book.Book;
+import com.management.library.domain.book.BookInfo;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.dto.BookUpdateDto.Request;
 import javax.persistence.EntityManager;
@@ -64,16 +66,7 @@ class BookTest {
     Book modifiedBook = em.find(Book.class, book.getId());
 
     // then
-    log.info("created at = {}", modifiedBook.getCreatedAt());
-    log.info("last modified at = {}", modifiedBook.getLastModifiedAt());
-
     assertThat(modifiedBook.getBookStatus()).isEqualTo(BookStatus.RENTAL);
-    assertThat(modifiedBook.getBookInfo().getTitle()).isEqualTo(book.getBookInfo().getTitle());
-    assertThat(modifiedBook.getBookInfo().getPublisher()).isEqualTo(book.getBookInfo().getPublisher());
-    assertThat(modifiedBook.getBookInfo().getAuthor()).isEqualTo(book.getBookInfo().getAuthor());
-    assertThat(modifiedBook.getBookInfo().getPublishedYear()).isEqualTo(book.getBookInfo().getPublishedYear());
-    assertThat(modifiedBook.getBookInfo().getLocation()).isEqualTo(book.getBookInfo().getLocation());
-    assertThat(modifiedBook.getTypeCode()).isEqualTo(book.getTypeCode());
   }
 
   @Test

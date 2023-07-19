@@ -1,5 +1,6 @@
-package com.management.library.domain;
+package com.management.library.domain.book;
 
+import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.dto.BookUpdateDto;
 import javax.persistence.Column;

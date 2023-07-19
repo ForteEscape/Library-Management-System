@@ -3,6 +3,9 @@ package com.management.library.domain;
 import static com.management.library.domain.type.RequestStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
+import com.management.library.domain.member.Address;
+import com.management.library.domain.member.Member;
+import com.management.library.domain.newbook.NewBookRequest;
 import com.management.library.domain.type.MemberRentalStatus;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

@@ -1,5 +1,7 @@
-package com.management.library.domain;
+package com.management.library.domain.book;
 
+import com.management.library.domain.BaseEntity;
+import com.management.library.domain.member.Member;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -20,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class BookReview extends BaseEntity{
+public class BookReview extends BaseEntity {
 
   @Id
   @GeneratedValue
