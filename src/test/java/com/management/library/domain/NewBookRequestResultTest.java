@@ -1,7 +1,7 @@
 package com.management.library.domain;
 
 import static com.management.library.domain.type.RequestStatus.ACCEPTED;
-import static com.management.library.domain.type.RequestStatus.STAND_BY;
+import static com.management.library.domain.type.RequestStatus.AWAIT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.admin.Administrator;
@@ -56,7 +56,7 @@ class NewBookRequestResultTest {
         .requestBookTitle("management request title")
         .requestContent("management request content")
         .member(member)
-        .requestStatus(STAND_BY)
+        .requestStatus(AWAIT)
         .build();
 
     em.persist(request);
