@@ -1,10 +1,11 @@
 package com.management.library.repository.book;
 
-import static com.management.library.domain.book.QBook.*;
+import static com.management.library.domain.book.QBook.book;
+import static com.querydsl.core.types.Projections.*;
 
 import com.management.library.domain.book.Book;
-import com.management.library.domain.book.QBook;
 import com.management.library.dto.BookSearchCond;
+import com.management.library.service.book.response.BookServiceResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,7 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
-public class BookRepositoryImpl implements BookRepositoryCustom{
+public class BookRepositoryImpl implements BookRepositoryCustom {
 
   private final JPAQueryFactory queryFactory;
 
@@ -24,15 +25,26 @@ public class BookRepositoryImpl implements BookRepositoryCustom{
   }
 
   /**
-   * 도서의 이름, 저자, 출판사를 사용하여 검색이 가능
-   * 검색 결과는 페이징되어 반환
-   * @param cond 검색 조건
+   * 도서의 이름, 저자, 출판사를 사용하여 검색이 가능 검색 결과는 페이징되어 반환
+   *
+   * @param cond     검색 조건
    * @param pageable 페이징 설정
-   * @return 페이징된 검색 결과
+   * @return 페이징된 검색 결과 DTO
    */
   @Override
-  public Page<Book> bookSearch(BookSearchCond cond, Pageable pageable) {
-    List<Book> result = queryFactory.selectFrom(book)
+  public Page<BookServiceResponseDto> bookSearch(BookSearchCond cond, Pageable pageable) {
+    List<BookServiceResponseDto> result = queryFactory.select(
+            constructor(BookServiceResponseDto.class,
+                book.id,
+                book.bookInfo.title,
+                book.bookInfo.author,
+                book.bookInfo.publisher,
+                book.bookInfo.publishedYear,
+                book.bookInfo.location,
+                book.typeCode,
+                book.bookStatus)
+        )
+        .from(book)
         .where(
             bookNameEq(cond.getBookTitle()),
             bookAuthorEq(cond.getBookAuthor()),
@@ -53,9 +65,28 @@ public class BookRepositoryImpl implements BookRepositoryCustom{
     return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
   }
 
+  /**
+   * 도서 분류 코드를 통해서 책들을 필터링할 수 있다.
+   *
+   * @param startCode 시작 분류 번호
+   * @param endCode   끝 분류 번호
+   * @param pageable  페이징 설정
+   * @return 페이징된 결과 DTO
+   */
   @Override
-  public Page<Book> findAllByBookTypeCode(int startCode, int endCode, Pageable pageable) {
-    List<Book> result = queryFactory.select(book)
+  public Page<BookServiceResponseDto> findAllByBookTypeCode(int startCode, int endCode,
+      Pageable pageable) {
+    List<BookServiceResponseDto> result = queryFactory.select(
+            constructor(BookServiceResponseDto.class,
+                book.id,
+                book.bookInfo.title,
+                book.bookInfo.author,
+                book.bookInfo.publisher,
+                book.bookInfo.publishedYear,
+                book.bookInfo.location,
+                book.typeCode,
+                book.bookStatus)
+        )
         .from(book)
         .where(book.typeCode.between(startCode, endCode))
         .offset(pageable.getOffset())
@@ -71,14 +102,15 @@ public class BookRepositoryImpl implements BookRepositoryCustom{
 
   @Override
   public Optional<Book> findByTitleAndAuthor(String title, String author) {
-    Book book = queryFactory.selectFrom(QBook.book)
+    Book result = queryFactory.select(book)
+        .from(book)
         .where(
-            QBook.book.bookInfo.title.eq(title),
-            QBook.book.bookInfo.author.eq(author)
+            bookNameEq(title),
+            bookAuthorEq(author)
         )
         .fetchOne();
 
-    return Optional.ofNullable(book);
+    return Optional.ofNullable(result);
   }
 
   private BooleanExpression bookPublisherEq(String publisherName) {
