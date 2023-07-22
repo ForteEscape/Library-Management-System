@@ -1,11 +1,12 @@
 package com.management.library.repository.book;
 
+import static com.management.library.domain.type.BookStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
 import com.management.library.domain.book.Book;
 import com.management.library.domain.book.BookInfo;
-import com.management.library.domain.type.BookStatus;
 import com.management.library.dto.BookSearchCond;
+import com.management.library.service.book.response.BookServiceResponseDto;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,47 +81,31 @@ class BookRepositoryTest {
     PageRequest pageRequest2 = PageRequest.of(1, 5);
 
     // when
-    Page<Book> books = bookRepository.bookSearch(cond, pageRequest);
-    List<Book> content = books.getContent();
+    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
+        pageRequest);
+    List<BookServiceResponseDto> content = books.getContent();
 
-    Page<Book> books2 = bookRepository.bookSearch(cond, pageRequest2);
-    List<Book> content2 = books2.getContent();
+    Page<BookServiceResponseDto> books2 = bookRepository.bookSearch(cond,
+        pageRequest2);
+    List<BookServiceResponseDto> content2 = books2.getContent();
 
     // then
     assertThat(content).hasSize(5)
-        .extracting("typeCode", "bookStatus")
+        .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
+            "status")
         .containsExactlyInAnyOrder(
-            tuple(130, BookStatus.AVAILABLE),
-            tuple(150, BookStatus.AVAILABLE),
-            tuple(130, BookStatus.AVAILABLE),
-            tuple(150, BookStatus.AVAILABLE),
-            tuple(110, BookStatus.AVAILABLE)
-        );
-
-    assertThat(content)
-        .extracting(Book::getBookInfo)
-        .extracting(BookInfo::getTitle, BookInfo::getAuthor, BookInfo::getPublisher,
-            BookInfo::getLocation, BookInfo::getPublishedYear)
-        .containsExactlyInAnyOrder(
-            tuple("jpa1", "kim", "publisher", "location", 2017),
-            tuple("spring", "park", "publisher1", "location1", 2017),
-            tuple("jpa2", "kim", "publisher", "location2", 2020),
-            tuple("spring2", "park", "publisher1", "location3", 2020),
-            tuple("docker1", "lee", "publisher2", "location4", 2018)
+            tuple("jpa1", "kim", "publisher", 2017, "location", 130, AVAILABLE),
+            tuple("spring", "park", "publisher1", 2017, "location1", 150, AVAILABLE),
+            tuple("jpa2", "kim", "publisher", 2020, "location2", 130, AVAILABLE),
+            tuple("spring2", "park", "publisher1", 2020, "location3", 150, AVAILABLE),
+            tuple("docker1", "lee", "publisher2", 2018, "location4", 110, AVAILABLE)
         );
 
     assertThat(content2).hasSize(1)
-        .extracting("typeCode", "bookStatus")
-        .containsExactlyInAnyOrder(
-            tuple(110, BookStatus.AVAILABLE)
-        );
-
-    assertThat(content2)
-        .extracting(Book::getBookInfo)
-        .extracting(BookInfo::getTitle, BookInfo::getAuthor, BookInfo::getPublisher,
-            BookInfo::getLocation, BookInfo::getPublishedYear)
-        .containsExactlyInAnyOrder(
-            tuple("docker2", "lee", "publisher2", "location5", 2020)
+        .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
+            "status")
+        .contains(
+            tuple("docker2", "lee", "publisher2", 2020, "location5", 110, AVAILABLE)
         );
   }
 
@@ -140,24 +125,17 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<Book> books = bookRepository.bookSearch(cond, pageRequest);
-    List<Book> content = books.getContent();
+    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
+        pageRequest);
+    List<BookServiceResponseDto> content = books.getContent();
 
     // then
     assertThat(content).hasSize(2)
-        .extracting("typeCode", "bookStatus")
+        .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
+            "status")
         .containsExactlyInAnyOrder(
-            tuple(130, BookStatus.AVAILABLE),
-            tuple(130, BookStatus.AVAILABLE)
-        );
-
-    assertThat(content)
-        .extracting(Book::getBookInfo)
-        .extracting(BookInfo::getTitle, BookInfo::getAuthor, BookInfo::getPublisher,
-            BookInfo::getLocation, BookInfo::getPublishedYear)
-        .containsExactlyInAnyOrder(
-            tuple("jpa1", "kim", "publisher", "location", 2017),
-            tuple("jpa2", "kim", "publisher2", "location2", 2020)
+            tuple("jpa1", "kim", "publisher", 2017, "location", 130, AVAILABLE),
+            tuple("jpa2", "kim", "publisher2", 2020, "location2", 130, AVAILABLE)
         );
   }
 
@@ -177,22 +155,16 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<Book> books = bookRepository.bookSearch(cond, pageRequest);
-    List<Book> content = books.getContent();
+    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
+        pageRequest);
+    List<BookServiceResponseDto> content = books.getContent();
 
     // then
     assertThat(content).hasSize(1)
-        .extracting("typeCode", "bookStatus")
+        .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
+            "status")
         .containsExactlyInAnyOrder(
-            tuple(150, BookStatus.AVAILABLE)
-        );
-
-    assertThat(content)
-        .extracting(Book::getBookInfo)
-        .extracting(BookInfo::getTitle, BookInfo::getAuthor, BookInfo::getPublisher,
-            BookInfo::getLocation, BookInfo::getPublishedYear)
-        .containsExactlyInAnyOrder(
-            tuple("spring", "park", "publisher1", "location1", 2017)
+            tuple("spring", "park", "publisher1", 2017, "location1", 150, AVAILABLE)
         );
   }
 
@@ -212,24 +184,17 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<Book> books = bookRepository.bookSearch(cond, pageRequest);
-    List<Book> content = books.getContent();
+    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
+        pageRequest);
+    List<BookServiceResponseDto> content = books.getContent();
 
     // then
     assertThat(content).hasSize(2)
-        .extracting("typeCode", "bookStatus")
+        .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
+            "status")
         .containsExactlyInAnyOrder(
-            tuple(130, BookStatus.AVAILABLE),
-            tuple(150, BookStatus.AVAILABLE)
-        );
-
-    assertThat(content)
-        .extracting(Book::getBookInfo)
-        .extracting(BookInfo::getTitle, BookInfo::getAuthor, BookInfo::getPublisher,
-            BookInfo::getLocation, BookInfo::getPublishedYear)
-        .containsExactlyInAnyOrder(
-            tuple("jpa1", "kim", "publisher", "location", 2017),
-            tuple("spring", "park", "publisher", "location1", 2017)
+            tuple("jpa1", "kim", "publisher", 2017, "location", 130, AVAILABLE),
+            tuple("spring", "park", "publisher", 2017, "location1", 150, AVAILABLE)
         );
   }
 
@@ -249,28 +214,19 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<Book> result = bookRepository.findAllByBookTypeCode(100, 200, pageRequest);
-    List<Book> content = result.getContent();
+    Page<BookServiceResponseDto> result = bookRepository.findAllByBookTypeCode(100, 200,
+        pageRequest);
+    List<BookServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(4)
-        .extracting("typeCode", "bookStatus")
+        .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
+            "status")
         .containsExactlyInAnyOrder(
-            tuple(130, BookStatus.AVAILABLE),
-            tuple(150, BookStatus.AVAILABLE),
-            tuple(130, BookStatus.AVAILABLE),
-            tuple(150, BookStatus.AVAILABLE)
-        );
-
-    assertThat(content)
-        .extracting(Book::getBookInfo)
-        .extracting(BookInfo::getTitle, BookInfo::getAuthor, BookInfo::getPublisher,
-            BookInfo::getLocation, BookInfo::getPublishedYear)
-        .containsExactlyInAnyOrder(
-            tuple("jpa1", "kim", "publisher", "location", 2017),
-            tuple("spring", "park", "publisher1", "location1", 2017),
-            tuple("jpa2", "kim", "publisher", "location2", 2020),
-            tuple("spring2", "park", "publisher1", "location3", 2020)
+            tuple("jpa1", "kim", "publisher", 2017, "location", 130, AVAILABLE),
+            tuple("spring", "park", "publisher1", 2017, "location1", 150, AVAILABLE),
+            tuple("jpa2", "kim", "publisher", 2020, "location2", 130, AVAILABLE),
+            tuple("spring2", "park", "publisher1", 2020, "location3", 150, AVAILABLE)
         );
   }
 
@@ -280,7 +236,7 @@ class BookRepositoryTest {
 
     return Book.builder()
         .bookInfo(bookInfo)
-        .bookStatus(BookStatus.AVAILABLE)
+        .bookStatus(AVAILABLE)
         .typeCode(typeCode)
         .build();
   }
