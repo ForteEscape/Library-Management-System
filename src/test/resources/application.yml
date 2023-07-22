@@ -16,5 +16,9 @@ spring:
         format_sql: true
     database: h2
 
+  redis:
+    host: localhost
+    port: 6379
+
 logging.level:
   org.hibernate.SQL: debug
