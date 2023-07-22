@@ -28,4 +28,15 @@ public class BookInfo {
     this.location = location;
     this.publishedYear = publishedYear;
   }
+
+  public static BookInfo of(String title, String author, String publisher, int publishedYear,
+      String location) {
+    return BookInfo.builder()
+        .title(title)
+        .author(author)
+        .publisher(publisher)
+        .publishedYear(publishedYear)
+        .location(location)
+        .build();
+  }
 }
