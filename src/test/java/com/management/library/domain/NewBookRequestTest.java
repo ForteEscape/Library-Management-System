@@ -42,7 +42,7 @@ class NewBookRequestTest {
         .requestBookTitle("management request title")
         .requestContent("management request content")
         .member(member)
-        .requestStatus(STAND_BY)
+        .requestStatus(AWAIT)
         .build();
 
     em.persist(request);
@@ -57,7 +57,7 @@ class NewBookRequestTest {
     assertThat(result.getRequestBookTitle()).isEqualTo(request.getRequestBookTitle());
     assertThat(result.getRequestContent()).isEqualTo(request.getRequestContent());
     assertThat(result.getMember().getName()).isEqualTo(request.getMember().getName());
-    assertThat(result.getRequestStatus()).isEqualTo(STAND_BY);
+    assertThat(result.getRequestStatus()).isEqualTo(AWAIT);
   }
 
   @Test
@@ -79,7 +79,7 @@ class NewBookRequestTest {
         .requestBookTitle("management request title")
         .requestContent("management request content")
         .member(member)
-        .requestStatus(STAND_BY)
+        .requestStatus(AWAIT)
         .build();
 
     em.persist(request);

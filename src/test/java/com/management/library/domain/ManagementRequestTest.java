@@ -42,7 +42,7 @@ class ManagementRequestTest {
         .title("management request title")
         .content("management request content")
         .member(member)
-        .requestStatus(STAND_BY)
+        .requestStatus(AWAIT)
         .build();
 
     em.persist(request);
@@ -57,7 +57,7 @@ class ManagementRequestTest {
     assertThat(result.getTitle()).isEqualTo(request.getTitle());
     assertThat(result.getMember().getName()).isEqualTo(request.getMember().getName());
     assertThat(result.getContent()).isEqualTo(request.getContent());
-    assertThat(result.getRequestStatus()).isEqualTo(STAND_BY);
+    assertThat(result.getRequestStatus()).isEqualTo(AWAIT);
   }
 
   @Test
@@ -79,7 +79,7 @@ class ManagementRequestTest {
         .title("management request title")
         .content("management request content")
         .member(member)
-        .requestStatus(STAND_BY)
+        .requestStatus(AWAIT)
         .build();
 
     em.persist(request);

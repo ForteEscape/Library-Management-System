@@ -55,7 +55,7 @@ class ManagementRequestResultTest {
         .title("management request title")
         .content("management request content")
         .member(member)
-        .requestStatus(RequestStatus.STAND_BY)
+        .requestStatus(RequestStatus.AWAIT)
         .build();
 
     em.persist(request);
