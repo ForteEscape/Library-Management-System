@@ -1,9 +1,11 @@
 package com.management.library.repository.management;
 
-import static com.management.library.domain.QManagementRequest.*;
-import static com.management.library.domain.QMember.*;
+import static com.management.library.domain.management.QManagementRequest.*;
+import static com.management.library.domain.member.QMember.*;
 
 import com.management.library.domain.management.ManagementRequest;
+import com.management.library.domain.management.QManagementRequest;
+import com.management.library.domain.member.QMember;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.dto.RequestSearchCond;
 import com.querydsl.core.types.dsl.BooleanExpression;
