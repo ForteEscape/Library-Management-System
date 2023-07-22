@@ -20,6 +20,47 @@ class BookRepositoryTest {
   @Autowired
   private BookRepository bookRepository;
 
+  @DisplayName("도서 이름으로 도서를 조회할 수 있다.")
+  @Test
+  public void findByBookInfo_Title() throws Exception {
+    // given
+    Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
+    Book book2 = createBook("spring", "park", "publisher1", "location1", 2017, 150);
+    Book book3 = createBook("jpa2", "kim", "publisher", "location2", 2020, 130);
+
+    bookRepository.saveAll(List.of(book1, book2, book3));
+
+    // when
+    Book book = bookRepository.findByTitleAndAuthor("spring", "park")
+        .orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+
+    // then
+    assertThat(book)
+        .extracting(Book::getBookInfo)
+        .extracting(BookInfo::getTitle, BookInfo::getAuthor)
+        .contains(
+            "spring", "park"
+        );
+  }
+
+  @DisplayName("도서를 찾을 수 없을 시 예외를 반환한다.")
+  @Test
+  public void findByTitleAndAuthorWithNoBook() throws Exception {
+    // given
+    Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
+    Book book2 = createBook("spring", "park", "publisher1", "location1", 2017, 150);
+    Book book3 = createBook("jpa2", "kim", "publisher", "location2", 2020, 130);
+
+    bookRepository.saveAll(List.of(book1, book2, book3));
+
+    // when
+    // then
+    assertThatThrownBy(() -> bookRepository.findByTitleAndAuthor("spring", "kim")
+        .orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다.")))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("해당 도서가 존재하지 않습니다.");
+  }
+
   @DisplayName("조건 없이 모든 도서를 검색할 수 있다. 한 번에 5개의 데이터씩 조회가 가능하다.")
   @Test
   public void bookSearchPagingTest() throws Exception {

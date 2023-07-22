@@ -1,15 +1,15 @@
 package com.management.library.repository.book;
 
-import static com.management.library.domain.QBook.*;
+import static com.management.library.domain.book.QBook.*;
 
-import com.management.library.domain.QBook;
 import com.management.library.domain.book.Book;
+import com.management.library.domain.book.QBook;
 import com.management.library.dto.BookSearchCond;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,6 +67,18 @@ public class BookRepositoryImpl implements BookRepositoryCustom{
         .where(book.typeCode.between(startCode, endCode));
 
     return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+  }
+
+  @Override
+  public Optional<Book> findByTitleAndAuthor(String title, String author) {
+    Book book = queryFactory.selectFrom(QBook.book)
+        .where(
+            QBook.book.bookInfo.title.eq(title),
+            QBook.book.bookInfo.author.eq(author)
+        )
+        .fetchOne();
+
+    return Optional.ofNullable(book);
   }
 
   private BooleanExpression bookPublisherEq(String publisherName) {
