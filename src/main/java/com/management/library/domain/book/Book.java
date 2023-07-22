@@ -3,6 +3,7 @@ package com.management.library.domain.book;
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.dto.BookUpdateDto;
+import com.management.library.service.book.request.BookServiceUpdateRequestDto;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -53,7 +54,7 @@ public class Book extends BaseEntity {
   }
 
   // 도서 정보 변경 메서드
-  public void changeBookData(BookUpdateDto.Request request) {
+  public void changeBookData(BookServiceUpdateRequestDto request) {
     this.typeCode = request.getTypeCode();
     this.bookInfo = BookInfo.builder()
         .title(request.getTitle())
