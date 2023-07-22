@@ -34,6 +34,9 @@ dependencies {
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 	// querydsl implementation
 	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+	// https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
+	testImplementation 'org.testcontainers:junit-jupiter:1.17.2'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'

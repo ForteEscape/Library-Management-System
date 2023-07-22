@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+  redis:
+    image: redis
+    container_name: rediscache
+    ports:
+    - 6380:6379
+    networks:
+      - spring-net
+
+  spring-library-app:
+    image: spring-library-app
+    container_name: spring-library-app
+    build: ,
+    restart: always
+    environment:
+      REDIS_HOST: rediscache
+      REDIS_PORT: 6379
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis
+    networks:
+      - spring-net
+
+networks:
+  spring-net:
