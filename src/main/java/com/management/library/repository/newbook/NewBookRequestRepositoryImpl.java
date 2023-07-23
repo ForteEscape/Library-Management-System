@@ -1,7 +1,7 @@
 package com.management.library.repository.newbook;
 
-import static com.management.library.domain.QMember.*;
-import static com.management.library.domain.QNewBookRequest.*;
+import static com.management.library.domain.member.QMember.*;
+import static com.management.library.domain.newbook.QNewBookRequest.*;
 
 import com.management.library.domain.newbook.NewBookRequest;
 import com.management.library.domain.type.RequestStatus;
@@ -25,7 +25,7 @@ public class NewBookRequestRepositoryImpl implements NewBookRequestRepositoryCus
 
   @Override
   public Page<NewBookRequest> findByMemberCode(String memberCode, Pageable pageable) {
-    List<NewBookRequest> content = queryFactory.selectFrom(newBookRequest)
+  List<NewBookRequest> content = queryFactory.selectFrom(newBookRequest)
         .join(newBookRequest.member, member).fetchJoin()
         .where(member.memberCode.eq(memberCode))
         .offset(pageable.getOffset())

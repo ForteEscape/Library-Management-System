@@ -1,8 +1,10 @@
 package com.management.library.repository.rental;
 
-import static com.management.library.domain.QMember.*;
-import static com.management.library.domain.QRental.*;
+import static com.management.library.domain.member.QMember.*;
+import static com.management.library.domain.rental.QRental.*;
 
+import com.management.library.domain.member.QMember;
+import com.management.library.domain.rental.QRental;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.RentalStatus;
 import com.management.library.dto.BookRentalSearchCond;

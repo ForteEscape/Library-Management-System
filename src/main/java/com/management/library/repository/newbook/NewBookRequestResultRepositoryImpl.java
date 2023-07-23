@@ -1,10 +1,13 @@
 package com.management.library.repository.newbook;
 
-import static com.management.library.domain.QAdministrator.*;
-import static com.management.library.domain.QNewBookRequest.*;
-import static com.management.library.domain.QNewBookRequestResult.*;
+import static com.management.library.domain.admin.QAdministrator.*;
+import static com.management.library.domain.newbook.QNewBookRequest.*;
+import static com.management.library.domain.newbook.QNewBookRequestResult.*;
 
+import com.management.library.domain.admin.QAdministrator;
 import com.management.library.domain.newbook.NewBookRequestResult;
+import com.management.library.domain.newbook.QNewBookRequest;
+import com.management.library.domain.newbook.QNewBookRequestResult;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

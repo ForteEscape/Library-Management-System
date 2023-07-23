@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ArrayResponseWrapper<T> {
 
-  private int count;
+  private Long count;
   private T data;
 }

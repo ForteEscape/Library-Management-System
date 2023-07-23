@@ -5,17 +5,15 @@ import static org.assertj.core.api.Assertions.*;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.book.BookInfo;
 import com.management.library.domain.type.BookStatus;
-import com.management.library.dto.BookUpdateDto.Request;
+import com.management.library.service.book.request.BookServiceUpdateRequestDto;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@SpringBootTest
-@Transactional
+@DataJpaTest
 @Slf4j
 class BookTest {
 
@@ -46,7 +44,7 @@ class BookTest {
 
   @Test
   @DisplayName("도서 엔티티 변경 - 도서 상태 변경 메서드")
-  void changeBookStatusTest(){
+  void changeBookStatusTest() {
     // given
     Book book = Book.builder()
         .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
@@ -71,7 +69,7 @@ class BookTest {
 
   @Test
   @DisplayName("도서 엔티티 변경 - 도서 정보 변경 메서드")
-  void changeBookDataTest(){
+  void changeBookDataTest() {
     // given
     Book book = Book.builder()
         .bookInfo(new BookInfo("book", "author", "publisher", "location", 2002))
@@ -81,7 +79,7 @@ class BookTest {
 
     em.persist(book);
 
-    Request request = Request.builder()
+    BookServiceUpdateRequestDto request = BookServiceUpdateRequestDto.builder()
         .title("book2")
         .author("author2")
         .publisher("publisher2")
@@ -99,11 +97,12 @@ class BookTest {
     Book result = em.find(Book.class, book.getId());
 
     // then
-    assertThat(result.getBookInfo().getTitle()).isEqualTo("book2");
-    assertThat(result.getBookInfo().getAuthor()).isEqualTo("author2");
-    assertThat(result.getBookInfo().getPublisher()).isEqualTo("publisher2");
-    assertThat(result.getBookInfo().getPublishedYear()).isEqualTo(2005);
-    assertThat(result.getBookInfo().getLocation()).isEqualTo("location2");
+    assertThat(result)
+        .extracting(Book::getBookInfo)
+        .extracting(BookInfo::getTitle, BookInfo::getAuthor, BookInfo::getPublisher,
+            BookInfo::getPublishedYear, BookInfo::getLocation)
+        .contains("book2", "author2", "publisher2", 2005, "location2");
+
     assertThat(result.getTypeCode()).isEqualTo(835);
   }
 }

@@ -1,9 +1,8 @@
 package com.management.library.repository.management;
 
-
-import static com.management.library.domain.QAdministrator.*;
-import static com.management.library.domain.QManagementRequest.*;
-import static com.management.library.domain.QManagementRequestResult.*;
+import static com.management.library.domain.admin.QAdministrator.*;
+import static com.management.library.domain.management.QManagementRequest.*;
+import static com.management.library.domain.management.QManagementRequestResult.*;
 
 import com.management.library.domain.management.ManagementRequestResult;
 import com.querydsl.jpa.impl.JPAQuery;
