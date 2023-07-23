@@ -6,7 +6,6 @@ import com.management.library.domain.book.Book;
 import com.management.library.dto.ArrayResponseWrapper;
 import com.management.library.dto.BookSearchCond;
 import com.management.library.exception.DuplicateException;
-import com.management.library.exception.ErrorCode;
 import com.management.library.exception.InvalidArgumentException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.book.BookRepository;
