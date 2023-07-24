@@ -5,7 +5,8 @@ import static com.querydsl.core.types.Projections.*;
 
 import com.management.library.domain.book.Book;
 import com.management.library.dto.BookSearchCond;
-import com.management.library.service.book.response.BookServiceResponseDto;
+import com.management.library.service.book.dto.BookServiceCreateDto;
+import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -32,9 +33,9 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
    * @return 페이징된 검색 결과 DTO
    */
   @Override
-  public Page<BookServiceResponseDto> bookSearch(BookSearchCond cond, Pageable pageable) {
-    List<BookServiceResponseDto> result = queryFactory.select(
-            constructor(BookServiceResponseDto.class,
+  public Page<BookServiceCreateDto.Response> bookSearch(BookSearchCond cond, Pageable pageable) {
+    List<Response> result = queryFactory.select(
+            constructor(Response.class,
                 book.id,
                 book.bookInfo.title,
                 book.bookInfo.author,
@@ -42,7 +43,8 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                 book.bookInfo.publishedYear,
                 book.bookInfo.location,
                 book.typeCode,
-                book.bookStatus)
+                book.bookStatus
+            )
         )
         .from(book)
         .where(
@@ -74,10 +76,10 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
    * @return 페이징된 결과 DTO
    */
   @Override
-  public Page<BookServiceResponseDto> findAllByBookTypeCode(int startCode, int endCode,
+  public Page<BookServiceCreateDto.Response> findAllByBookTypeCode(int startCode, int endCode,
       Pageable pageable) {
-    List<BookServiceResponseDto> result = queryFactory.select(
-            constructor(BookServiceResponseDto.class,
+    List<Response> result = queryFactory.select(
+            constructor(Response.class,
                 book.id,
                 book.bookInfo.title,
                 book.bookInfo.author,
@@ -85,7 +87,8 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                 book.bookInfo.publishedYear,
                 book.bookInfo.location,
                 book.typeCode,
-                book.bookStatus)
+                book.bookStatus
+            )
         )
         .from(book)
         .where(book.typeCode.between(startCode, endCode))
