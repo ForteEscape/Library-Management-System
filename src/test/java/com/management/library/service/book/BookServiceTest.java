@@ -10,8 +10,10 @@ import com.management.library.dto.BookSearchCond;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.InvalidArgumentException;
 import com.management.library.exception.NoSuchElementExistsException;
-import com.management.library.service.book.request.BookServiceRequestDto;
-import com.management.library.service.book.response.BookServiceResponseDto;
+import com.management.library.service.book.dto.BookServiceCreateDto;
+import com.management.library.service.book.dto.BookServiceCreateDto.Request;
+import com.management.library.service.book.dto.BookServiceCreateDto.Response;
+import com.management.library.service.book.dto.BookServiceResponseDto;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -34,15 +36,15 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void addNewBook() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher",
+    Request request1 = createRequest("book1", "author1", "publisher",
         2015, "location1", 135);
 
-    BookServiceRequestDto request2 = createRequest("book2", "author2", "publisher2",
+    Request request2 = createRequest("book2", "author2", "publisher2",
         2016, "location2", 130);
 
     // when
-    BookServiceResponseDto response1 = bookService.createNewBook(request1);
-    BookServiceResponseDto response2 = bookService.createNewBook(request2);
+    Response response1 = bookService.createNewBook(request1);
+    Response response2 = bookService.createNewBook(request2);
 
     // then
     assertThat(List.of(response1, response2))
@@ -58,10 +60,10 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void addNewBookWithDuplicateBook() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher",
+    Request request1 = createRequest("book1", "author1", "publisher",
         2015, "location1", 135);
 
-    BookServiceRequestDto request2 = createRequest("book1", "author1", "publisher",
+    Request request2 = createRequest("book1", "author1", "publisher",
         2015, "location1", 135);
 
     // when
@@ -80,14 +82,14 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getBookData() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher",
+    Request request1 = createRequest("book1", "author1", "publisher",
         2015, "location1", 135);
 
-    BookServiceRequestDto request2 = createRequest("book2", "author2", "publisher2",
+    Request request2 = createRequest("book2", "author2", "publisher2",
         2016, "location2", 130);
 
-    BookServiceResponseDto newBook1 = bookService.createNewBook(request1);
-    BookServiceResponseDto newBook2 = bookService.createNewBook(request2);
+    Response newBook1 = bookService.createNewBook(request1);
+    Response newBook2 = bookService.createNewBook(request2);
 
     // when
     BookServiceResponseDto bookData1 = bookService.getBookData(newBook1.getId());
@@ -120,23 +122,23 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void searchBook() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher1",
+    Request request1 = createRequest("book1", "author1", "publisher1",
         2015, "location1", 130);
-    BookServiceRequestDto request2 = createRequest("book2", "author2", "publisher2",
+    Request request2 = createRequest("book2", "author2", "publisher2",
         2015, "location2", 135);
-    BookServiceRequestDto request3 = createRequest("book3", "author3", "publisher3",
+    Request request3 = createRequest("book3", "author3", "publisher3",
         2015, "location3", 140);
-    BookServiceRequestDto request4 = createRequest("book4", "author4", "publisher4",
+    Request request4 = createRequest("book4", "author4", "publisher4",
         2015, "location4", 145);
-    BookServiceRequestDto request5 = createRequest("book5", "author5", "publisher5",
+    Request request5 = createRequest("book5", "author5", "publisher5",
         2015, "location5", 150);
-    BookServiceRequestDto request6 = createRequest("book6", "author6", "publisher6",
+    Request request6 = createRequest("book6", "author6", "publisher6",
         2015, "location6", 155);
 
-    List<BookServiceRequestDto> requests = List.of(request1, request2, request3, request4,
+    List<Request> requests = List.of(request1, request2, request3, request4,
         request5, request6);
 
-    for (BookServiceRequestDto request : requests) {
+    for (Request request : requests) {
       bookService.createNewBook(request);
     }
 
@@ -144,10 +146,9 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<BookServiceResponseDto>> result = bookService.searchBook(cond,
-        pageRequest);
+    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond, pageRequest);
     Long count = result.getCount();
-    List<BookServiceResponseDto> content = result.getData().getContent();
+    List<Response> content = result.getData().getContent();
 
     // then
     assertThat(count).isEqualTo(6L);
@@ -167,23 +168,23 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void searchBookWithBookName() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher1",
+    Request request1 = createRequest("book1", "author1", "publisher1",
         2015, "location1", 130);
-    BookServiceRequestDto request2 = createRequest("book2", "author2", "publisher2",
+    Request request2 = createRequest("book2", "author2", "publisher2",
         2015, "location2", 135);
-    BookServiceRequestDto request3 = createRequest("book3", "author3", "publisher3",
+    Request request3 = createRequest("book3", "author3", "publisher3",
         2015, "location3", 140);
-    BookServiceRequestDto request4 = createRequest("book4", "author4", "publisher4",
+    Request request4 = createRequest("book4", "author4", "publisher4",
         2015, "location4", 145);
-    BookServiceRequestDto request5 = createRequest("book5", "author5", "publisher5",
+    Request request5 = createRequest("book5", "author5", "publisher5",
         2015, "location5", 150);
-    BookServiceRequestDto request6 = createRequest("book6", "author6", "publisher6",
+    Request request6 = createRequest("book6", "author6", "publisher6",
         2015, "location6", 155);
 
-    List<BookServiceRequestDto> requests = List.of(request1, request2, request3, request4,
+    List<Request> requests = List.of(request1, request2, request3, request4,
         request5, request6);
 
-    for (BookServiceRequestDto request : requests) {
+    for (Request request : requests) {
       bookService.createNewBook(request);
     }
 
@@ -192,10 +193,10 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<BookServiceResponseDto>> result = bookService.searchBook(cond,
+    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond,
         pageRequest);
     Long count = result.getCount();
-    List<BookServiceResponseDto> content = result.getData().getContent();
+    List<Response> content = result.getData().getContent();
 
     // then
     assertThat(count).isEqualTo(1L);
@@ -211,23 +212,23 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void searchBookWithAuthorName() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher1",
+    Request request1 = createRequest("book1", "author1", "publisher1",
         2015, "location1", 130);
-    BookServiceRequestDto request2 = createRequest("book2", "author1", "publisher2",
+    Request request2 = createRequest("book2", "author1", "publisher2",
         2015, "location2", 135);
-    BookServiceRequestDto request3 = createRequest("book3", "author1", "publisher3",
+    Request request3 = createRequest("book3", "author1", "publisher3",
         2015, "location3", 140);
-    BookServiceRequestDto request4 = createRequest("book4", "author1", "publisher4",
+    Request request4 = createRequest("book4", "author1", "publisher4",
         2015, "location4", 145);
-    BookServiceRequestDto request5 = createRequest("book5", "author5", "publisher5",
+    Request request5 = createRequest("book5", "author5", "publisher5",
         2015, "location5", 150);
-    BookServiceRequestDto request6 = createRequest("book6", "author6", "publisher6",
+    Request request6 = createRequest("book6", "author6", "publisher6",
         2015, "location6", 155);
 
-    List<BookServiceRequestDto> requests = List.of(request1, request2, request3, request4,
+    List<Request> requests = List.of(request1, request2, request3, request4,
         request5, request6);
 
-    for (BookServiceRequestDto request : requests) {
+    for (Request request : requests) {
       bookService.createNewBook(request);
     }
 
@@ -236,10 +237,10 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<BookServiceResponseDto>> result = bookService.searchBook(cond,
+    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond,
         pageRequest);
     Long count = result.getCount();
-    List<BookServiceResponseDto> content = result.getData().getContent();
+    List<Response> content = result.getData().getContent();
 
     // then
     assertThat(count).isEqualTo(4L);
@@ -258,23 +259,23 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void searchBookWithPublisherName() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher1",
+    Request request1 = createRequest("book1", "author1", "publisher1",
         2015, "location1", 130);
-    BookServiceRequestDto request2 = createRequest("book2", "author2", "publisher1",
+    Request request2 = createRequest("book2", "author2", "publisher1",
         2015, "location2", 135);
-    BookServiceRequestDto request3 = createRequest("book3", "author3", "publisher1",
+    Request request3 = createRequest("book3", "author3", "publisher1",
         2015, "location3", 140);
-    BookServiceRequestDto request4 = createRequest("book4", "author4", "publisher1",
+    Request request4 = createRequest("book4", "author4", "publisher1",
         2015, "location4", 145);
-    BookServiceRequestDto request5 = createRequest("book5", "author5", "publisher5",
+    Request request5 = createRequest("book5", "author5", "publisher5",
         2015, "location5", 150);
-    BookServiceRequestDto request6 = createRequest("book6", "author6", "publisher6",
+    Request request6 = createRequest("book6", "author6", "publisher6",
         2015, "location6", 155);
 
-    List<BookServiceRequestDto> requests = List.of(request1, request2, request3, request4,
+    List<Request> requests = List.of(request1, request2, request3, request4,
         request5, request6);
 
-    for (BookServiceRequestDto request : requests) {
+    for (Request request : requests) {
       bookService.createNewBook(request);
     }
 
@@ -283,10 +284,10 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<BookServiceResponseDto>> result = bookService.searchBook(cond,
+    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond,
         pageRequest);
     Long count = result.getCount();
-    List<BookServiceResponseDto> content = result.getData().getContent();
+    List<Response> content = result.getData().getContent();
 
     // then
     assertThat(count).isEqualTo(4L);
@@ -305,33 +306,33 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void searchBookByTypeCode() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher1",
+    Request request1 = createRequest("book1", "author1", "publisher1",
         2015, "location1", 130);
-    BookServiceRequestDto request2 = createRequest("book2", "author2", "publisher2",
+    Request request2 = createRequest("book2", "author2", "publisher2",
         2015, "location2", 135);
-    BookServiceRequestDto request3 = createRequest("book3", "author3", "publisher3",
+    Request request3 = createRequest("book3", "author3", "publisher3",
         2015, "location3", 240);
-    BookServiceRequestDto request4 = createRequest("book4", "author4", "publisher4",
+    Request request4 = createRequest("book4", "author4", "publisher4",
         2015, "location4", 245);
-    BookServiceRequestDto request5 = createRequest("book5", "author5", "publisher5",
+    Request request5 = createRequest("book5", "author5", "publisher5",
         2015, "location5", 350);
-    BookServiceRequestDto request6 = createRequest("book6", "author6", "publisher6",
+    Request request6 = createRequest("book6", "author6", "publisher6",
         2015, "location6", 355);
 
-    List<BookServiceRequestDto> requests = List.of(request1, request2, request3, request4,
+    List<Request> requests = List.of(request1, request2, request3, request4,
         request5, request6);
 
-    for (BookServiceRequestDto request : requests) {
+    for (Request request : requests) {
       bookService.createNewBook(request);
     }
 
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<BookServiceResponseDto>> result = bookService.searchBookByTypeCode(
+    ArrayResponseWrapper<Page<Response>> result = bookService.searchBookByTypeCode(
         100, 300, pageRequest);
     Long count = result.getCount();
-    List<BookServiceResponseDto> content = result.getData().getContent();
+    List<Response> content = result.getData().getContent();
 
     // then
     assertThat(count).isEqualTo(4L);
@@ -350,23 +351,23 @@ class BookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void searchBookByInvalidTypeCode() {
     // given
-    BookServiceRequestDto request1 = createRequest("book1", "author1", "publisher1",
+    Request request1 = createRequest("book1", "author1", "publisher1",
         2015, "location1", 130);
-    BookServiceRequestDto request2 = createRequest("book2", "author2", "publisher2",
+    Request request2 = createRequest("book2", "author2", "publisher2",
         2015, "location2", 135);
-    BookServiceRequestDto request3 = createRequest("book3", "author3", "publisher3",
+    Request request3 = createRequest("book3", "author3", "publisher3",
         2015, "location3", 240);
-    BookServiceRequestDto request4 = createRequest("book4", "author4", "publisher4",
+    Request request4 = createRequest("book4", "author4", "publisher4",
         2015, "location4", 245);
-    BookServiceRequestDto request5 = createRequest("book5", "author5", "publisher5",
+    Request request5 = createRequest("book5", "author5", "publisher5",
         2015, "location5", 350);
-    BookServiceRequestDto request6 = createRequest("book6", "author6", "publisher6",
+    Request request6 = createRequest("book6", "author6", "publisher6",
         2015, "location6", 355);
 
-    List<BookServiceRequestDto> requests = List.of(request1, request2, request3, request4,
+    List<Request> requests = List.of(request1, request2, request3, request4,
         request5, request6);
 
-    for (BookServiceRequestDto request : requests) {
+    for (Request request : requests) {
       bookService.createNewBook(request);
     }
 
@@ -382,9 +383,9 @@ class BookServiceTest extends AbstractContainerBaseTest {
         );
   }
 
-  private static BookServiceRequestDto createRequest(String title, String author, String publisher,
+  private static Request createRequest(String title, String author, String publisher,
       int publishedYear, String location, int typeCode) {
-    return BookServiceRequestDto.builder()
+    return BookServiceCreateDto.Request.builder()
         .title(title)
         .author(author)
         .publisher(publisher)
