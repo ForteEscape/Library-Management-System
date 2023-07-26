@@ -21,7 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @RequiredArgsConstructor
-public class CacheConfiguration {
+public class RedisConfiguration {
 
   @Value("${spring.redis.host}")
   private String host;
@@ -58,10 +58,10 @@ public class CacheConfiguration {
   }
 
   @Bean
-  public RedisTemplate<String, Object> redisTemplate(){
-    RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-
+  public RedisTemplate<String, ?> redisTemplate(){
+    RedisTemplate<String, ?> redisTemplate = new RedisTemplate<>();
     redisTemplate.setConnectionFactory(redisConnectionFactory());
+
     redisTemplate.setKeySerializer(new StringRedisSerializer());
     redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
 
