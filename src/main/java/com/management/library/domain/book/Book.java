@@ -4,8 +4,8 @@ import static com.management.library.domain.type.BookStatus.*;
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.BookStatus;
-import com.management.library.service.book.request.BookServiceRequestDto;
-import com.management.library.service.book.request.BookServiceUpdateRequestDto;
+import com.management.library.service.book.dto.BookServiceCreateDto;
+import com.management.library.service.book.dto.BookServiceUpdateDto;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ public class Book extends BaseEntity {
     this.bookStatus = bookStatus;
   }
 
-  public static Book of(BookServiceRequestDto request){
+  public static Book of(BookServiceCreateDto.Request request){
     return Book.builder()
         .bookInfo(
             BookInfo.of(
@@ -69,7 +69,7 @@ public class Book extends BaseEntity {
   }
 
   // 도서 정보 변경 메서드
-  public void changeBookData(BookServiceUpdateRequestDto request) {
+  public void changeBookData(BookServiceUpdateDto.Request request) {
     this.typeCode = request.getTypeCode();
     this.bookInfo = BookInfo.builder()
         .title(request.getTitle())

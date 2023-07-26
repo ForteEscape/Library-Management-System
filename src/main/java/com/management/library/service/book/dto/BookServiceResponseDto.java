@@ -1,4 +1,4 @@
-package com.management.library.service.book.response;
+package com.management.library.service.book.dto;
 
 import com.management.library.domain.book.Book;
 import com.management.library.domain.type.BookStatus;

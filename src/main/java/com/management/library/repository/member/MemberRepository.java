@@ -7,13 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
   Optional<Member> findByMemberCode(String memberCode);
-
-  @Override
-  Page<Member> findAll(Pageable pageable);
-
   Page<Member> findAllByMemberRentalStatus(MemberRentalStatus memberRentalStatus,
       Pageable pageable);
 }

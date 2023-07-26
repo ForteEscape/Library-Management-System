@@ -43,7 +43,7 @@ public class Member extends BaseEntity implements UserDetails {
 
   @Embedded
   private Address address;
-  @Column(name = "member_code")
+  @Column(name = "member_code", unique = true)
   private String memberCode;
 
   @Enumerated(EnumType.STRING)

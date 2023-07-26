@@ -36,7 +36,8 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0'
 	// https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
 	testImplementation 'org.testcontainers:junit-jupiter:1.17.2'
-
+	// https://mvnrepository.com/artifact/org.redisson/redisson
+	implementation 'org.redisson:redisson:3.17.7'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'

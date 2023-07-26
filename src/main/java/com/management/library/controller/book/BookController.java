@@ -1,11 +1,13 @@
 package com.management.library.controller.book;
 
-import com.management.library.controller.book.request.BookControllerCreateRequestDto;
-import com.management.library.controller.book.request.BookControllerUpdateRequestDto;
+import static com.management.library.controller.book.dto.BookControllerCreateDto.*;
+
+import com.management.library.controller.book.dto.BookControllerCreateDto;
+import com.management.library.controller.book.dto.BookControllerUpdateDto;
 import com.management.library.service.book.BookService;
-import com.management.library.service.book.request.BookServiceRequestDto;
-import com.management.library.service.book.request.BookServiceUpdateRequestDto;
-import com.management.library.service.book.response.BookServiceResponseDto;
+import com.management.library.service.book.dto.BookServiceCreateDto;
+import com.management.library.service.book.dto.BookServiceUpdateDto;
+import com.management.library.service.book.dto.BookServiceResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,18 +24,23 @@ public class BookController {
   private final BookService bookService;
 
   @PostMapping("/new-book")
-  public BookServiceResponseDto addBook(@RequestBody BookControllerCreateRequestDto request) {
-    return bookService.createNewBook(BookServiceRequestDto.of(request));
+  public Response addBook(@RequestBody BookControllerCreateDto.Request request) {
+    BookServiceCreateDto.Response result = bookService.createNewBook(
+        BookServiceCreateDto.Request.of(request));
+    return Response.of(result);
   }
 
   @PostMapping("/{bookId}/update")
-  public BookServiceResponseDto updateBook(@PathVariable("bookId") Long id,
-      @RequestBody BookControllerUpdateRequestDto request) {
-    return bookService.updateBookData(id, BookServiceUpdateRequestDto.of(request));
+  public BookControllerUpdateDto.Response updateBook(@PathVariable("bookId") Long id,
+      @RequestBody BookControllerUpdateDto.Request request) {
+
+    BookServiceUpdateDto.Response result = bookService.updateBookData(id,
+        BookServiceUpdateDto.Request.of(request));
+    return BookControllerUpdateDto.Response.of(result);
   }
 
   @PostMapping("/{bookId}/delete")
-  public String deleteBook(@PathVariable("bookId") Long id){
+  public String deleteBook(@PathVariable("bookId") Long id) {
     return bookService.deleteBookData(id);
   }
 

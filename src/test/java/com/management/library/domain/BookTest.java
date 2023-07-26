@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.book.BookInfo;
 import com.management.library.domain.type.BookStatus;
-import com.management.library.service.book.request.BookServiceUpdateRequestDto;
+import com.management.library.service.book.dto.BookServiceUpdateDto;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +79,7 @@ class BookTest {
 
     em.persist(book);
 
-    BookServiceUpdateRequestDto request = BookServiceUpdateRequestDto.builder()
+    BookServiceUpdateDto.Request request = BookServiceUpdateDto.Request.builder()
         .title("book2")
         .author("author2")
         .publisher("publisher2")

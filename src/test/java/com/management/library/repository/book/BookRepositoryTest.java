@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.book.BookInfo;
 import com.management.library.dto.BookSearchCond;
-import com.management.library.service.book.response.BookServiceResponseDto;
+import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -81,13 +81,11 @@ class BookRepositoryTest {
     PageRequest pageRequest2 = PageRequest.of(1, 5);
 
     // when
-    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
-        pageRequest);
-    List<BookServiceResponseDto> content = books.getContent();
+    Page<Response> result = bookRepository.bookSearch(cond, pageRequest);
+    List<Response> content = result.getContent();
 
-    Page<BookServiceResponseDto> books2 = bookRepository.bookSearch(cond,
-        pageRequest2);
-    List<BookServiceResponseDto> content2 = books2.getContent();
+    Page<Response> result2 = bookRepository.bookSearch(cond, pageRequest2);
+    List<Response> content2 = result2.getContent();
 
     // then
     assertThat(content).hasSize(5)
@@ -125,9 +123,8 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
-        pageRequest);
-    List<BookServiceResponseDto> content = books.getContent();
+    Page<Response> result = bookRepository.bookSearch(cond, pageRequest);
+    List<Response> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -155,9 +152,8 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
-        pageRequest);
-    List<BookServiceResponseDto> content = books.getContent();
+    Page<Response> result = bookRepository.bookSearch(cond, pageRequest);
+    List<Response> content = result.getContent();
 
     // then
     assertThat(content).hasSize(1)
@@ -184,9 +180,8 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<BookServiceResponseDto> books = bookRepository.bookSearch(cond,
-        pageRequest);
-    List<BookServiceResponseDto> content = books.getContent();
+    Page<Response> result = bookRepository.bookSearch(cond, pageRequest);
+    List<Response> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -214,9 +209,8 @@ class BookRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<BookServiceResponseDto> result = bookRepository.findAllByBookTypeCode(100, 200,
-        pageRequest);
-    List<BookServiceResponseDto> content = result.getContent();
+    Page<Response> result = bookRepository.findAllByBookTypeCode(100, 200, pageRequest);
+    List<Response> content = result.getContent();
 
     // then
     assertThat(content).hasSize(4)
