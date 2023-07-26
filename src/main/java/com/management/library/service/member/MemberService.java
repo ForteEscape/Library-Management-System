@@ -1,9 +1,12 @@
 package com.management.library.service.member;
 
+import static com.management.library.domain.type.Authority.ROLE_MEMBER;
+import static com.management.library.domain.type.MemberRentalStatus.RENTAL_AVAILABLE;
 import static com.management.library.exception.ErrorCode.DUPLICATE_MEMBER_CODE;
 import static com.management.library.exception.ErrorCode.MEMBER_ALREADY_EXISTS;
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
 
+import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
 import com.management.library.dto.BookRentalSearchCond;
 import com.management.library.exception.DuplicateException;
@@ -18,7 +21,6 @@ import com.management.library.service.member.dto.MemberReadServiceDto;
 import com.management.library.service.rental.dto.RentalServiceReadDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,10 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
   private final MemberRepository memberRepository;
-  private final RedissonClient redissonClient;
   private final BookRentalRepository bookRentalRepository;
   private final Generator<String> memberPasswordGenerator;
-  private final MemberCreateService memberCreateService;
   private final RedisMemberService redisService;
 
   /**
@@ -55,9 +55,15 @@ public class MemberService {
     if(isMemberCodeDuplicate(memberCode)){
       throw new DuplicateException(DUPLICATE_MEMBER_CODE);
     }
+
     String password = memberPasswordGenerator.generate(request.getBirthdayCode());
 
-    Member savedMember = memberCreateService.saveMember(memberCode, password, request);
+    Address address = getAddress(request.getLegion(), request.getCity(), request.getStreet());
+    Member member = getMember(request.getName(), request.getBirthdayCode(), memberCode,
+        password, address);
+
+    Member savedMember = memberRepository.save(member);
+
     Response response = Response.of(savedMember);
     response.setPassword(password);
 
@@ -102,7 +108,25 @@ public class MemberService {
         cond, memberCode, pageable);
   }
 
-  // 회원이 요청한 신간 반입 요청 목록 데이터를 가져오기
-  // 이건 그냥 각 requestService에서 수행하도록 한다.
+  private Address getAddress(String legion, String city, String street) {
+    return Address.builder()
+        .legion(legion)
+        .city(city)
+        .street(street)
+        .build();
+  }
+
+  private Member getMember(String name, String birthdayCode, String memberCode, String password,
+      Address address) {
+    return Member.builder()
+        .name(name)
+        .birthdayCode(birthdayCode)
+        .address(address)
+        .memberRentalStatus(RENTAL_AVAILABLE)
+        .authority(ROLE_MEMBER)
+        .memberCode(memberCode)
+        .password(password)
+        .build();
+  }
 
 }
