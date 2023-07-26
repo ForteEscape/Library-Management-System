@@ -12,6 +12,7 @@ import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.dto.RequestSearchCond;
 import com.management.library.repository.member.MemberRepository;
+import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,9 +50,9 @@ class ManagementRequestRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<ManagementRequest> requests = managementRequestRepository.findByMemberCode(
+    Page<Response> requests = managementRequestRepository.findByMemberCode(
         member1.getMemberCode(), pageRequest);
-    List<ManagementRequest> content = requests.getContent();
+    List<Response> content = requests.getContent();
 
     // then
     assertThat(content).hasSize(3)
@@ -60,15 +61,6 @@ class ManagementRequestRepositoryTest {
             tuple("운영 약정 개정", "운영 약정 개정 의 내용", AWAIT),
             tuple("화장실 개선 요청", "화장실 개선 요청 의 내용", ACCEPTED),
             tuple("운영시간 연장 요청", "운영시간 연장 요청 의 내용", REFUSED)
-        );
-
-    assertThat(content)
-        .extracting(ManagementRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456")
         );
   }
 
