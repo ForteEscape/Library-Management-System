@@ -1,13 +1,13 @@
 package com.management.library.service.member;
 
-import static com.management.library.exception.ErrorCode.*;
+import static com.management.library.exception.ErrorCode.DUPLICATE_MEMBER_CODE;
+import static com.management.library.exception.ErrorCode.MEMBER_ALREADY_EXISTS;
+import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
 
 import com.management.library.domain.member.Member;
-import com.management.library.dto.ArrayResponseWrapper;
 import com.management.library.dto.BookRentalSearchCond;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
-import com.management.library.exception.RedisLockException;
 import com.management.library.repository.member.MemberRepository;
 import com.management.library.repository.rental.BookRentalRepository;
 import com.management.library.service.Generator;
@@ -16,10 +16,8 @@ import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
 import com.management.library.service.member.dto.MemberReadServiceDto;
 import com.management.library.service.rental.dto.RentalServiceReadDto;
-import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,10 +33,9 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final RedissonClient redissonClient;
   private final BookRentalRepository bookRentalRepository;
-  private final Generator<String> memberCodeGenerator;
   private final Generator<String> memberPasswordGenerator;
   private final MemberCreateService memberCreateService;
-  private static final String INIT_MEMBER_CODE = "100000000000";
+  private final RedisMemberService redisService;
 
   /**
    * 회원 가입 기능 회원의 이름 및 주소가 모두 동일한 경우 -> 일반적으로 동일인이라고 가정할 수 있으므로 중복으로 판단해 가입 제한. 회원 번호와 관련된 동시성 문제 발생
@@ -49,38 +46,22 @@ public class MemberService {
    */
   @Transactional
   public MemberCreateServiceDto.Response createMember(MemberCreateServiceDto.Request request) {
-    String latestMemberCode = memberRepository.findTopByOrderByIdDesc()
-        .orElse(INIT_MEMBER_CODE);
+    String memberCode = String.valueOf(redisService.getMemberCode());
 
-    String memberCode = memberCodeGenerator.generate(latestMemberCode);
-
-    RLock lock = redissonClient.getLock(memberCode);
-    try{
-      boolean available = lock.tryLock(1, 3, TimeUnit.SECONDS);
-
-      if (!available){
-        throw new RedisLockException(ALREADY_IN_USE);
-      }
-
-      if (isMemberPresent(request)) {
-        throw new DuplicateException(MEMBER_ALREADY_EXISTS);
-      }
-
-      if(isMemberCodeDuplicate(memberCode)){
-        throw new DuplicateException(DUPLICATE_MEMBER_CODE);
-      }
-      String password = memberPasswordGenerator.generate(request.getBirthdayCode());
-
-      Member savedMember = memberCreateService.saveMember(memberCode, password, request);
-      Response response = Response.of(savedMember);
-      response.setPassword(password);
-
-      return response;
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    } finally {
-      lock.unlock();
+    if (isMemberPresent(request)) {
+      throw new DuplicateException(MEMBER_ALREADY_EXISTS);
     }
+
+    if(isMemberCodeDuplicate(memberCode)){
+      throw new DuplicateException(DUPLICATE_MEMBER_CODE);
+    }
+    String password = memberPasswordGenerator.generate(request.getBirthdayCode());
+
+    Member savedMember = memberCreateService.saveMember(memberCode, password, request);
+    Response response = Response.of(savedMember);
+    response.setPassword(password);
+
+    return response;
   }
 
   private boolean isMemberCodeDuplicate(String memberCode) {
@@ -114,17 +95,11 @@ public class MemberService {
    * @param pageable   페이지 정보
    * @return 조회된 데이터 페이지
    */
-  public ArrayResponseWrapper<Page<RentalServiceReadDto>> getMemberRentalData(
+  public Page<RentalServiceReadDto> getMemberRentalData(
       BookRentalSearchCond cond, String memberCode, Pageable pageable) {
 
-    Page<RentalServiceReadDto> page = bookRentalRepository.findRentalPageByMemberCode(
+    return bookRentalRepository.findRentalPageByMemberCode(
         cond, memberCode, pageable);
-
-    ArrayResponseWrapper<Page<RentalServiceReadDto>> wrapper = new ArrayResponseWrapper<>();
-    wrapper.setCount(page.getTotalElements());
-    wrapper.setData(page);
-
-    return wrapper;
   }
 
   // 회원이 요청한 신간 반입 요청 목록 데이터를 가져오기
