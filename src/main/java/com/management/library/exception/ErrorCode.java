@@ -15,6 +15,7 @@ public enum ErrorCode {
   DUPLICATE_MEMBER_CODE("동일한 멤버 코드가 존재합니다. 다시 시도해 주세요"),
   MEMBER_ALREADY_EXISTS("이미 존재하는 회원입니다."),
   ADMIN_ALREADY_EXISTS("이미 존재하는 관리자 이메일입니다."),
+  MANAGEMENT_REQUEST_COUNT_EXCEEDED("운영 개선 요청 등록은 1달에 최대 5회까지 가능합니다."),
   ADMIN_NOT_EXISTS("해당 이메일로 가입된 관리자가 없습니다.");
 
   private final String description;
