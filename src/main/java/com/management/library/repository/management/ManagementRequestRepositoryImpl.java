@@ -1,15 +1,17 @@
 package com.management.library.repository.management;
 
-import static com.management.library.domain.management.QManagementRequest.*;
-import static com.management.library.domain.member.QMember.*;
+import static com.management.library.domain.management.QManagementRequest.managementRequest;
+import static com.management.library.domain.member.QMember.member;
 
 import com.management.library.domain.management.ManagementRequest;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.dto.RequestSearchCond;
+import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +26,17 @@ public class ManagementRequestRepositoryImpl implements ManagementRequestReposit
   }
 
   @Override
-  public Page<ManagementRequest> findByMemberCode(String memberCode, Pageable pageable) {
-    List<ManagementRequest> request = queryFactory.selectFrom(managementRequest)
+  public Page<Response> findByMemberCode(String memberCode, Pageable pageable) {
+    List<ManagementRequest> requests = queryFactory.selectFrom(managementRequest)
         .join(managementRequest.member, member).fetchJoin()
         .where(member.memberCode.eq(memberCode))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
+
+    List<Response> request = requests.stream()
+        .map(Response::of)
+        .collect(Collectors.toList());
 
     JPAQuery<Long> countQuery = queryFactory.select(managementRequest.count())
         .from(managementRequest)
