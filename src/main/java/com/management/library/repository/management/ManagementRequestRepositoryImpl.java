@@ -47,12 +47,17 @@ public class ManagementRequestRepositoryImpl implements ManagementRequestReposit
   }
 
   @Override
-  public Page<ManagementRequest> findAll(RequestSearchCond cond, Pageable pageable) {
-    List<ManagementRequest> request = queryFactory.selectFrom(managementRequest)
+  public Page<Response> findAll(RequestSearchCond cond, Pageable pageable) {
+    List<ManagementRequest> requests = queryFactory.selectFrom(managementRequest)
+        .join(managementRequest.member, member).fetchJoin()
         .where(requestStatusEq(cond.getRequestStatus()))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
+
+    List<Response> request = requests.stream()
+        .map(Response::of)
+        .collect(Collectors.toList());
 
     JPAQuery<Long> countQuery = queryFactory.select(managementRequest.count())
         .from(managementRequest)
