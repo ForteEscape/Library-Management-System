@@ -13,7 +13,6 @@ public class ManagementRequestServiceDto {
   @Setter
   @NoArgsConstructor
   public static class Request {
-
     private String title;
     private String content;
 
