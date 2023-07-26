@@ -54,7 +54,7 @@ public class Rental extends BaseEntity {
   private RentalStatus rentalStatus;
 
   @Builder
-  public Rental(Long id, Member member, Book book, LocalDateTime rentalStartDate,
+  private Rental(Long id, Member member, Book book, LocalDateTime rentalStartDate,
       LocalDateTime rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
     this.id = id;
     this.member = member;
