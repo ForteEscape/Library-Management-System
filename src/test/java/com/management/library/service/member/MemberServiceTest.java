@@ -1,13 +1,16 @@
 package com.management.library.service.member;
 
 import static com.management.library.domain.type.BookStatus.AVAILABLE;
-import static com.management.library.domain.type.ExtendStatus.*;
-import static com.management.library.domain.type.MemberRentalStatus.*;
+import static com.management.library.domain.type.ExtendStatus.UNAVAILABLE;
+import static com.management.library.domain.type.MemberRentalStatus.RENTAL_AVAILABLE;
 import static com.management.library.domain.type.RentalStatus.OVERDUE;
 import static com.management.library.domain.type.RentalStatus.PROCEEDING;
 import static com.management.library.domain.type.RentalStatus.RETURNED;
-import static com.management.library.exception.ErrorCode.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.management.library.exception.ErrorCode.DUPLICATE_MEMBER_CODE;
+import static com.management.library.exception.ErrorCode.MEMBER_ALREADY_EXISTS;
+import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.AbstractContainerBaseTest;
@@ -17,7 +20,6 @@ import com.management.library.domain.member.Member;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
-import com.management.library.dto.ArrayResponseWrapper;
 import com.management.library.dto.BookRentalSearchCond;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
@@ -42,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
 @Slf4j
@@ -55,12 +58,16 @@ class MemberServiceTest extends AbstractContainerBaseTest {
   private BookRentalRepository bookRentalRepository;
   @Autowired
   private BookRepository bookRepository;
+  @Autowired
+  private RedisTemplate<String, String> redisTemplate;
 
   @AfterEach
-  void tearDown(){
+  void tearDown() {
     bookRentalRepository.deleteAllInBatch();
     memberRepository.deleteAllInBatch();
     bookRepository.deleteAllInBatch();
+
+    redisTemplate.delete("memberCode");
   }
 
   @DisplayName("회원의 이름과 생일, 주소를 사용하여 회원 가입을 진행할 수 있다.")
@@ -78,8 +85,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     assertThat(List.of(savedMember1, savedMember2))
         .extracting("name", "birthdayCode", "legion", "city", "street", "memberCode", "password")
         .containsExactlyInAnyOrder(
-            tuple("kim", "980101", "경상남도", "김해시", "삼계로", "100000000001", "980101!@#"),
-            tuple("park", "980101", "경상남도", "김해시", "북부로", "100000000002", "980101!@#")
+            tuple("kim", "980101", "경상남도", "김해시", "삼계로", "100000001", "980101!@#"),
+            tuple("park", "980101", "경상남도", "김해시", "북부로", "100000002", "980101!@#")
         );
   }
 
@@ -145,7 +152,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     latch.await();
     assertThat(List.of(submit1.get(), submit2.get()))
-        .contains(true, false);
+        .contains(true, true);
   }
 
   @DisplayName("동시에 세 회원이 회원 가입을 진행하는 경우 한 명을 제외하고 회원 가입에 실패한다.")
@@ -199,7 +206,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     // then
     assertThat(result)
         .hasSize(3)
-        .contains(true, false, false);
+        .contains(true, true, true);
   }
 
   @DisplayName("회원 번호로 회원의 정보를 조회할 수 있다.")
@@ -217,12 +224,12 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     }
 
     // when
-    MemberReadServiceDto memberData = memberService.getMemberData("100000000002");
+    MemberReadServiceDto memberData = memberService.getMemberData("100000002");
 
     // then
     assertThat(memberData)
         .extracting("name", "memberCode", "memberRentalStatus")
-        .contains("park", "100000000002", RENTAL_AVAILABLE);
+        .contains("park", "100000002", RENTAL_AVAILABLE);
   }
 
   @DisplayName("존재하지 않는 회원 번호로 조회할 수 없다.")
@@ -255,7 +262,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
     memberService.createMember(request1);
 
-    Member member1 = memberRepository.findByMemberCode("100000000001")
+    Member member1 = memberRepository.findByMemberCode("100000001")
         .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
 
     Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
@@ -276,14 +283,12 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
     BookRentalSearchCond cond = new BookRentalSearchCond();
     // when
-    ArrayResponseWrapper<Page<RentalServiceReadDto>> result = memberService.getMemberRentalData(
-        cond, "100000000001", pageRequest);
+    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+        pageRequest);
 
-    Long count = result.getCount();
-    List<RentalServiceReadDto> content = result.getData().getContent();
+    List<RentalServiceReadDto> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(3);
     assertThat(content).hasSize(3)
         .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
         .containsExactlyInAnyOrder(
@@ -300,7 +305,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
     memberService.createMember(request1);
 
-    Member member1 = memberRepository.findByMemberCode("100000000001")
+    Member member1 = memberRepository.findByMemberCode("100000001")
         .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
 
     Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
@@ -313,7 +318,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
 
     Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
-    Rental rental2 = createRental(book2, member1, PROCEEDING, rentalDate2, ExtendStatus.UNAVAILABLE);
+    Rental rental2 = createRental(book2, member1, PROCEEDING, rentalDate2,
+        ExtendStatus.UNAVAILABLE);
     Rental rental3 = createRental(book3, member1, PROCEEDING, rentalDate2, ExtendStatus.AVAILABLE);
 
     bookRentalRepository.saveAll(List.of(rental1, rental2, rental3));
@@ -323,14 +329,12 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(PROCEEDING);
 
     // when
-    ArrayResponseWrapper<Page<RentalServiceReadDto>> result = memberService.getMemberRentalData(
-        cond, "100000000001", pageRequest);
+    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+        pageRequest);
 
-    Long count = result.getCount();
-    List<RentalServiceReadDto> content = result.getData().getContent();
+    List<RentalServiceReadDto> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(2);
     assertThat(content).hasSize(2)
         .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
         .containsExactlyInAnyOrder(
@@ -346,7 +350,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
     memberService.createMember(request1);
 
-    Member member1 = memberRepository.findByMemberCode("100000000001")
+    Member member1 = memberRepository.findByMemberCode("100000001")
         .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
 
     Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
@@ -369,14 +373,12 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(RETURNED);
 
     // when
-    ArrayResponseWrapper<Page<RentalServiceReadDto>> result = memberService.getMemberRentalData(
-        cond, "100000000001", pageRequest);
+    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+        pageRequest);
 
-    Long count = result.getCount();
-    List<RentalServiceReadDto> content = result.getData().getContent();
+    List<RentalServiceReadDto> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(2);
     assertThat(content).hasSize(2)
         .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
         .containsExactlyInAnyOrder(
@@ -392,7 +394,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
     memberService.createMember(request1);
 
-    Member member1 = memberRepository.findByMemberCode("100000000001")
+    Member member1 = memberRepository.findByMemberCode("100000001")
         .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
 
     Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
@@ -415,14 +417,12 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(OVERDUE);
 
     // when
-    ArrayResponseWrapper<Page<RentalServiceReadDto>> result = memberService.getMemberRentalData(
-        cond, "100000000001", pageRequest);
+    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+        pageRequest);
 
-    Long count = result.getCount();
-    List<RentalServiceReadDto> content = result.getData().getContent();
+    List<RentalServiceReadDto> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(2);
     assertThat(content).hasSize(2)
         .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
         .containsExactlyInAnyOrder(
