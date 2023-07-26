@@ -85,29 +85,18 @@ class ManagementRequestRepositoryTest {
     RequestSearchCond cond = new RequestSearchCond();
 
     // when
-    Page<ManagementRequest> requests = managementRequestRepository.findAll(cond, pageRequest);
-    List<ManagementRequest> content = requests.getContent();
+    Page<Response> requests = managementRequestRepository.findAll(cond, pageRequest);
+    List<Response> content = requests.getContent();
 
     // then
     assertThat(content).hasSize(5)
-        .extracting("title", "content", "requestStatus")
+        .extracting("title",  "content", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("운영 약정 개정", "운영 약정 개정 의 내용", AWAIT),
-            tuple("화장실 개선 요청", "화장실 개선 요청 의 내용", ACCEPTED),
-            tuple("운영시간 연장 요청", "운영시간 연장 요청 의 내용", REFUSED),
-            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", AWAIT),
-            tuple("멀티미디어관 개선 요청", "멀티미디어관 개선 요청 의 내용", AWAIT)
-        );
-
-    assertThat(content)
-        .extracting(ManagementRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("park", "123457"),
-            tuple("park", "123457")
+            tuple("운영 약정 개정", "운영 약정 개정 의 내용", "kim", AWAIT),
+            tuple("화장실 개선 요청", "화장실 개선 요청 의 내용", "kim", ACCEPTED),
+            tuple("운영시간 연장 요청", "운영시간 연장 요청 의 내용", "kim", REFUSED),
+            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", "park", AWAIT),
+            tuple("멀티미디어관 개선 요청", "멀티미디어관 개선 요청 의 내용", "park", AWAIT)
         );
   }
 
@@ -133,25 +122,16 @@ class ManagementRequestRepositoryTest {
     cond.setRequestStatus(AWAIT);
 
     // when
-    Page<ManagementRequest> requests = managementRequestRepository.findAll(cond, pageRequest);
-    List<ManagementRequest> content = requests.getContent();
+    Page<Response> requests = managementRequestRepository.findAll(cond, pageRequest);
+    List<Response> content = requests.getContent();
 
     // then
     assertThat(content).hasSize(3)
-        .extracting("title", "content", "requestStatus")
+        .extracting("title", "content", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("운영 약정 개정", "운영 약정 개정 의 내용", AWAIT),
-            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", AWAIT),
-            tuple("멀티미디어관 개선 요청", "멀티미디어관 개선 요청 의 내용", AWAIT)
-        );
-
-    assertThat(content)
-        .extracting(ManagementRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("park", "123457"),
-            tuple("park", "123457")
+            tuple("운영 약정 개정", "운영 약정 개정 의 내용", "kim", AWAIT),
+            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", "park", AWAIT),
+            tuple("멀티미디어관 개선 요청", "멀티미디어관 개선 요청 의 내용", "park", AWAIT)
         );
   }
 
@@ -177,23 +157,15 @@ class ManagementRequestRepositoryTest {
     cond.setRequestStatus(ACCEPTED);
 
     // when
-    Page<ManagementRequest> requests = managementRequestRepository.findAll(cond, pageRequest);
-    List<ManagementRequest> content = requests.getContent();
+    Page<Response> requests = managementRequestRepository.findAll(cond, pageRequest);
+    List<Response> content = requests.getContent();
 
     // then
     assertThat(content).hasSize(2)
-        .extracting("title", "content", "requestStatus")
+        .extracting("title", "content", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("화장실 개선 요청", "화장실 개선 요청 의 내용", ACCEPTED),
-            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", ACCEPTED)
-        );
-
-    assertThat(content)
-        .extracting(ManagementRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("park", "123457")
+            tuple("화장실 개선 요청", "화장실 개선 요청 의 내용", "kim", ACCEPTED),
+            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", "park", ACCEPTED)
         );
   }
 
@@ -219,23 +191,15 @@ class ManagementRequestRepositoryTest {
     cond.setRequestStatus(REFUSED);
 
     // when
-    Page<ManagementRequest> requests = managementRequestRepository.findAll(cond, pageRequest);
-    List<ManagementRequest> content = requests.getContent();
+    Page<Response> requests = managementRequestRepository.findAll(cond, pageRequest);
+    List<Response> content = requests.getContent();
 
     // then
     assertThat(content).hasSize(2)
-        .extracting("title", "content", "requestStatus")
+        .extracting("title", "content", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("운영시간 연장 요청", "운영시간 연장 요청 의 내용", REFUSED),
-            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", REFUSED)
-        );
-
-    assertThat(content)
-        .extracting(ManagementRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("park", "123457")
+            tuple("운영시간 연장 요청", "운영시간 연장 요청 의 내용", "kim", REFUSED),
+            tuple("주차장 규제 요청", "주차장 규제 요청 의 내용", "park", REFUSED)
         );
   }
 
