@@ -1,8 +1,11 @@
 package com.management.library.domain.newbook;
 
+import static com.management.library.domain.type.RequestStatus.*;
+
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.member.Member;
 import com.management.library.domain.type.RequestStatus;
+import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Request;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -49,6 +52,15 @@ public class NewBookRequest extends BaseEntity {
     this.requestBookTitle = requestBookTitle;
     this.requestContent = requestContent;
     this.requestStatus = requestStatus;
+  }
+
+  public static NewBookRequest of(Request request, Member member) {
+    return NewBookRequest.builder()
+        .requestBookTitle(request.getRequestBookTitle())
+        .requestContent(request.getRequestContent())
+        .member(member)
+        .requestStatus(AWAIT)
+        .build();
   }
 
   public void changeRequestStatus(RequestStatus requestStatus){
