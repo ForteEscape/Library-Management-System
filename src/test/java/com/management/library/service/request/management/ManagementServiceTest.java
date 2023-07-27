@@ -4,7 +4,7 @@ import static com.management.library.domain.type.RequestStatus.ACCEPTED;
 import static com.management.library.domain.type.RequestStatus.AWAIT;
 import static com.management.library.domain.type.RequestStatus.REFUSED;
 import static com.management.library.exception.ErrorCode.MANAGEMENT_REQUEST_COUNT_EXCEEDED;
-import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.management.library.exception.ErrorCode.REQUEST_NOT_EXISTS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
@@ -208,9 +208,9 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
     }
 
     ManagementRequest result1 = managementRequestRepository.findById(savedRequest.get(1).getId())
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
     ManagementRequest result2 = managementRequestRepository.findById(savedRequest.get(3).getId())
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
 
     result1.changeRequestStatus(ACCEPTED);
     result2.changeRequestStatus(ACCEPTED);
@@ -258,9 +258,9 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
     }
 
     ManagementRequest result1 = managementRequestRepository.findById(savedRequest.get(1).getId())
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
     ManagementRequest result2 = managementRequestRepository.findById(savedRequest.get(3).getId())
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
 
     result1.changeRequestStatus(REFUSED);
     result2.changeRequestStatus(REFUSED);
@@ -308,9 +308,9 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
     }
 
     ManagementRequest result1 = managementRequestRepository.findById(savedRequest.get(1).getId())
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
     ManagementRequest result2 = managementRequestRepository.findById(savedRequest.get(3).getId())
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
 
     result1.changeRequestStatus(REFUSED);
     result2.changeRequestStatus(REFUSED);
