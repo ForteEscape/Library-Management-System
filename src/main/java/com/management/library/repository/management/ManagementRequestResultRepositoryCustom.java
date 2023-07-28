@@ -1,5 +1,7 @@
 package com.management.library.repository.management;
 
+import static com.management.library.service.result.management.dto.ManagementResultCreateDto.Response;
+
 import com.management.library.domain.management.ManagementRequestResult;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -9,5 +11,5 @@ public interface ManagementRequestResultRepositoryCustom {
 
   Optional<ManagementRequestResult> findByRequestId(Long requestId);
 
-  Page<ManagementRequestResult> findByAdminEmail(String adminEmail, Pageable pageable);
+  Page<Response> findByAdminEmail(String adminEmail, Pageable pageable);
 }
