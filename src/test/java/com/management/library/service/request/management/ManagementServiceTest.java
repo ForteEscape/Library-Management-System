@@ -17,6 +17,7 @@ import com.management.library.exception.RequestLimitExceededException;
 import com.management.library.repository.management.ManagementRequestRepository;
 import com.management.library.service.member.MemberService;
 import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.request.RedisRequestService;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Request;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -43,14 +43,18 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   private MemberService memberService;
   @Autowired
   private ManagementRequestRepository managementRequestRepository;
-  private static final String KEY = "management-request-count:";
-
   @Autowired
-  private RedisTemplate<String, String> redisTemplate;
+  private RedisRequestService redisRequestService;
+  private static final String KEY = "management-request-count:";
+  private static final String MANAGEMENT_REQUEST_PREFIX = "management-request-id:";
 
   @AfterEach
   void tearDown() {
-    redisTemplate.delete(KEY);
+    redisRequestService.deleteCache(KEY);
+
+    for (int i = 0; i < 100; i++){
+      redisRequestService.deleteCache(MANAGEMENT_REQUEST_PREFIX + i);
+    }
   }
 
   @DisplayName("새로운 운영 개선 요청을 등록할 수 있다.")
@@ -65,11 +69,6 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
     // when
     Response managementResponse = managementService.createManagementRequest(
         managementRequest, memberResponse.getMemberCode());
-
-    log.info(managementResponse.getTitle());
-    log.info(managementResponse.getContent());
-    log.info(managementResponse.getMemberName());
-    log.info(String.valueOf(managementResponse.getRequestStatus()));
 
     // then
     assertThat(managementResponse)

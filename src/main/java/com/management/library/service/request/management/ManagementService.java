@@ -34,10 +34,12 @@ public class ManagementService {
 
     redisManagementRequestService.checkManagementRequestCount(memberCode);
 
-    ManagementRequest savedMember = managementRequestRepository.save(
+    ManagementRequest savedRequest = managementRequestRepository.save(
         ManagementRequest.of(request, member));
 
-    return Response.of(savedMember);
+    redisManagementRequestService.addManagementRequestCache(savedRequest.getId());
+
+    return Response.of(savedRequest);
   }
 
   // 운영 개선 사항을 회원의 이메일로 찾아 반환한다.
