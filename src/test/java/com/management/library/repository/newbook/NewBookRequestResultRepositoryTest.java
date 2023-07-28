@@ -14,6 +14,7 @@ import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.repository.admin.AdministratorRepository;
 import com.management.library.repository.member.MemberRepository;
+import com.management.library.service.result.newbook.dto.NewBookResultCreateDto.Response;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -133,49 +134,30 @@ class NewBookRequestResultRepositoryTest {
     PageRequest pageRequest2 = PageRequest.of(1, 5);
 
     // when
-    Page<NewBookRequestResult> requestResult1 = newBookRequestResultRepository.findByAdminId(
+    Page<Response> requestResult1 = newBookRequestResultRepository.findByAdminId(
         admin.getEmail(), pageRequest1);
-    List<NewBookRequestResult> content1 = requestResult1.getContent();
+    List<Response> content1 = requestResult1.getContent();
 
-    Page<NewBookRequestResult> requestResult2 = newBookRequestResultRepository.findByAdminId(
+    Page<Response> requestResult2 = newBookRequestResultRepository.findByAdminId(
         admin.getEmail(), pageRequest2);
-    List<NewBookRequestResult> content2 = requestResult2.getContent();
+    List<Response> content2 = requestResult2.getContent();
 
     // then
     assertThat(content1).hasSize(5)
-        .extracting("resultPostTitle", "resultPostContent", "result")
+        .extracting("adminName", "resultPostTitle", "resultPostContent", "resultStatus")
         .containsExactlyInAnyOrder(
-            tuple("도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
-            tuple("도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
-            tuple("도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
-            tuple("도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
-            tuple("도서 요청 결과", "도서 요청 결과 내용", ACCEPTED)
-        );
-
-    assertThat(content1)
-        .extracting(NewBookRequestResult::getAdministrator)
-        .extracting(Administrator::getName, Administrator::getEmail)
-        .containsExactlyInAnyOrder(
-            tuple("admin", "admin@test.com"),
-            tuple("admin", "admin@test.com"),
-            tuple("admin", "admin@test.com"),
-            tuple("admin", "admin@test.com"),
-            tuple("admin", "admin@test.com")
+            tuple("admin", "도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
+            tuple("admin", "도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
+            tuple("admin", "도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
+            tuple("admin", "도서 요청 결과", "도서 요청 결과 내용", ACCEPTED),
+            tuple("admin", "도서 요청 결과", "도서 요청 결과 내용", ACCEPTED)
         );
 
     assertThat(content2).hasSize(2)
-        .extracting("resultPostTitle", "resultPostContent", "result")
+        .extracting("adminName", "resultPostTitle", "resultPostContent", "resultStatus")
         .containsExactlyInAnyOrder(
-            tuple("도서 요청 결과", "도서 요청 결과 내용", REFUSED),
-            tuple("도서 요청 결과", "도서 요청 결과 내용", REFUSED)
-        );
-
-    assertThat(content2)
-        .extracting(NewBookRequestResult::getAdministrator)
-        .extracting(Administrator::getName, Administrator::getEmail)
-        .containsExactlyInAnyOrder(
-            tuple("admin", "admin@test.com"),
-            tuple("admin", "admin@test.com")
+            tuple("admin", "도서 요청 결과", "도서 요청 결과 내용", REFUSED),
+            tuple("admin", "도서 요청 결과", "도서 요청 결과 내용", REFUSED)
         );
   }
 
