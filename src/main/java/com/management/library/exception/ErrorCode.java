@@ -18,6 +18,7 @@ public enum ErrorCode {
   MANAGEMENT_REQUEST_COUNT_EXCEEDED("운영 개선 요청 등록은 1달에 최대 5회까지 가능합니다."),
   NEW_BOOK_REQUEST_COUNT_EXCEEDED("신간 요청 등록은 1달에 최대 5회까지 가능합니다."),
   REQUEST_NOT_EXISTS("해당 요청이 존재하지 않습니다."),
+  REPLY_ALREADY_EXISTS("해당 요청의 답변이 이미 등록되어 있습니다."),
   ADMIN_NOT_EXISTS("해당 이메일로 가입된 관리자가 없습니다.");
 
   private final String description;
