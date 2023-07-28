@@ -46,10 +46,15 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Autowired
   private RedisRequestService redisRequestService;
   private static final String NEW_BOOK_CACHE_KEY = "book-request-count:";
+  private static final String NEW_BOOK_REQUEST_PREFIX = "book-request-id:";
 
   @AfterEach
   void tearDown() {
     redisRequestService.deleteCache(NEW_BOOK_CACHE_KEY);
+
+    for (int i = 1; i < 100; i++){
+      redisRequestService.deleteCache(NEW_BOOK_REQUEST_PREFIX + i);
+    }
   }
 
   @DisplayName("신간 요청을 생성할 수 있다.")

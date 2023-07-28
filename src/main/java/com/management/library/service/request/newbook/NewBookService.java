@@ -35,6 +35,8 @@ public class NewBookService {
 
     NewBookRequest savedRequest = newBookRequestRepository.save(NewBookRequest.of(request, member));
 
+    redisRequestService.addBookRequestCache(savedRequest.getId());
+
     return Response.of(savedRequest);
   }
 
