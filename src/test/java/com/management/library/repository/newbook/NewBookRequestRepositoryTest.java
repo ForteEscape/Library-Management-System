@@ -12,6 +12,7 @@ import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.dto.RequestSearchCond;
 import com.management.library.repository.member.MemberRepository;
+import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,49 +60,29 @@ class NewBookRequestRepositoryTest {
     RequestSearchCond cond = new RequestSearchCond();
 
     // when
-    Page<NewBookRequest> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest1);
-    List<NewBookRequest> content1 = newBookRequestPage1.getContent();
+    Page<Response> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest1);
+    List<Response> content1 = newBookRequestPage1.getContent();
 
-    Page<NewBookRequest> newBookRequestPage2 = newBookRequestRepository.findAll(cond, pageRequest2);
-    List<NewBookRequest> content2 = newBookRequestPage2.getContent();
+    Page<Response> newBookRequestPage2 = newBookRequestRepository.findAll(cond, pageRequest2);
+    List<Response> content2 = newBookRequestPage2.getContent();
 
     // then
     assertThat(content1).hasSize(5)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("jpa", "jpa 를 요청합니다.", ACCEPTED),
-            tuple("jpa2", "jpa2 를 요청합니다.", ACCEPTED),
-            tuple("spring", "spring 를 요청합니다.", AWAIT),
-            tuple("spring2", "spring2 를 요청합니다.", AWAIT),
-            tuple("docker", "docker 를 요청합니다.", AWAIT)
-        );
-
-    assertThat(content1)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456")
+            tuple("jpa", "jpa 를 요청합니다.", "kim", ACCEPTED),
+            tuple("jpa2", "jpa2 를 요청합니다.", "kim", ACCEPTED),
+            tuple("spring", "spring 를 요청합니다.", "kim", AWAIT),
+            tuple("spring2", "spring2 를 요청합니다.", "kim", AWAIT),
+            tuple("docker", "docker 를 요청합니다.", "kim", AWAIT)
         );
 
     assertThat(content2).hasSize(3)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("docker2", "docker2 를 요청합니다.", AWAIT),
-            tuple("aws", "aws 를 요청합니다.", AWAIT),
-            tuple("aws2", "aws2 를 요청합니다.", AWAIT)
-        );
-
-    assertThat(content2)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("park", "123457"),
-            tuple("park", "123457")
+            tuple("docker2", "docker2 를 요청합니다.", "kim", AWAIT),
+            tuple("aws", "aws 를 요청합니다.", "park", AWAIT),
+            tuple("aws2", "aws2 를 요청합니다.", "park", AWAIT)
         );
   }
 
@@ -136,45 +117,27 @@ class NewBookRequestRepositoryTest {
     cond.setRequestStatus(AWAIT);
 
     // when
-    Page<NewBookRequest> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest1);
-    List<NewBookRequest> content1 = newBookRequestPage1.getContent();
+    Page<Response> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest1);
+    List<Response> content1 = newBookRequestPage1.getContent();
 
-    Page<NewBookRequest> newBookRequestPage2 = newBookRequestRepository.findAll(cond, pageRequest2);
-    List<NewBookRequest> content2 = newBookRequestPage2.getContent();
+    Page<Response> newBookRequestPage2 = newBookRequestRepository.findAll(cond, pageRequest2);
+    List<Response> content2 = newBookRequestPage2.getContent();
 
     // then
     assertThat(content1).hasSize(5)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("spring", "spring 를 요청합니다.", AWAIT),
-            tuple("spring2", "spring2 를 요청합니다.", AWAIT),
-            tuple("docker", "docker 를 요청합니다.", AWAIT),
-            tuple("docker2", "docker2 를 요청합니다.", AWAIT),
-            tuple("aws", "aws 를 요청합니다.", AWAIT)
-        );
-
-    assertThat(content1)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("park", "123457")
+            tuple("spring", "spring 를 요청합니다.", "kim", AWAIT),
+            tuple("spring2", "spring2 를 요청합니다.", "kim", AWAIT),
+            tuple("docker", "docker 를 요청합니다.", "kim", AWAIT),
+            tuple("docker2", "docker2 를 요청합니다.", "kim", AWAIT),
+            tuple("aws", "aws 를 요청합니다.", "park", AWAIT)
         );
 
     assertThat(content2).hasSize(1)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("aws2", "aws2 를 요청합니다.", AWAIT)
-        );
-
-    assertThat(content2)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("park", "123457")
+            tuple("aws2", "aws2 를 요청합니다.", "park", AWAIT)
         );
   }
 
@@ -208,23 +171,15 @@ class NewBookRequestRepositoryTest {
     cond.setRequestStatus(ACCEPTED);
 
     // when
-    Page<NewBookRequest> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest);
-    List<NewBookRequest> content = newBookRequestPage1.getContent();
+    Page<Response> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest);
+    List<Response> content = newBookRequestPage1.getContent();
 
     // then
     assertThat(content).hasSize(2)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("jpa", "jpa 를 요청합니다.", ACCEPTED),
-            tuple("jpa2", "jpa2 를 요청합니다.", ACCEPTED)
-        );
-
-    assertThat(content)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("kim", "123456")
+            tuple("jpa", "jpa 를 요청합니다.", "kim", ACCEPTED),
+            tuple("jpa2", "jpa2 를 요청합니다.", "kim", ACCEPTED)
         );
   }
 
@@ -258,23 +213,15 @@ class NewBookRequestRepositoryTest {
     cond.setRequestStatus(REFUSED);
 
     // when
-    Page<NewBookRequest> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest);
-    List<NewBookRequest> content = newBookRequestPage1.getContent();
+    Page<Response> newBookRequestPage1 = newBookRequestRepository.findAll(cond, pageRequest);
+    List<Response> content = newBookRequestPage1.getContent();
 
     // then
     assertThat(content).hasSize(2)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("jpa", "jpa 를 요청합니다.", REFUSED),
-            tuple("jpa2", "jpa2 를 요청합니다.", REFUSED)
-        );
-
-    assertThat(content)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("kim", "123456")
+            tuple("jpa", "jpa 를 요청합니다.", "kim", REFUSED),
+            tuple("jpa2", "jpa2 를 요청합니다.", "kim", REFUSED)
         );
   }
 
@@ -307,47 +254,29 @@ class NewBookRequestRepositoryTest {
     PageRequest pageRequest2 = PageRequest.of(1, 5);
 
     // when
-    Page<NewBookRequest> newBookRequestPage1 = newBookRequestRepository.findByMemberCode(
+    Page<Response> newBookRequestPage1 = newBookRequestRepository.findByMemberCode(
         member1.getMemberCode(), pageRequest1);
-    List<NewBookRequest> content1 = newBookRequestPage1.getContent();
+    List<Response> content1 = newBookRequestPage1.getContent();
 
-    Page<NewBookRequest> newBookRequestPage2 = newBookRequestRepository.findByMemberCode(
+    Page<Response> newBookRequestPage2 = newBookRequestRepository.findByMemberCode(
         member1.getMemberCode(), pageRequest2);
-    List<NewBookRequest> content2 = newBookRequestPage2.getContent();
+    List<Response> content2 = newBookRequestPage2.getContent();
 
     // then
     assertThat(content1).hasSize(5)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("jpa", "jpa 를 요청합니다.", ACCEPTED),
-            tuple("jpa2", "jpa2 를 요청합니다.", ACCEPTED),
-            tuple("spring", "spring 를 요청합니다.", AWAIT),
-            tuple("spring2", "spring2 를 요청합니다.", AWAIT),
-            tuple("docker", "docker 를 요청합니다.", AWAIT)
-        );
-
-    assertThat(content1)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456"),
-            tuple("kim", "123456")
+            tuple("jpa", "jpa 를 요청합니다.", "kim", ACCEPTED),
+            tuple("jpa2", "jpa2 를 요청합니다.", "kim", ACCEPTED),
+            tuple("spring", "spring 를 요청합니다.", "kim", AWAIT),
+            tuple("spring2", "spring2 를 요청합니다.", "kim", AWAIT),
+            tuple("docker", "docker 를 요청합니다.", "kim", AWAIT)
         );
 
     assertThat(content2).hasSize(1)
-        .extracting("requestBookTitle", "requestContent", "requestStatus")
+        .extracting("requestBookTitle", "requestContent", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
-            tuple("docker2", "docker2 를 요청합니다.", AWAIT)
-        );
-
-    assertThat(content2)
-        .extracting(NewBookRequest::getMember)
-        .extracting(Member::getName, Member::getMemberCode)
-        .containsExactlyInAnyOrder(
-            tuple("kim", "123456")
+            tuple("docker2", "docker2 를 요청합니다.", "kim", AWAIT)
         );
   }
 

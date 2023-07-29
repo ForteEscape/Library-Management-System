@@ -6,7 +6,6 @@ import static com.management.library.domain.type.MemberRentalStatus.RENTAL_AVAIL
 import static com.management.library.domain.type.RentalStatus.OVERDUE;
 import static com.management.library.domain.type.RentalStatus.PROCEEDING;
 import static com.management.library.domain.type.RentalStatus.RETURNED;
-import static com.management.library.exception.ErrorCode.DUPLICATE_MEMBER_CODE;
 import static com.management.library.exception.ErrorCode.MEMBER_ALREADY_EXISTS;
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,55 +106,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
   }
 
-  @DisplayName("이미 존재하는 회원 코드로 회원 가입을 진행할 수 없다.")
-  @Test
-  public void createMemberWithDuplicateMemberCode() throws Exception {
-    // given
-    ExecutorService executorService = Executors.newFixedThreadPool(2);
-    CountDownLatch latch = new CountDownLatch(2);
-
-    Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    Request request2 = createRequest("park", "980101", "경상남도", "김해시", "북부로");
-
-    // when
-    Future<Boolean> submit1 = executorService.submit(() -> {
-      try {
-        memberService.createMember(request1);
-        return true;
-      } catch (Exception e) {
-
-        assertThat(e).isInstanceOf(DuplicateException.class)
-            .extracting("errorCode", "description")
-            .contains(DUPLICATE_MEMBER_CODE, DUPLICATE_MEMBER_CODE.getDescription());
-
-        return false;
-      } finally {
-        latch.countDown();
-      }
-    });
-
-    Future<Boolean> submit2 = executorService.submit(() -> {
-      try {
-        memberService.createMember(request2);
-        return true;
-      } catch (Exception e) {
-
-        assertThat(e).isInstanceOf(DuplicateException.class)
-            .extracting("errorCode", "description")
-            .contains(DUPLICATE_MEMBER_CODE, DUPLICATE_MEMBER_CODE.getDescription());
-
-        return false;
-      } finally {
-        latch.countDown();
-      }
-    });
-
-    latch.await();
-    assertThat(List.of(submit1.get(), submit2.get()))
-        .contains(true, true);
-  }
-
-  @DisplayName("동시에 세 회원이 회원 가입을 진행하는 경우 한 명을 제외하고 회원 가입에 실패한다.")
+  @DisplayName("동시에 세 회원이 회원 가입을 진행하는 경우에도 모두 회원 가입이 가능하다(동시성 체크)")
   @Test
   public void createMemberWithConcurrentProblem() throws Exception {
     // given

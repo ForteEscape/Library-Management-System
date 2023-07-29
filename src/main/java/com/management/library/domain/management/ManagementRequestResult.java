@@ -1,8 +1,9 @@
 package com.management.library.domain.management;
 
+import static com.management.library.service.result.management.dto.ManagementResultCreateDto.Request;
+
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.admin.Administrator;
-import com.management.library.domain.management.ManagementRequest;
 import com.management.library.domain.type.RequestStatus;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +29,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class ManagementRequestResult extends BaseEntity {
 
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "management_reqeust_result_id")
   private Long id;
 
@@ -47,7 +49,7 @@ public class ManagementRequestResult extends BaseEntity {
   private RequestStatus result;
 
   @Builder
-  public ManagementRequestResult(Long id, ManagementRequest managementRequest,
+  private ManagementRequestResult(Long id, ManagementRequest managementRequest,
       Administrator administrator, String resultPostTitle, String resultPostContent,
       RequestStatus result) {
     this.id = id;
@@ -56,5 +58,16 @@ public class ManagementRequestResult extends BaseEntity {
     this.resultPostTitle = resultPostTitle;
     this.resultPostContent = resultPostContent;
     this.result = result;
+  }
+
+  public static ManagementRequestResult of(Request request, ManagementRequest management,
+      Administrator admin) {
+    return ManagementRequestResult.builder()
+        .managementRequest(management)
+        .administrator(admin)
+        .resultPostTitle(request.getResultPostTitle())
+        .resultPostContent(request.getResultPostContent())
+        .result(request.getResultStatus())
+        .build();
   }
 }

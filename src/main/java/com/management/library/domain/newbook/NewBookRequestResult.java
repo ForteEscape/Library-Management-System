@@ -3,6 +3,7 @@ package com.management.library.domain.newbook;
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.admin.Administrator;
 import com.management.library.domain.type.RequestStatus;
+import com.management.library.service.result.newbook.dto.NewBookResultCreateDto.Request;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -54,5 +55,16 @@ public class NewBookRequestResult extends BaseEntity {
     this.resultPostTitle = resultPostTitle;
     this.resultPostContent = resultPostContent;
     this.result = result;
+  }
+
+  public static NewBookRequestResult of(Request request, NewBookRequest newBookRequest,
+      Administrator administrator) {
+    return NewBookRequestResult.builder()
+        .newBookRequest(newBookRequest)
+        .administrator(administrator)
+        .resultPostTitle(request.getResultTitle())
+        .resultPostContent(request.getResultContent())
+        .result(request.getResultStatus())
+        .build();
   }
 }

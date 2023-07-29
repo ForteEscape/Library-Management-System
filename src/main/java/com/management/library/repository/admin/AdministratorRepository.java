@@ -7,4 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AdministratorRepository extends JpaRepository<Administrator, Long> {
 
   Optional<Administrator> findByEmail(String email);
+
+  boolean existsByEmail(String email);
+
+  void deleteByEmail(String email);
 }

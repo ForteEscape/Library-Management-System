@@ -2,6 +2,7 @@ package com.management.library.domain.admin;
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
+import com.management.library.service.admin.dto.AdminCreateServiceDto;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,12 +39,21 @@ public class Administrator extends BaseEntity implements UserDetails {
   private Authority authority;
 
   @Builder
-  public Administrator(Long id, String name, String email, String password, Authority authority) {
+  private Administrator(Long id, String name, String email, String password, Authority authority) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
     this.authority = authority;
+  }
+
+  public static Administrator of(AdminCreateServiceDto.Request request){
+    return Administrator.builder()
+        .name(request.getName())
+        .email(request.getEmail())
+        .password(request.getPassword())
+        .authority(Authority.ROLE_ADMIN)
+        .build();
   }
 
   @Override

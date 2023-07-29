@@ -15,6 +15,7 @@ import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.repository.admin.AdministratorRepository;
 import com.management.library.repository.member.MemberRepository;
+import com.management.library.service.result.management.dto.ManagementResultCreateDto.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -118,26 +119,17 @@ class ManagementRequestResultRepositoryTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    Page<ManagementRequestResult> resultList = managementRequestResultRepository.findByAdminEmail(
+    Page<Response> resultList = managementRequestResultRepository.findByAdminEmail(
         admin1.getEmail(), pageRequest);
-    List<ManagementRequestResult> content = resultList.getContent();
+    List<Response> content = resultList.getContent();
 
     // then
     assertThat(content).hasSize(3)
-        .extracting("resultPostTitle", "resultPostContent", "result")
+        .extracting("adminName", "resultPostTitle", "resultPostContent", "resultStatus")
         .containsExactlyInAnyOrder(
-            tuple("운영 요청 1", "운영 요청 1 의 결과입니다.", ACCEPTED),
-            tuple("운영 요청 2", "운영 요청 2 의 결과입니다.", ACCEPTED),
-            tuple("운영 요청 3", "운영 요청 3 의 결과입니다.", REFUSED)
-        );
-
-    assertThat(content)
-        .extracting(ManagementRequestResult::getAdministrator)
-        .extracting(Administrator::getName, Administrator::getEmail)
-        .containsExactlyInAnyOrder(
-            tuple("admin1", "admin1@test.com"),
-            tuple("admin1", "admin1@test.com"),
-            tuple("admin1", "admin1@test.com")
+            tuple("admin1", "운영 요청 1", "운영 요청 1 의 결과입니다.", ACCEPTED),
+            tuple("admin1", "운영 요청 2", "운영 요청 2 의 결과입니다.", ACCEPTED),
+            tuple("admin1", "운영 요청 3", "운영 요청 3 의 결과입니다.", REFUSED)
         );
   }
 

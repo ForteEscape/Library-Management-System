@@ -1,5 +1,8 @@
 package com.management.library.domain.management;
 
+import static com.management.library.domain.type.RequestStatus.*;
+import static com.management.library.service.request.management.dto.ManagementRequestServiceDto.Request;
+
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.member.Member;
 import com.management.library.domain.type.RequestStatus;
@@ -48,6 +51,15 @@ public class ManagementRequest extends BaseEntity {
     this.title = title;
     this.content = content;
     this.requestStatus = requestStatus;
+  }
+
+  public static ManagementRequest of(Request request, Member member){
+    return ManagementRequest.builder()
+        .title(request.getTitle())
+        .content(request.getContent())
+        .member(member)
+        .requestStatus(AWAIT)
+        .build();
   }
 
   public void changeRequestStatus(RequestStatus requestStatus){
