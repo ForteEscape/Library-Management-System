@@ -1,7 +1,6 @@
 package com.management.library.repository.rental;
 
 import com.management.library.domain.rental.Rental;
-import com.management.library.domain.type.RentalStatus;
 import com.management.library.dto.BookRentalSearchCond;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import java.util.List;
@@ -18,5 +17,5 @@ public interface BookRentalRepositoryCustom {
 
   Page<RentalServiceResponseDto> findAllWithPage(BookRentalSearchCond cond, Pageable pageable);
 
-  Optional<Rental> findByBookInfoAndStatus(String memberCode, String bookTitle, String author, RentalStatus rentalStatus);
+  Optional<Rental> findByBookInfoAndStatus(String memberCode, String bookTitle, String author);
 }

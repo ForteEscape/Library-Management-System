@@ -73,8 +73,10 @@ public class BookRentalRepositoryImpl implements BookRentalRepositoryCustom {
   }
 
   @Override
-  public Page<RentalServiceResponseDto> findAllWithPage(BookRentalSearchCond cond, Pageable pageable) {
+  public Page<RentalServiceResponseDto> findAllWithPage(BookRentalSearchCond cond,
+      Pageable pageable) {
     List<Rental> result = queryFactory.selectFrom(rental)
+        .join(rental.book, book).fetchJoin()
         .where(rentalStatusEq(cond.getRentalStatus()))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
@@ -93,14 +95,14 @@ public class BookRentalRepositoryImpl implements BookRentalRepositoryCustom {
 
   @Override
   public Optional<Rental> findByBookInfoAndStatus(String memberCode, String bookTitle,
-      String author, RentalStatus rentalStatus) {
+      String author) {
 
     Rental result = queryFactory.select(rental)
         .from(rental)
         .join(rental.member, member).fetchJoin()
         .join(rental.book, book).fetchJoin()
         .where(
-            rental.rentalStatus.eq(RentalStatus.PROCEEDING),
+            rentalStatusEq(RentalStatus.PROCEEDING).or(rentalStatusEq(RentalStatus.OVERDUE)),
             member.memberCode.eq(memberCode),
             book.bookInfo.title.eq(bookTitle),
             book.bookInfo.author.eq(author)
