@@ -14,6 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RentalServiceResponseDto {
 
+  private Long id;
   private String bookName;
   private LocalDate rentalStartDate;
   private LocalDate rentalEndDate;
@@ -21,8 +22,9 @@ public class RentalServiceResponseDto {
   private RentalStatus rentalStatus;
 
   @Builder
-  public RentalServiceResponseDto(String bookName, LocalDate rentalStartDate,
+  public RentalServiceResponseDto(Long id, String bookName, LocalDate rentalStartDate,
       LocalDate rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
+    this.id = id;
     this.bookName = bookName;
     this.rentalStartDate = rentalStartDate;
     this.rentalEndDate = rentalEndDate;
@@ -32,6 +34,7 @@ public class RentalServiceResponseDto {
 
   public static RentalServiceResponseDto of(Rental rental){
     return RentalServiceResponseDto.builder()
+        .id(rental.getId())
         .bookName(rental.getBook().getBookInfo().getTitle())
         .rentalStartDate(rental.getRentalStartDate())
         .rentalEndDate(rental.getRentalEndDate())
