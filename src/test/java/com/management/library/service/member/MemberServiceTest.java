@@ -2,7 +2,6 @@ package com.management.library.service.member;
 
 import static com.management.library.domain.type.BookStatus.AVAILABLE;
 import static com.management.library.domain.type.ExtendStatus.UNAVAILABLE;
-import static com.management.library.domain.type.MemberRentalStatus.RENTAL_AVAILABLE;
 import static com.management.library.domain.type.RentalStatus.OVERDUE;
 import static com.management.library.domain.type.RentalStatus.PROCEEDING;
 import static com.management.library.domain.type.RentalStatus.RETURNED;
@@ -179,8 +178,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     // then
     assertThat(memberData)
-        .extracting("name", "memberCode", "memberRentalStatus")
-        .contains("park", "100000002", RENTAL_AVAILABLE);
+        .extracting("name", "memberCode")
+        .contains("park", "100000002");
   }
 
   @DisplayName("존재하지 않는 회원 번호로 조회할 수 없다.")

@@ -10,7 +10,6 @@ import com.management.library.domain.member.Member;
 import com.management.library.domain.newbook.NewBookRequest;
 import com.management.library.domain.newbook.NewBookRequestResult;
 import com.management.library.domain.type.Authority;
-import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,7 +35,6 @@ class NewBookRequestResultTest {
         .birthdayCode("980506")
         .address(new Address("서울", "강변", "강변길"))
         .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(member);

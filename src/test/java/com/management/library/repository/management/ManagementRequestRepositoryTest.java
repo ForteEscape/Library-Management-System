@@ -1,14 +1,15 @@
 package com.management.library.repository.management;
 
-import static com.management.library.domain.type.MemberRentalStatus.RENTAL_AVAILABLE;
-import static com.management.library.domain.type.RequestStatus.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.management.library.domain.type.RequestStatus.ACCEPTED;
+import static com.management.library.domain.type.RequestStatus.AWAIT;
+import static com.management.library.domain.type.RequestStatus.REFUSED;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.domain.management.ManagementRequest;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
 import com.management.library.domain.type.Authority;
-import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.dto.RequestSearchCond;
 import com.management.library.repository.member.MemberRepository;
@@ -34,8 +35,8 @@ class ManagementRequestRepositoryTest {
   @Test
   public void findByMemberCode() throws Exception {
     // given
-    Member member1 = createMember("kim", RENTAL_AVAILABLE, "123456");
-    Member member2 = createMember("park", RENTAL_AVAILABLE, "123457");
+    Member member1 = createMember("kim", "123456");
+    Member member2 = createMember("park", "123457");
 
     memberRepository.saveAll(List.of(member1, member2));
 
@@ -68,8 +69,8 @@ class ManagementRequestRepositoryTest {
   @Test
   public void findAllWithNoCondition() throws Exception {
     // given
-    Member member1 = createMember("kim", RENTAL_AVAILABLE, "123456");
-    Member member2 = createMember("park", RENTAL_AVAILABLE, "123457");
+    Member member1 = createMember("kim", "123456");
+    Member member2 = createMember("park", "123457");
 
     memberRepository.saveAll(List.of(member1, member2));
 
@@ -90,7 +91,7 @@ class ManagementRequestRepositoryTest {
 
     // then
     assertThat(content).hasSize(5)
-        .extracting("title",  "content", "memberName", "requestStatus")
+        .extracting("title", "content", "memberName", "requestStatus")
         .containsExactlyInAnyOrder(
             tuple("운영 약정 개정", "운영 약정 개정 의 내용", "kim", AWAIT),
             tuple("화장실 개선 요청", "화장실 개선 요청 의 내용", "kim", ACCEPTED),
@@ -104,8 +105,8 @@ class ManagementRequestRepositoryTest {
   @Test
   public void findAllWithAwaiting() throws Exception {
     // given
-    Member member1 = createMember("kim", RENTAL_AVAILABLE, "123456");
-    Member member2 = createMember("park", RENTAL_AVAILABLE, "123457");
+    Member member1 = createMember("kim", "123456");
+    Member member2 = createMember("park", "123457");
 
     memberRepository.saveAll(List.of(member1, member2));
 
@@ -139,8 +140,8 @@ class ManagementRequestRepositoryTest {
   @Test
   public void findAllWithAccepted() throws Exception {
     // given
-    Member member1 = createMember("kim", RENTAL_AVAILABLE, "123456");
-    Member member2 = createMember("park", RENTAL_AVAILABLE, "123457");
+    Member member1 = createMember("kim", "123456");
+    Member member2 = createMember("park", "123457");
 
     memberRepository.saveAll(List.of(member1, member2));
 
@@ -173,8 +174,8 @@ class ManagementRequestRepositoryTest {
   @Test
   public void findAllWithRefused() throws Exception {
     // given
-    Member member1 = createMember("kim", RENTAL_AVAILABLE, "123456");
-    Member member2 = createMember("park", RENTAL_AVAILABLE, "123457");
+    Member member1 = createMember("kim", "123456");
+    Member member2 = createMember("park", "123457");
 
     memberRepository.saveAll(List.of(member1, member2));
 
@@ -213,8 +214,7 @@ class ManagementRequestRepositoryTest {
         .build();
   }
 
-  private static Member createMember(String name, MemberRentalStatus memberRentalStatus,
-      String memberCode) {
+  private static Member createMember(String name, String memberCode) {
     Address address = Address.builder()
         .legion("경상남도")
         .city("김해시")
@@ -224,7 +224,6 @@ class ManagementRequestRepositoryTest {
     return Member.builder()
         .name(name)
         .birthdayCode("980101")
-        .memberRentalStatus(memberRentalStatus)
         .memberCode(memberCode)
         .address(address)
         .password("1234")

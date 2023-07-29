@@ -7,6 +7,4 @@ public interface MemberRepositoryCustom {
 
   Optional<Member> findByMemberNameAndAddress(String name, String legion, String city,
       String street);
-
-  Optional<String> findTopByOrderByIdDesc();
 }

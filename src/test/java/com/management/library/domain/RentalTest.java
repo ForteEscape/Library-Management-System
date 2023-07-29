@@ -8,7 +8,6 @@ import com.management.library.domain.member.Member;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.domain.type.ExtendStatus;
-import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RentalStatus;
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
@@ -31,7 +30,6 @@ class RentalTest {
     // given
     Member userA = Member.builder()
         .name("userA")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(userA);
@@ -68,7 +66,6 @@ class RentalTest {
     // given
     Member userA = Member.builder()
         .name("userA")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(userA);
@@ -112,7 +109,6 @@ class RentalTest {
     // given
     Member userA = Member.builder()
         .name("userA")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(userA);
@@ -140,7 +136,5 @@ class RentalTest {
     // when
     Rental rental1 = em.find(Rental.class, rental.getId());
     rental1.changeRentalStatus(RentalStatus.RETURNED);
-
-
   }
 }
