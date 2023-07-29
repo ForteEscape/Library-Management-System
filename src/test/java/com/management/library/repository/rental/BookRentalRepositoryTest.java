@@ -478,7 +478,7 @@ class BookRentalRepositoryTest {
 
     // when
     Rental rental = bookRentalRepository.findByBookInfoAndStatus(member1.getMemberCode(), "docker",
-            "kim", PROCEEDING)
+            "kim")
         .orElseThrow(() -> new NoSuchElementExistsException(ErrorCode.RENTAL_NOT_EXISTS));
 
     // then
