@@ -3,7 +3,7 @@ package com.management.library.dto;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,8 +19,8 @@ public class BookRentalResponseDto {
 
   private String memberName;
   private String bookTitle;
-  private LocalDateTime rentalStartDate;
-  private LocalDateTime rentalEndDate;
+  private LocalDate rentalStartDate;
+  private LocalDate rentalEndDate;
   private ExtendStatus extendStatus;
   private RentalStatus rentalStatus;
 

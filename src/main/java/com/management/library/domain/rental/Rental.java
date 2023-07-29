@@ -1,11 +1,13 @@
 package com.management.library.domain.rental;
 
+import static com.management.library.domain.type.RentalStatus.*;
+
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.member.Member;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -44,8 +46,8 @@ public class Rental extends BaseEntity {
   @JoinColumn(name = "book_id")
   private Book book;
 
-  private LocalDateTime rentalStartDate;
-  private LocalDateTime rentalEndDate;
+  private LocalDate rentalStartDate;
+  private LocalDate rentalEndDate;
 
   @Enumerated(EnumType.STRING)
   private ExtendStatus extendStatus;
@@ -54,8 +56,8 @@ public class Rental extends BaseEntity {
   private RentalStatus rentalStatus;
 
   @Builder
-  private Rental(Long id, Member member, Book book, LocalDateTime rentalStartDate,
-      LocalDateTime rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
+  private Rental(Long id, Member member, Book book, LocalDate rentalStartDate,
+      LocalDate rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
     this.id = id;
     this.member = member;
     this.book = book;
@@ -63,6 +65,16 @@ public class Rental extends BaseEntity {
     this.rentalEndDate = rentalEndDate;
     this.extendStatus = extendStatus;
     this.rentalStatus = rentalStatus;
+  }
+
+  public static Rental of(Member member, Book book, LocalDate rentalDate) {
+    return Rental.builder()
+        .member(member)
+        .book(book)
+        .rentalStatus(PROCEEDING)
+        .rentalStartDate(rentalDate)
+        .rentalEndDate(rentalDate.plusDays(14))
+        .build();
   }
 
   /**

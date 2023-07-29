@@ -18,7 +18,7 @@ import com.management.library.service.member.dto.MemberCreateServiceDto;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
 import com.management.library.service.member.dto.MemberReadServiceDto;
-import com.management.library.service.rental.dto.RentalServiceReadDto;
+import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -101,7 +101,7 @@ public class MemberService {
    * @param pageable   페이지 정보
    * @return 조회된 데이터 페이지
    */
-  public Page<RentalServiceReadDto> getMemberRentalData(
+  public Page<RentalServiceResponseDto> getMemberRentalData(
       BookRentalSearchCond cond, String memberCode, Pageable pageable) {
 
     return bookRentalRepository.findRentalPageByMemberCode(

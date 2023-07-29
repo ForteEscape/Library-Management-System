@@ -28,8 +28,8 @@ import com.management.library.repository.rental.BookRentalRepository;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
 import com.management.library.service.member.dto.MemberReadServiceDto;
-import com.management.library.service.rental.dto.RentalServiceReadDto;
-import java.time.LocalDateTime;
+import com.management.library.service.rental.dto.RentalServiceResponseDto;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -222,8 +222,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, RETURNED, rentalDate1, ExtendStatus.UNAVAILABLE);
@@ -234,10 +234,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
     BookRentalSearchCond cond = new BookRentalSearchCond();
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(3)
@@ -265,8 +265,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, PROCEEDING, rentalDate2,
@@ -280,10 +280,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(PROCEEDING);
 
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -310,8 +310,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, RETURNED, rentalDate1, ExtendStatus.UNAVAILABLE);
@@ -324,10 +324,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(RETURNED);
 
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -354,8 +354,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, OVERDUE, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, OVERDUE, rentalDate1, ExtendStatus.UNAVAILABLE);
@@ -368,10 +368,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(OVERDUE);
 
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -416,7 +416,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
   }
 
   private static Rental createRental(Book book, Member member, RentalStatus rentalStatus,
-      LocalDateTime rentalStartDate, ExtendStatus extendStatus) {
+      LocalDate rentalStartDate, ExtendStatus extendStatus) {
     return Rental.builder()
         .book(book)
         .member(member)
