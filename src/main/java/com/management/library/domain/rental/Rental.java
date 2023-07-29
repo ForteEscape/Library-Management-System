@@ -1,5 +1,6 @@
 package com.management.library.domain.rental;
 
+import static com.management.library.domain.type.ExtendStatus.*;
 import static com.management.library.domain.type.RentalStatus.*;
 
 import com.management.library.domain.BaseEntity;
@@ -72,6 +73,7 @@ public class Rental extends BaseEntity {
         .member(member)
         .book(book)
         .rentalStatus(PROCEEDING)
+        .extendStatus(AVAILABLE)
         .rentalStartDate(rentalDate)
         .rentalEndDate(rentalDate.plusDays(14))
         .build();
@@ -82,7 +84,7 @@ public class Rental extends BaseEntity {
    * 해당 대여 데이터가 연장 가능한 데이터인지는 service 에서 검증하도록 한다.
    */
   public void extendRentalEndDate() {
-    this.extendStatus = ExtendStatus.UNAVAILABLE;
+    this.extendStatus = UNAVAILABLE;
     this.rentalEndDate = this.rentalEndDate.plusDays(7);
   }
 
