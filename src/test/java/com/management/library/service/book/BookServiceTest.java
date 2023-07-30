@@ -1,12 +1,15 @@
 package com.management.library.service.book;
 
-import static com.management.library.domain.type.BookStatus.*;
-import static com.management.library.exception.ErrorCode.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.management.library.domain.type.BookStatus.AVAILABLE;
+import static com.management.library.exception.ErrorCode.BOOK_ALREADY_EXISTS;
+import static com.management.library.exception.ErrorCode.BOOK_NOT_EXISTS;
+import static com.management.library.exception.ErrorCode.INVALID_RANGE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.AbstractContainerBaseTest;
-import com.management.library.dto.ArrayResponseWrapper;
-import com.management.library.dto.BookSearchCond;
+import com.management.library.controller.book.dto.BookSearchCond;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.InvalidArgumentException;
 import com.management.library.exception.NoSuchElementExistsException;
@@ -146,12 +149,10 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond, pageRequest);
-    Long count = result.getCount();
-    List<Response> content = result.getData().getContent();
+    Page<Response> result = bookService.searchBook(cond, pageRequest);
+    List<Response> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(6L);
     assertThat(content).hasSize(5)
         .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
             "status")
@@ -193,13 +194,10 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond,
-        pageRequest);
-    Long count = result.getCount();
-    List<Response> content = result.getData().getContent();
+    Page<Response> result = bookService.searchBook(cond, pageRequest);
+    List<Response> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(1L);
     assertThat(content).hasSize(1)
         .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
             "status")
@@ -237,13 +235,11 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond,
+    Page<Response> result = bookService.searchBook(cond,
         pageRequest);
-    Long count = result.getCount();
-    List<Response> content = result.getData().getContent();
+    List<Response> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(4L);
     assertThat(content).hasSize(4)
         .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
             "status")
@@ -284,13 +280,11 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<Response>> result = bookService.searchBook(cond,
+    Page<Response> result = bookService.searchBook(cond,
         pageRequest);
-    Long count = result.getCount();
-    List<Response> content = result.getData().getContent();
+    List<Response> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(4L);
     assertThat(content).hasSize(4)
         .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
             "status")
@@ -329,13 +323,11 @@ class BookServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
 
     // when
-    ArrayResponseWrapper<Page<Response>> result = bookService.searchBookByTypeCode(
+    Page<Response> result = bookService.searchBookByTypeCode(
         100, 300, pageRequest);
-    Long count = result.getCount();
-    List<Response> content = result.getData().getContent();
+    List<Response> content = result.getContent();
 
     // then
-    assertThat(count).isEqualTo(4L);
     assertThat(content).hasSize(4)
         .extracting("title", "author", "publisher", "publishedYear", "location", "typeCode",
             "status")
