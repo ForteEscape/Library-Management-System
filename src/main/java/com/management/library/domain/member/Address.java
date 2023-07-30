@@ -1,5 +1,7 @@
 package com.management.library.domain.member;
 
+import static com.management.library.service.member.dto.MemberCreateServiceDto.Request;
+
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,5 +24,21 @@ public class Address {
     this.legion = legion;
     this.city = city;
     this.street = street;
+  }
+
+  public static Address of(Request request){
+    return Address.builder()
+        .legion(request.getLegion())
+        .city(request.getCity())
+        .street(request.getStreet())
+        .build();
+  }
+
+  public static Address of(String legion, String city, String street){
+    return Address.builder()
+        .legion(legion)
+        .city(city)
+        .street(street)
+        .build();
   }
 }

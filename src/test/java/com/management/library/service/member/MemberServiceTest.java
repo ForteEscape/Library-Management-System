@@ -1,10 +1,6 @@
 package com.management.library.service.member;
 
 import static com.management.library.domain.type.BookStatus.AVAILABLE;
-import static com.management.library.domain.type.ExtendStatus.UNAVAILABLE;
-import static com.management.library.domain.type.RentalStatus.OVERDUE;
-import static com.management.library.domain.type.RentalStatus.PROCEEDING;
-import static com.management.library.domain.type.RentalStatus.RETURNED;
 import static com.management.library.exception.ErrorCode.MEMBER_ALREADY_EXISTS;
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,7 +14,6 @@ import com.management.library.domain.member.Member;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
-import com.management.library.dto.BookRentalSearchCond;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.book.BookRepository;
@@ -27,7 +22,6 @@ import com.management.library.repository.rental.BookRentalRepository;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
 import com.management.library.service.member.dto.MemberReadServiceDto;
-import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -40,8 +34,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
@@ -203,182 +195,6 @@ class MemberServiceTest extends AbstractContainerBaseTest {
         .extracting("errorCode", "description")
         .contains(MEMBER_NOT_EXISTS, MEMBER_NOT_EXISTS.getDescription());
 
-  }
-
-  @DisplayName("회원의 모든 대여 기록을 조회할 수 있다.")
-  @Test
-  public void getMemberRentalData() throws Exception {
-    // given
-    Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    memberService.createMember(request1);
-
-    Member member1 = memberRepository.findByMemberCode("100000001")
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
-
-    Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
-    Book book2 = createBook("spring", "park", "publisher1", "location1", 2017, 150);
-    Book book3 = createBook("jpa2", "kim", "publisher", "location2", 2020, 130);
-
-    bookRepository.saveAll(List.of(book1, book2, book3));
-
-    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
-    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
-
-    Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
-    Rental rental2 = createRental(book2, member1, RETURNED, rentalDate1, ExtendStatus.UNAVAILABLE);
-    Rental rental3 = createRental(book3, member1, PROCEEDING, rentalDate2, ExtendStatus.AVAILABLE);
-
-    bookRentalRepository.saveAll(List.of(rental1, rental2, rental3));
-
-    PageRequest pageRequest = PageRequest.of(0, 5);
-    BookRentalSearchCond cond = new BookRentalSearchCond();
-    // when
-    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
-        pageRequest);
-
-    List<RentalServiceResponseDto> content = result.getContent();
-
-    // then
-    assertThat(content).hasSize(3)
-        .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
-        .containsExactlyInAnyOrder(
-            tuple("jpa1", rentalDate1, rentalDate1.plusDays(14), ExtendStatus.AVAILABLE, RETURNED),
-            tuple("spring", rentalDate1, rentalDate1.plusDays(14), UNAVAILABLE, RETURNED),
-            tuple("jpa2", rentalDate2, rentalDate2.plusDays(14), ExtendStatus.AVAILABLE, PROCEEDING)
-        );
-  }
-
-  @DisplayName("회원의 현재 대여 중인 대여 기록을 조회할 수 있다.")
-  @Test
-  public void getMemberRentalDataOnProceeding() throws Exception {
-    // given
-    Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    memberService.createMember(request1);
-
-    Member member1 = memberRepository.findByMemberCode("100000001")
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
-
-    Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
-    Book book2 = createBook("spring", "park", "publisher1", "location1", 2017, 150);
-    Book book3 = createBook("jpa2", "kim", "publisher", "location2", 2020, 130);
-
-    bookRepository.saveAll(List.of(book1, book2, book3));
-
-    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
-    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
-
-    Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
-    Rental rental2 = createRental(book2, member1, PROCEEDING, rentalDate2,
-        ExtendStatus.UNAVAILABLE);
-    Rental rental3 = createRental(book3, member1, PROCEEDING, rentalDate2, ExtendStatus.AVAILABLE);
-
-    bookRentalRepository.saveAll(List.of(rental1, rental2, rental3));
-
-    PageRequest pageRequest = PageRequest.of(0, 5);
-    BookRentalSearchCond cond = new BookRentalSearchCond();
-    cond.setRentalStatus(PROCEEDING);
-
-    // when
-    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
-        pageRequest);
-
-    List<RentalServiceResponseDto> content = result.getContent();
-
-    // then
-    assertThat(content).hasSize(2)
-        .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
-        .containsExactlyInAnyOrder(
-            tuple("spring", rentalDate2, rentalDate2.plusDays(14), UNAVAILABLE, PROCEEDING),
-            tuple("jpa2", rentalDate2, rentalDate2.plusDays(14), ExtendStatus.AVAILABLE, PROCEEDING)
-        );
-  }
-
-  @DisplayName("회원의 반납된 대여 기록을 조회할 수 있다.")
-  @Test
-  public void getMemberRentalDataOnReturned() throws Exception {
-    // given
-    Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    memberService.createMember(request1);
-
-    Member member1 = memberRepository.findByMemberCode("100000001")
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
-
-    Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
-    Book book2 = createBook("spring", "park", "publisher1", "location1", 2017, 150);
-    Book book3 = createBook("jpa2", "kim", "publisher", "location2", 2020, 130);
-
-    bookRepository.saveAll(List.of(book1, book2, book3));
-
-    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
-    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
-
-    Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
-    Rental rental2 = createRental(book2, member1, RETURNED, rentalDate1, ExtendStatus.UNAVAILABLE);
-    Rental rental3 = createRental(book3, member1, PROCEEDING, rentalDate2, ExtendStatus.AVAILABLE);
-
-    bookRentalRepository.saveAll(List.of(rental1, rental2, rental3));
-
-    PageRequest pageRequest = PageRequest.of(0, 5);
-    BookRentalSearchCond cond = new BookRentalSearchCond();
-    cond.setRentalStatus(RETURNED);
-
-    // when
-    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
-        pageRequest);
-
-    List<RentalServiceResponseDto> content = result.getContent();
-
-    // then
-    assertThat(content).hasSize(2)
-        .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
-        .containsExactlyInAnyOrder(
-            tuple("jpa1", rentalDate1, rentalDate1.plusDays(14), ExtendStatus.AVAILABLE, RETURNED),
-            tuple("spring", rentalDate1, rentalDate1.plusDays(14), UNAVAILABLE, RETURNED)
-        );
-  }
-
-  @DisplayName("회원의 연체 중인 대여 기록을 조회할 수 있다.")
-  @Test
-  public void getMemberRentalDataOnOverdue() throws Exception {
-    // given
-    Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    memberService.createMember(request1);
-
-    Member member1 = memberRepository.findByMemberCode("100000001")
-        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
-
-    Book book1 = createBook("jpa1", "kim", "publisher", "location", 2017, 130);
-    Book book2 = createBook("spring", "park", "publisher1", "location1", 2017, 150);
-    Book book3 = createBook("jpa2", "kim", "publisher", "location2", 2020, 130);
-
-    bookRepository.saveAll(List.of(book1, book2, book3));
-
-    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
-    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
-
-    Rental rental1 = createRental(book1, member1, OVERDUE, rentalDate1, ExtendStatus.AVAILABLE);
-    Rental rental2 = createRental(book2, member1, OVERDUE, rentalDate1, ExtendStatus.UNAVAILABLE);
-    Rental rental3 = createRental(book3, member1, PROCEEDING, rentalDate2, ExtendStatus.AVAILABLE);
-
-    bookRentalRepository.saveAll(List.of(rental1, rental2, rental3));
-
-    PageRequest pageRequest = PageRequest.of(0, 5);
-    BookRentalSearchCond cond = new BookRentalSearchCond();
-    cond.setRentalStatus(OVERDUE);
-
-    // when
-    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
-        pageRequest);
-
-    List<RentalServiceResponseDto> content = result.getContent();
-
-    // then
-    assertThat(content).hasSize(2)
-        .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
-        .containsExactlyInAnyOrder(
-            tuple("jpa1", rentalDate1, rentalDate1.plusDays(14), ExtendStatus.AVAILABLE, OVERDUE),
-            tuple("spring", rentalDate1, rentalDate1.plusDays(14), UNAVAILABLE, OVERDUE)
-        );
   }
 
   private static Request createRequest(String name, String birthdayCode, String legion, String city,

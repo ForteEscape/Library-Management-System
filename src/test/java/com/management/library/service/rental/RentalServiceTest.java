@@ -1,6 +1,6 @@
 package com.management.library.service.rental;
 
-import static com.management.library.domain.type.BookStatus.*;
+import static com.management.library.domain.type.BookStatus.RENTAL;
 import static com.management.library.domain.type.ExtendStatus.AVAILABLE;
 import static com.management.library.domain.type.RentalStatus.OVERDUE;
 import static com.management.library.domain.type.RentalStatus.PROCEEDING;
@@ -19,6 +19,7 @@ import com.management.library.AbstractContainerBaseTest;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.BookStatus;
+import com.management.library.domain.type.ExtendStatus;
 import com.management.library.dto.BookRentalSearchCond;
 import com.management.library.exception.RentalException;
 import com.management.library.repository.book.BookRepository;
@@ -722,6 +723,152 @@ class RentalServiceTest extends AbstractContainerBaseTest {
         .containsExactlyInAnyOrder(
             tuple("jpa2", rentalDate2, rentalDate2.plusDays(14), AVAILABLE, OVERDUE),
             tuple("spring", rentalDate2, rentalDate2.plusDays(14), AVAILABLE, OVERDUE)
+        );
+  }
+
+  @DisplayName("회원의 모든 대여 기록을 조회할 수 있다.")
+  @Test
+  public void getMemberRentalData() throws Exception {
+    // given
+    MemberCreateServiceDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
+        "삼계로");
+    MemberCreateServiceDto.Response member = memberService.createMember(request1);
+
+    Request bookRequest1 = createBookRequest("jpa1", "kim", "publisher", 2017, "location", 130);
+    Request bookRequest2 = createBookRequest("spring", "park", "publisher1", 2017, "location1",
+        150);
+    Request bookRequest3 = createBookRequest("jpa2", "kim", "publisher", 2020, "location2", 130);
+
+    Response newBook1 = bookService.createNewBook(bookRequest1);
+    Response newBook2 = bookService.createNewBook(bookRequest2);
+    Response newBook3 = bookService.createNewBook(bookRequest3);
+
+    LocalDate rentedDate = LocalDate.now();
+
+    RentalBookInfoDto rentalData1 = createRentalData(newBook1);
+    RentalBookInfoDto rentalData2 = createRentalData(newBook2);
+    RentalBookInfoDto rentalData3 = createRentalData(newBook3);
+
+    rentalService.createBookRental(member.getMemberCode(), rentalData1, rentedDate);
+    rentalService.createBookRental(member.getMemberCode(), rentalData2, rentedDate);
+
+    rentalService.returnBook(member.getMemberCode(), rentalData2.getBookTitle(), rentalData2.getAuthor());
+
+    rentalService.createBookRental(member.getMemberCode(), rentalData3, rentedDate);
+
+    PageRequest pageRequest = PageRequest.of(0, 5);
+    BookRentalSearchCond cond = new BookRentalSearchCond();
+
+    // when
+    Page<RentalServiceResponseDto> result = rentalService.getMemberRentalData(cond,
+        member.getMemberCode(), pageRequest);
+
+    List<RentalServiceResponseDto> content = result.getContent();
+
+    // then
+    assertThat(content).hasSize(3)
+        .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
+        .containsExactlyInAnyOrder(
+            tuple("jpa1", rentedDate, rentedDate.plusDays(14), ExtendStatus.AVAILABLE, PROCEEDING),
+            tuple("spring", rentedDate, rentedDate.plusDays(14), AVAILABLE, RETURNED),
+            tuple("jpa2", rentedDate, rentedDate.plusDays(14), ExtendStatus.AVAILABLE, PROCEEDING)
+        );
+  }
+
+  @DisplayName("회원의 현재 대여 중인 대여 기록을 조회할 수 있다.")
+  @Test
+  public void getMemberRentalDataOnProceeding() throws Exception {
+    // given
+    MemberCreateServiceDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
+        "삼계로");
+    MemberCreateServiceDto.Response member = memberService.createMember(request1);
+
+    Request bookRequest1 = createBookRequest("jpa1", "kim", "publisher", 2017, "location", 130);
+    Request bookRequest2 = createBookRequest("spring", "park", "publisher1", 2017, "location1",
+        150);
+    Request bookRequest3 = createBookRequest("jpa2", "kim", "publisher", 2020, "location2", 130);
+
+    Response newBook1 = bookService.createNewBook(bookRequest1);
+    Response newBook2 = bookService.createNewBook(bookRequest2);
+    Response newBook3 = bookService.createNewBook(bookRequest3);
+
+    LocalDate rentedDate = LocalDate.now();
+
+    RentalBookInfoDto rentalData1 = createRentalData(newBook1);
+    RentalBookInfoDto rentalData2 = createRentalData(newBook2);
+    RentalBookInfoDto rentalData3 = createRentalData(newBook3);
+
+    rentalService.createBookRental(member.getMemberCode(), rentalData1, rentedDate);
+    rentalService.createBookRental(member.getMemberCode(), rentalData2, rentedDate);
+
+    rentalService.returnBook(member.getMemberCode(), rentalData2.getBookTitle(), rentalData2.getAuthor());
+
+    rentalService.createBookRental(member.getMemberCode(), rentalData3, rentedDate);
+
+    PageRequest pageRequest = PageRequest.of(0, 5);
+    BookRentalSearchCond cond = new BookRentalSearchCond();
+    cond.setRentalStatus(PROCEEDING);
+
+    // when
+    Page<RentalServiceResponseDto> result = rentalService.getMemberRentalData(cond,
+        member.getMemberCode(), pageRequest);
+
+    List<RentalServiceResponseDto> content = result.getContent();
+
+    // then
+    assertThat(content).hasSize(2)
+        .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
+        .containsExactlyInAnyOrder(
+            tuple("jpa1", rentedDate, rentedDate.plusDays(14), ExtendStatus.AVAILABLE, PROCEEDING),
+            tuple("jpa2", rentedDate, rentedDate.plusDays(14), ExtendStatus.AVAILABLE, PROCEEDING)
+        );
+  }
+
+  @DisplayName("회원의 반납된 대여 기록을 조회할 수 있다.")
+  @Test
+  public void getMemberRentalDataOnReturned() throws Exception {
+    // given
+    MemberCreateServiceDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
+        "삼계로");
+    MemberCreateServiceDto.Response member = memberService.createMember(request1);
+
+    Request bookRequest1 = createBookRequest("jpa1", "kim", "publisher", 2017, "location", 130);
+    Request bookRequest2 = createBookRequest("spring", "park", "publisher1", 2017, "location1",
+        150);
+    Request bookRequest3 = createBookRequest("jpa2", "kim", "publisher", 2020, "location2", 130);
+
+    Response newBook1 = bookService.createNewBook(bookRequest1);
+    Response newBook2 = bookService.createNewBook(bookRequest2);
+    Response newBook3 = bookService.createNewBook(bookRequest3);
+
+    LocalDate rentedDate = LocalDate.now();
+
+    RentalBookInfoDto rentalData1 = createRentalData(newBook1);
+    RentalBookInfoDto rentalData2 = createRentalData(newBook2);
+    RentalBookInfoDto rentalData3 = createRentalData(newBook3);
+
+    rentalService.createBookRental(member.getMemberCode(), rentalData1, rentedDate);
+    rentalService.createBookRental(member.getMemberCode(), rentalData2, rentedDate);
+
+    rentalService.returnBook(member.getMemberCode(), rentalData2.getBookTitle(), rentalData2.getAuthor());
+
+    rentalService.createBookRental(member.getMemberCode(), rentalData3, rentedDate);
+
+    PageRequest pageRequest = PageRequest.of(0, 5);
+    BookRentalSearchCond cond = new BookRentalSearchCond();
+    cond.setRentalStatus(RETURNED);
+
+    // when
+    Page<RentalServiceResponseDto> result = rentalService.getMemberRentalData(cond,
+        member.getMemberCode(), pageRequest);
+
+    List<RentalServiceResponseDto> content = result.getContent();
+
+    // then
+    assertThat(content).hasSize(1)
+        .extracting("bookName", "rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
+        .containsExactlyInAnyOrder(
+            tuple("spring", rentedDate, rentedDate.plusDays(14), AVAILABLE, RETURNED)
         );
   }
 

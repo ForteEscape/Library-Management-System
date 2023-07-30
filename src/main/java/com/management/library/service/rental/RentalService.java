@@ -160,5 +160,18 @@ public class RentalService {
     return rentalRepository.findAllWithPage(cond, pageable);
   }
 
+  /**
+   * 회원의 도서 대여 정보 기록 조회
+   *
+   * @param cond       대여 상태 필터 데이터
+   * @param memberCode 회원 번호
+   * @param pageable   페이지 정보
+   * @return 조회된 데이터 페이지
+   */
+  public Page<RentalServiceResponseDto> getMemberRentalData(
+      BookRentalSearchCond cond, String memberCode, Pageable pageable) {
+
+    return rentalRepository.findRentalPageByMemberCode(cond, memberCode, pageable);
+  }
 
 }

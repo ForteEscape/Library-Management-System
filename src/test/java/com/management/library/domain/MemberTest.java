@@ -27,7 +27,7 @@ class MemberTest {
         .name("memberA")
         .password("1234")
         .birthdayCode("980506")
-        .address(new Address("서울", "강변", "강변길"))
+        .address(Address.of("서울", "강변", "강변길"))
         .memberCode("123456")
         .build();
 
@@ -54,7 +54,7 @@ class MemberTest {
         .name("memberA")
         .password("1234")
         .birthdayCode("980506")
-        .address(new Address("서울", "강변", "강변길"))
+        .address(Address.of("서울", "강변", "강변길"))
         .memberCode("123456")
         .build();
 
@@ -84,7 +84,7 @@ class MemberTest {
         .name("memberA")
         .password("1234")
         .birthdayCode("980506")
-        .address(new Address("서울", "강변", "강변길"))
+        .address(Address.of("서울", "강변", "강변길"))
         .memberCode("123456")
         .build();
 
