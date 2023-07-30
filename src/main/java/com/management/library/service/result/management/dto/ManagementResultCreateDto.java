@@ -1,5 +1,6 @@
 package com.management.library.service.result.management.dto;
 
+import com.management.library.controller.result.management.dto.ManagementResultControllerDto;
 import com.management.library.domain.management.ManagementRequestResult;
 import com.management.library.domain.type.RequestStatus;
 import lombok.Builder;
@@ -23,6 +24,14 @@ public class ManagementResultCreateDto {
       this.resultPostTitle = resultPostTitle;
       this.resultPostContent = resultPostContent;
       this.resultStatus = resultStatus;
+    }
+
+    public static Request of(ManagementResultControllerDto.Request request) {
+      return Request.builder()
+          .resultPostTitle(request.getResultPostTitle())
+          .resultPostContent(request.getResultPostContent())
+          .resultStatus(request.getResultStatus())
+          .build();
     }
   }
 
