@@ -3,7 +3,7 @@ package com.management.library.service.rental.dto;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,17 +12,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RentalServiceReadDto {
+public class RentalServiceResponseDto {
 
+  private Long id;
   private String bookName;
-  private LocalDateTime rentalStartDate;
-  private LocalDateTime rentalEndDate;
+  private LocalDate rentalStartDate;
+  private LocalDate rentalEndDate;
   private ExtendStatus extendStatus;
   private RentalStatus rentalStatus;
 
   @Builder
-  public RentalServiceReadDto(String bookName, LocalDateTime rentalStartDate,
-      LocalDateTime rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
+  public RentalServiceResponseDto(Long id, String bookName, LocalDate rentalStartDate,
+      LocalDate rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
+    this.id = id;
     this.bookName = bookName;
     this.rentalStartDate = rentalStartDate;
     this.rentalEndDate = rentalEndDate;
@@ -30,8 +32,9 @@ public class RentalServiceReadDto {
     this.rentalStatus = rentalStatus;
   }
 
-  public static RentalServiceReadDto of(Rental rental){
-    return RentalServiceReadDto.builder()
+  public static RentalServiceResponseDto of(Rental rental){
+    return RentalServiceResponseDto.builder()
+        .id(rental.getId())
         .bookName(rental.getBook().getBookInfo().getTitle())
         .rentalStartDate(rental.getRentalStartDate())
         .rentalEndDate(rental.getRentalEndDate())

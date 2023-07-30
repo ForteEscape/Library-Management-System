@@ -108,8 +108,8 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     Book result = queryFactory.select(book)
         .from(book)
         .where(
-            bookNameEq(title),
-            bookAuthorEq(author)
+            book.bookInfo.title.eq(title),
+            book.bookInfo.author.eq(author)
         )
         .fetchOne();
 

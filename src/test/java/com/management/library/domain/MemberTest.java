@@ -1,10 +1,9 @@
 package com.management.library.domain;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.dto.MemberUpdateDto.Request;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,7 +29,6 @@ class MemberTest {
         .birthdayCode("980506")
         .address(new Address("서울", "강변", "강변길"))
         .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(member);
@@ -46,12 +44,11 @@ class MemberTest {
     assertThat(result.getPassword()).isEqualTo(member.getPassword());
     assertThat(result.getBirthdayCode()).isEqualTo(member.getBirthdayCode());
     assertThat(result.getMemberCode()).isEqualTo(member.getMemberCode());
-    assertThat(result.getMemberRentalStatus()).isEqualTo(member.getMemberRentalStatus());
   }
 
   @Test
   @DisplayName("회원 엔티티 변경 - 패스워드 변경")
-  void changeMemberRentalStatus() {
+  void changeMemberPassword() {
     // given
     Member member = Member.builder()
         .name("memberA")
@@ -59,7 +56,6 @@ class MemberTest {
         .birthdayCode("980506")
         .address(new Address("서울", "강변", "강변길"))
         .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(member);
@@ -81,38 +77,6 @@ class MemberTest {
   }
 
   @Test
-  @DisplayName("회원 엔티티 변경 테스트 - 회원 대여 가능 상태 변경")
-  void changeMemberRentalStatusTest() {
-    // given
-    Member member = Member.builder()
-        .name("memberA")
-        .password("1234")
-        .birthdayCode("980506")
-        .address(new Address("서울", "강변", "강변길"))
-        .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
-        .build();
-
-    em.persist(member);
-
-    em.flush();
-    em.clear();
-
-    // when
-    Member result = em.find(Member.class, member.getId());
-    result.changeMemberRentalStatus(MemberRentalStatus.RENTAL_UNAVAILABLE);
-
-    em.flush();
-    em.clear();
-
-    Member changeMemberRentalStatusEntity = em.find(Member.class, member.getId());
-
-    // then
-    assertThat(changeMemberRentalStatusEntity.getMemberRentalStatus()).isEqualTo(
-        MemberRentalStatus.RENTAL_UNAVAILABLE);
-  }
-
-  @Test
   @DisplayName("회원 엔티티 변경 테스트 - 회원 정보(이름, 거주 주소)")
   void changeMemberDateTest(){
     // given
@@ -122,7 +86,6 @@ class MemberTest {
         .birthdayCode("980506")
         .address(new Address("서울", "강변", "강변길"))
         .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(member);

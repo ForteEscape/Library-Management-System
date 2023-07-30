@@ -30,15 +30,4 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     return Optional.ofNullable(result);
   }
-
-  @Override
-  public Optional<String> findTopByOrderByIdDesc() {
-    String memberCode = queryFactory.select(member.memberCode)
-        .from(member)
-        .orderBy(member.id.desc())
-        .limit(1)
-        .fetchOne();
-
-    return Optional.ofNullable(memberCode);
-  }
 }

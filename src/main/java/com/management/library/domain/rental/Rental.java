@@ -1,11 +1,14 @@
 package com.management.library.domain.rental;
 
+import static com.management.library.domain.type.ExtendStatus.*;
+import static com.management.library.domain.type.RentalStatus.*;
+
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.member.Member;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -44,8 +47,8 @@ public class Rental extends BaseEntity {
   @JoinColumn(name = "book_id")
   private Book book;
 
-  private LocalDateTime rentalStartDate;
-  private LocalDateTime rentalEndDate;
+  private LocalDate rentalStartDate;
+  private LocalDate rentalEndDate;
 
   @Enumerated(EnumType.STRING)
   private ExtendStatus extendStatus;
@@ -54,8 +57,8 @@ public class Rental extends BaseEntity {
   private RentalStatus rentalStatus;
 
   @Builder
-  private Rental(Long id, Member member, Book book, LocalDateTime rentalStartDate,
-      LocalDateTime rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
+  private Rental(Long id, Member member, Book book, LocalDate rentalStartDate,
+      LocalDate rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
     this.id = id;
     this.member = member;
     this.book = book;
@@ -65,12 +68,23 @@ public class Rental extends BaseEntity {
     this.rentalStatus = rentalStatus;
   }
 
+  public static Rental of(Member member, Book book, LocalDate rentalDate) {
+    return Rental.builder()
+        .member(member)
+        .book(book)
+        .rentalStatus(PROCEEDING)
+        .extendStatus(AVAILABLE)
+        .rentalStartDate(rentalDate)
+        .rentalEndDate(rentalDate.plusDays(14))
+        .build();
+  }
+
   /**
    * 도서 대여 기한 연장
    * 해당 대여 데이터가 연장 가능한 데이터인지는 service 에서 검증하도록 한다.
    */
   public void extendRentalEndDate() {
-    this.extendStatus = ExtendStatus.UNAVAILABLE;
+    this.extendStatus = UNAVAILABLE;
     this.rentalEndDate = this.rentalEndDate.plusDays(7);
   }
 

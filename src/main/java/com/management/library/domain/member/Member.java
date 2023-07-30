@@ -2,9 +2,7 @@ package com.management.library.domain.member;
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
-import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.dto.MemberUpdateDto;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -47,24 +45,17 @@ public class Member extends BaseEntity implements UserDetails {
   private String memberCode;
 
   @Enumerated(EnumType.STRING)
-  private MemberRentalStatus memberRentalStatus;
-
-  @Enumerated(EnumType.STRING)
   private Authority authority;
-
-  // 연체로 인한 대여 불가 상태 지속 날짜
-  private LocalDateTime penaltyDate;
 
   @Builder
   public Member(Long id, String name, String password, String birthdayCode, Address address,
-      String memberCode, MemberRentalStatus memberRentalStatus, Authority authority) {
+      String memberCode, Authority authority) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.birthdayCode = birthdayCode;
     this.address = address;
     this.memberCode = memberCode;
-    this.memberRentalStatus = memberRentalStatus;
     this.authority = authority;
   }
 
@@ -86,15 +77,6 @@ public class Member extends BaseEntity implements UserDetails {
    */
   public void changePassword(String password) {
     this.password = password;
-  }
-
-  /**
-   * 회원의 대여 가능 상태 변경
-   *
-   * @param memberRentalStatus 변경할 회원 상태
-   */
-  public void changeMemberRentalStatus(MemberRentalStatus memberRentalStatus) {
-    this.memberRentalStatus = memberRentalStatus;
   }
 
   @Override

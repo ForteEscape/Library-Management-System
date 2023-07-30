@@ -1,12 +1,12 @@
 package com.management.library.domain;
 
-import static com.management.library.domain.type.RequestStatus.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.management.library.domain.type.RequestStatus.ACCEPTED;
+import static com.management.library.domain.type.RequestStatus.AWAIT;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.management.ManagementRequest;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.domain.type.MemberRentalStatus;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,6 @@ class ManagementRequestTest {
         .birthdayCode("980506")
         .address(new Address("서울", "강변", "강변길"))
         .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(member);
@@ -68,7 +67,6 @@ class ManagementRequestTest {
         .birthdayCode("980506")
         .address(new Address("서울", "강변", "강변길"))
         .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .build();
 
     em.persist(member);

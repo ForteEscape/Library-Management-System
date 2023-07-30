@@ -1,6 +1,6 @@
 package com.management.library.domain;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.admin.Administrator;
 import com.management.library.domain.management.ManagementRequest;
@@ -8,7 +8,6 @@ import com.management.library.domain.management.ManagementRequestResult;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
 import com.management.library.domain.type.Authority;
-import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,7 +33,6 @@ class ManagementRequestResultTest {
         .birthdayCode("980506")
         .address(new Address("서울", "강변", "강변길"))
         .memberCode("123456")
-        .memberRentalStatus(MemberRentalStatus.RENTAL_AVAILABLE)
         .authority(Authority.ROLE_MEMBER)
         .build();
 

@@ -2,16 +2,18 @@ package com.management.library.repository.management;
 
 import static com.management.library.domain.type.Authority.ROLE_ADMIN;
 import static com.management.library.domain.type.Authority.ROLE_MEMBER;
-import static com.management.library.domain.type.MemberRentalStatus.RENTAL_AVAILABLE;
-import static com.management.library.domain.type.RequestStatus.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.management.library.domain.type.RequestStatus.ACCEPTED;
+import static com.management.library.domain.type.RequestStatus.AWAIT;
+import static com.management.library.domain.type.RequestStatus.REFUSED;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.domain.admin.Administrator;
 import com.management.library.domain.management.ManagementRequest;
 import com.management.library.domain.management.ManagementRequestResult;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.domain.type.MemberRentalStatus;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.repository.admin.AdministratorRepository;
 import com.management.library.repository.member.MemberRepository;
@@ -43,7 +45,7 @@ class ManagementRequestResultRepositoryTest {
   @Test
   public void findByRequestId() throws Exception {
     // given
-    Member member = createMember("kim", RENTAL_AVAILABLE, "123456");
+    Member member = createMember("kim", "123456");
     memberRepository.save(member);
 
     Administrator administrator = createAdmin("admin1", "admin1@test.com", "1234");
@@ -92,8 +94,8 @@ class ManagementRequestResultRepositoryTest {
   @Test
   public void findByAdminEmail() throws Exception {
     // given
-    Member member1 = createMember("kim", RENTAL_AVAILABLE, "123456");
-    Member member2 = createMember("park", RENTAL_AVAILABLE, "123457");
+    Member member1 = createMember("kim", "123456");
+    Member member2 = createMember("park", "123457");
     memberRepository.saveAll(List.of(member1, member2));
 
     Administrator admin1 = createAdmin("admin1", "admin1@test.com", "1234");
@@ -163,8 +165,7 @@ class ManagementRequestResultRepositoryTest {
         .build();
   }
 
-  private static Member createMember(String name, MemberRentalStatus memberRentalStatus,
-      String memberCode) {
+  private static Member createMember(String name, String memberCode) {
     Address address = Address.builder()
         .legion("경상남도")
         .city("김해시")
@@ -174,7 +175,6 @@ class ManagementRequestResultRepositoryTest {
     return Member.builder()
         .name(name)
         .birthdayCode("980101")
-        .memberRentalStatus(memberRentalStatus)
         .memberCode(memberCode)
         .address(address)
         .password("1234")

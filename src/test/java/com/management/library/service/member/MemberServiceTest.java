@@ -2,7 +2,6 @@ package com.management.library.service.member;
 
 import static com.management.library.domain.type.BookStatus.AVAILABLE;
 import static com.management.library.domain.type.ExtendStatus.UNAVAILABLE;
-import static com.management.library.domain.type.MemberRentalStatus.RENTAL_AVAILABLE;
 import static com.management.library.domain.type.RentalStatus.OVERDUE;
 import static com.management.library.domain.type.RentalStatus.PROCEEDING;
 import static com.management.library.domain.type.RentalStatus.RETURNED;
@@ -28,8 +27,8 @@ import com.management.library.repository.rental.BookRentalRepository;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
 import com.management.library.service.member.dto.MemberReadServiceDto;
-import com.management.library.service.rental.dto.RentalServiceReadDto;
-import java.time.LocalDateTime;
+import com.management.library.service.rental.dto.RentalServiceResponseDto;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -179,8 +178,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     // then
     assertThat(memberData)
-        .extracting("name", "memberCode", "memberRentalStatus")
-        .contains("park", "100000002", RENTAL_AVAILABLE);
+        .extracting("name", "memberCode")
+        .contains("park", "100000002");
   }
 
   @DisplayName("존재하지 않는 회원 번호로 조회할 수 없다.")
@@ -222,8 +221,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, RETURNED, rentalDate1, ExtendStatus.UNAVAILABLE);
@@ -234,10 +233,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     PageRequest pageRequest = PageRequest.of(0, 5);
     BookRentalSearchCond cond = new BookRentalSearchCond();
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(3)
@@ -265,8 +264,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, PROCEEDING, rentalDate2,
@@ -280,10 +279,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(PROCEEDING);
 
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -310,8 +309,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, RETURNED, rentalDate1, ExtendStatus.UNAVAILABLE);
@@ -324,10 +323,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(RETURNED);
 
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -354,8 +353,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
     bookRepository.saveAll(List.of(book1, book2, book3));
 
-    LocalDateTime rentalDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-    LocalDateTime rentalDate2 = LocalDateTime.of(2023, 7, 21, 0, 0);
+    LocalDate rentalDate1 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 21);
 
     Rental rental1 = createRental(book1, member1, OVERDUE, rentalDate1, ExtendStatus.AVAILABLE);
     Rental rental2 = createRental(book2, member1, OVERDUE, rentalDate1, ExtendStatus.UNAVAILABLE);
@@ -368,10 +367,10 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     cond.setRentalStatus(OVERDUE);
 
     // when
-    Page<RentalServiceReadDto> result = memberService.getMemberRentalData(cond, "100000001",
+    Page<RentalServiceResponseDto> result = memberService.getMemberRentalData(cond, "100000001",
         pageRequest);
 
-    List<RentalServiceReadDto> content = result.getContent();
+    List<RentalServiceResponseDto> content = result.getContent();
 
     // then
     assertThat(content).hasSize(2)
@@ -416,7 +415,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
   }
 
   private static Rental createRental(Book book, Member member, RentalStatus rentalStatus,
-      LocalDateTime rentalStartDate, ExtendStatus extendStatus) {
+      LocalDate rentalStartDate, ExtendStatus extendStatus) {
     return Rental.builder()
         .book(book)
         .member(member)
