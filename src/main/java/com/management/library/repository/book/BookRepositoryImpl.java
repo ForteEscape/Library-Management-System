@@ -4,7 +4,7 @@ import static com.management.library.domain.book.QBook.book;
 import static com.querydsl.core.types.Projections.*;
 
 import com.management.library.domain.book.Book;
-import com.management.library.dto.BookSearchCond;
+import com.management.library.controller.book.dto.BookSearchCond;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import com.querydsl.core.types.dsl.BooleanExpression;

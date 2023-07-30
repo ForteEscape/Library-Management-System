@@ -1,7 +1,7 @@
 package com.management.library.repository.book;
 
 import com.management.library.domain.book.Book;
-import com.management.library.dto.BookSearchCond;
+import com.management.library.controller.book.dto.BookSearchCond;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
