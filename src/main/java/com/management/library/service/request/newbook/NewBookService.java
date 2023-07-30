@@ -1,6 +1,7 @@
 package com.management.library.service.request.newbook;
 
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.management.library.exception.ErrorCode.REQUEST_NOT_EXISTS;
 import static com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Request;
 import static com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Response;
 
@@ -42,6 +43,13 @@ public class NewBookService {
 
   public Page<Response> getMemberNewBookRequest(String memberCode, Pageable pageable){
     return newBookRequestRepository.findByMemberCode(memberCode, pageable);
+  }
+
+  public Response getNewBookRequestDetail(Long requestId){
+    NewBookRequest request = newBookRequestRepository.findById(requestId)
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
+
+    return Response.of(request);
   }
 
   public Page<Response> getAllNewBookRequest(RequestSearchCond cond, Pageable pageable){

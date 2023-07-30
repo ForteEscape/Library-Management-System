@@ -1,13 +1,13 @@
-package com.management.library.service.request.newbook.dto;
+package com.management.library.controller.request.newbook;
 
-import com.management.library.domain.newbook.NewBookRequest;
 import com.management.library.domain.type.RequestStatus;
+import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class NewBookRequestServiceDto {
+public class NewBookRequestControllerDto {
 
   @Getter
   @Setter
@@ -45,13 +45,13 @@ public class NewBookRequestServiceDto {
       this.requestStatus = requestStatus;
     }
 
-    public static Response of(NewBookRequest entity) {
+    public static Response of(NewBookRequestServiceDto.Response response) {
       return Response.builder()
-          .id(entity.getId())
-          .memberName(entity.getMember().getName())
-          .requestBookTitle(entity.getRequestBookTitle())
-          .requestContent(entity.getRequestContent())
-          .requestStatus(entity.getRequestStatus())
+          .id(response.getId())
+          .memberName(response.getMemberName())
+          .requestBookTitle(response.getRequestBookTitle())
+          .requestContent(response.getRequestContent())
+          .requestStatus(response.getRequestStatus())
           .build();
     }
   }

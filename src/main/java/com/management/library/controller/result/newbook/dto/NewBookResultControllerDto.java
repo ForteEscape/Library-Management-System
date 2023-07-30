@@ -1,14 +1,13 @@
-package com.management.library.service.result.newbook.dto;
+package com.management.library.controller.result.newbook.dto;
 
-import com.management.library.controller.result.newbook.dto.NewBookResultControllerDto;
-import com.management.library.domain.newbook.NewBookRequestResult;
 import com.management.library.domain.type.RequestStatus;
+import com.management.library.service.result.newbook.dto.NewBookResultCreateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class NewBookResultCreateDto {
+public class NewBookResultControllerDto {
 
   @Getter
   @Setter
@@ -24,14 +23,6 @@ public class NewBookResultCreateDto {
       this.resultTitle = resultTitle;
       this.resultContent = resultContent;
       this.resultStatus = resultStatus;
-    }
-
-    public static Request of(NewBookResultControllerDto.Request request) {
-      return Request.builder()
-          .resultTitle(request.getResultTitle())
-          .resultContent(request.getResultContent())
-          .resultStatus(request.getResultStatus())
-          .build();
     }
   }
 
@@ -58,16 +49,15 @@ public class NewBookResultCreateDto {
       this.resultStatus = resultStatus;
     }
 
-    public static Response of(NewBookRequestResult result) {
+    public static Response of(NewBookResultCreateDto.Response response){
       return Response.builder()
-          .id(result.getId())
-          .newBookRequestTitle(result.getNewBookRequest().getRequestBookTitle())
-          .adminName(result.getAdministrator().getName())
-          .resultPostTitle(result.getResultPostTitle())
-          .resultPostContent(result.getResultPostContent())
-          .resultStatus(result.getResult())
+          .id(response.getId())
+          .newBookRequestTitle(response.getNewBookRequestTitle())
+          .adminName(response.getAdminName())
+          .resultPostTitle(response.getResultPostTitle())
+          .resultPostContent(response.getResultPostContent())
+          .resultStatus(response.getResultStatus())
           .build();
     }
   }
-
 }
