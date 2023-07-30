@@ -24,8 +24,12 @@ public class AdminCreateServiceDto {
       this.password = password;
     }
 
-    public static Request of(AdminCreateControllerDto request){
-      return null;
+    public static Request of(AdminCreateControllerDto.Request request){
+      return Request.builder()
+          .name(request.getName())
+          .email(request.getEmail())
+          .password(request.getPassword())
+          .build();
     }
   }
 
