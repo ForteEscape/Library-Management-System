@@ -1,18 +1,19 @@
 package com.management.library.service.book;
 
-import static com.management.library.exception.ErrorCode.*;
+import static com.management.library.exception.ErrorCode.BOOK_ALREADY_EXISTS;
+import static com.management.library.exception.ErrorCode.BOOK_NOT_EXISTS;
+import static com.management.library.exception.ErrorCode.INVALID_RANGE;
 
 import com.management.library.domain.book.Book;
-import com.management.library.dto.ArrayResponseWrapper;
-import com.management.library.dto.BookSearchCond;
+import com.management.library.controller.book.dto.BookSearchCond;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.InvalidArgumentException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.book.BookRepository;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceCreateDto.Response;
-import com.management.library.service.book.dto.BookServiceUpdateDto;
 import com.management.library.service.book.dto.BookServiceResponseDto;
+import com.management.library.service.book.dto.BookServiceUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -53,14 +54,8 @@ public class BookService {
    * @param pageable 결과 페이징 설정
    * @return 결과 객체
    */
-  public ArrayResponseWrapper<Page<Response>> searchBook(BookSearchCond cond, Pageable pageable) {
-    Page<Response> books = bookRepository.bookSearch(cond, pageable);
-
-    ArrayResponseWrapper<Page<Response>> result = new ArrayResponseWrapper<>();
-    result.setCount(books.getTotalElements());
-    result.setData(books);
-
-    return result;
+  public Page<Response> searchBook(BookSearchCond cond, Pageable pageable) {
+    return bookRepository.bookSearch(cond, pageable);
   }
 
   /**
@@ -71,21 +66,14 @@ public class BookService {
    * @param pageable  페이징 설정
    * @return 결과 객체
    */
-  public ArrayResponseWrapper<Page<Response>> searchBookByTypeCode(int startCode, int endCode,
+  public Page<Response> searchBookByTypeCode(int startCode, int endCode,
       Pageable pageable) {
 
     if (isValidRange(startCode, endCode)) {
       throw new InvalidArgumentException(INVALID_RANGE);
     }
 
-    Page<Response> books = bookRepository.findAllByBookTypeCode(startCode, endCode,
-        pageable);
-
-    ArrayResponseWrapper<Page<Response>> result = new ArrayResponseWrapper<>();
-    result.setCount(books.getTotalElements());
-    result.setData(books);
-
-    return result;
+    return bookRepository.findAllByBookTypeCode(startCode, endCode, pageable);
   }
 
   private boolean isValidRange(int startCode, int endCode) {

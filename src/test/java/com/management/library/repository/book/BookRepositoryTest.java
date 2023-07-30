@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.management.library.domain.book.Book;
 import com.management.library.domain.book.BookInfo;
-import com.management.library.dto.BookSearchCond;
+import com.management.library.controller.book.dto.BookSearchCond;
 import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
