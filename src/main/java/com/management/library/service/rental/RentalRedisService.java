@@ -2,27 +2,29 @@ package com.management.library.service.rental;
 
 import static com.management.library.exception.ErrorCode.BOOK_RENTAL_COUNT_EXCEED;
 
+import com.management.library.exception.ErrorCode;
+import com.management.library.exception.InvalidAccessException;
 import com.management.library.exception.RentalException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class RentalRedisService {
 
   private final RedisTemplate<String, String> redisTemplate;
   private static final String RENTAL_REDIS_KEY = "rental-count";
   private static final String INIT_AVAILABLE_COUNT = "2";
   private static final String PENALTY_MEMBER_KEY = "penalty:";
+  private static final String BOOK_RENTED_COUNT = "book-rented-count";
 
   public void checkMemberRentalBookCount(String memberCode) {
     HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
@@ -53,6 +55,20 @@ public class RentalRedisService {
             TimeUnit.DAYS);
 
     return penaltyEndDate;
+  }
+
+  public void addBookRentedCount(String bookTitle){
+    ZSetOperations<String, String> sortedSet = redisTemplate.opsForZSet();
+
+    Boolean isKeyExists = sortedSet.addIfAbsent(BOOK_RENTED_COUNT, bookTitle, 1);
+
+    if (isKeyExists == null){
+      throw new InvalidAccessException(ErrorCode.UNEXPECTED_ERROR);
+    }
+
+    if (!isKeyExists){
+      sortedSet.incrementScore(BOOK_RENTED_COUNT, bookTitle, 1);
+    }
   }
 
   public boolean checkMemberRentalPenalty(String memberCode) {

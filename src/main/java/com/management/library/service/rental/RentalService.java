@@ -74,6 +74,7 @@ public class RentalService {
     book.changeBookStatus(RENTAL);
 
     Rental rental = rentalRepository.save(Rental.of(member, book, rentalDate));
+    rentalRedisService.addBookRentedCount(bookInfo.getBookTitle());
 
     return RentalServiceResponseDto.of(rental);
   }
