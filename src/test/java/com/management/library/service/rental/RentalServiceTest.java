@@ -70,6 +70,7 @@ class RentalServiceTest extends AbstractContainerBaseTest {
 
   private static final String RENTAL_REDIS_KEY = "rental-count";
   private static final String PENALTY_MEMBER_KEY = "penalty:";
+  private static final String BOOK_RENTED_COUNT = "book-rented-count";
 
   @AfterEach
   void tearDown() {
@@ -78,6 +79,7 @@ class RentalServiceTest extends AbstractContainerBaseTest {
     bookRepository.deleteAllInBatch();
 
     redisTemplate.delete(RENTAL_REDIS_KEY);
+    redisTemplate.delete(BOOK_RENTED_COUNT);
 
     for (int i = 1; i < 100; i++) {
       String keyCode = String.valueOf(100000000 + i);
@@ -107,8 +109,12 @@ class RentalServiceTest extends AbstractContainerBaseTest {
     // then
     String memberRentalCount = String.valueOf(
         redisTemplate.opsForHash().get(RENTAL_REDIS_KEY, createdMember.getMemberCode()));
+
+    Double score = redisTemplate.opsForZSet().score(BOOK_RENTED_COUNT, bookInfo.getBookTitle());
+
     Book book = bookRepository.findByTitleAndAuthor("jpa", "park").get();
 
+    assertThat(score).isEqualTo(1);
     assertThat(book.getBookStatus()).isEqualTo(RENTAL);
     assertThat(memberRentalCount).isEqualTo("1");
     assertThat(rental)
