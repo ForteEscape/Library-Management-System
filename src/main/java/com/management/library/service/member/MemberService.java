@@ -3,11 +3,14 @@ package com.management.library.service.member;
 import static com.management.library.exception.ErrorCode.DUPLICATE_MEMBER_CODE;
 import static com.management.library.exception.ErrorCode.MEMBER_ALREADY_EXISTS;
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.management.library.exception.ErrorCode.PASSWORD_NOT_MATCH;
 
 import com.management.library.controller.admin.dto.MemberSearchCond;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
+import com.management.library.dto.MemberUpdateServiceDto;
 import com.management.library.exception.DuplicateException;
+import com.management.library.exception.InvalidAccessException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.member.MemberRepository;
 import com.management.library.service.Generator;
@@ -15,10 +18,12 @@ import com.management.library.service.member.dto.MemberCreateServiceDto;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
 import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.query.dto.PasswordChangeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +36,7 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final Generator<String> memberPasswordGenerator;
   private final RedisMemberService redisService;
+  private final PasswordEncoder passwordEncoder;
 
   /**
    * 회원 가입 기능 회원의 이름 및 주소가 모두 동일한 경우 -> 일반적으로 동일인이라고 가정할 수 있으므로 중복으로 판단해 가입 제한. 회원 번호와 관련된 동시성 문제 발생
@@ -52,9 +58,10 @@ public class MemberService {
     }
 
     String password = memberPasswordGenerator.generate(request.getBirthdayCode());
+    String encodedPassword = passwordEncoder.encode(password);
 
     Address address = Address.of(request);
-    Member member = Member.of(request, memberCode, password, address);
+    Member member = Member.of(request, memberCode, encodedPassword, address);
 
     Member savedMember = memberRepository.save(member);
 
@@ -113,13 +120,30 @@ public class MemberService {
     String initPassword = memberPasswordGenerator.generate(member.getBirthdayCode());
 
     // 암호화해서 넘겨줘야함
-    member.changePassword(initPassword);
+    member.changePassword(passwordEncoder.encode(initPassword));
 
     return initPassword;
   }
 
   @Transactional
-  public String changePassword(String memberCode){
+  public String changePassword(String memberCode, PasswordChangeDto request){
+    Member member = memberRepository.findByMemberCode(memberCode)
+        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+
+    if (!passwordEncoder.matches(request.getCurrentPassword(), member.getPassword())){
+      throw new InvalidAccessException(PASSWORD_NOT_MATCH);
+    }
+
+    member.changePassword(passwordEncoder.encode(request.getNewPassword()));
+    return "success";
+  }
+
+  @Transactional
+  public String updateMemberData(MemberUpdateServiceDto request, String memberCode) {
+    Member member = memberRepository.findByMemberCode(memberCode)
+        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+
+    member.changeMemberData(request);
 
     return "success";
   }
