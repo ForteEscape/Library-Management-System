@@ -9,7 +9,7 @@ import static com.management.library.exception.ErrorCode.BOOK_RENTAL_COUNT_EXCEE
 import static com.management.library.exception.ErrorCode.MEMBER_STATUS_NOT_AVAILABLE;
 import static com.management.library.exception.ErrorCode.OVERDUE_RENTAL_EXISTS;
 import static com.management.library.exception.ErrorCode.RENTAL_ALREADY_EXTEND;
-import static com.management.library.exception.ErrorCode.RENTAL_IS_OVERDUE;
+import static com.management.library.exception.ErrorCode.RENTAL_STATUS_NOT_AVAILABLE;
 import static com.management.library.exception.ErrorCode.UNABLE_TO_BOOK_RENTAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -319,7 +319,7 @@ class RentalServiceTest extends AbstractContainerBaseTest {
         .isInstanceOf(RentalException.class)
         .extracting("errorCode", "description")
         .contains(
-            RENTAL_IS_OVERDUE, RENTAL_IS_OVERDUE.getDescription()
+            RENTAL_STATUS_NOT_AVAILABLE, RENTAL_STATUS_NOT_AVAILABLE.getDescription()
         );
   }
 
