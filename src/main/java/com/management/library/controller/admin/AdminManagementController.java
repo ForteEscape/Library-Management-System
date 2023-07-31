@@ -1,10 +1,10 @@
 package com.management.library.controller.admin;
 
-import com.management.library.controller.request.management.ManagementRequestControllerDto;
-import com.management.library.controller.result.management.dto.ManagementResultControllerDto;
+import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
 import com.management.library.dto.RequestSearchCond;
+import com.management.library.service.query.ManagementTotalResponseService;
+import com.management.library.service.query.dto.ManagementTotalResponseDto;
 import com.management.library.service.request.management.ManagementService;
-import com.management.library.service.request.management.dto.ManagementRequestServiceDto;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
 import com.management.library.service.result.management.ManagementResultService;
 import com.management.library.service.result.management.dto.ManagementResultCreateDto;
@@ -26,6 +26,7 @@ public class AdminManagementController {
 
   private final ManagementService managementService;
   private final ManagementResultService managementResultService;
+  private final ManagementTotalResponseService managementTotalResponseService;
 
   // 운영 개선 요구사항 조회
   @GetMapping
@@ -36,12 +37,10 @@ public class AdminManagementController {
 
   // 운영 개선 요구사항 상세 조회
   @GetMapping("/{requestId}")
-  public ManagementRequestControllerDto.Response getManagementRequestDetail(
+  public ManagementTotalResponseDto getManagementRequestDetail(
       @PathVariable("requestId") Long requestId) {
-    ManagementRequestServiceDto.Response response = managementService.getManagementRequestDetail(
-        requestId);
 
-    return ManagementRequestControllerDto.Response.of(response);
+    return managementTotalResponseService.getManagementTotalData(requestId);
   }
 
   // 운영 개선 요구사항 답변 등록

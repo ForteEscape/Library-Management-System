@@ -1,10 +1,10 @@
 package com.management.library.controller.admin;
 
-import com.management.library.controller.request.newbook.NewBookRequestControllerDto;
-import com.management.library.controller.result.newbook.dto.NewBookResultControllerDto;
+import com.management.library.controller.request.newbook.dto.NewBookResultControllerDto;
 import com.management.library.dto.RequestSearchCond;
+import com.management.library.service.query.NewBookTotalResponseService;
+import com.management.library.service.query.dto.NewBookTotalResponseDto;
 import com.management.library.service.request.newbook.NewBookService;
-import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Response;
 import com.management.library.service.result.newbook.NewBookResultService;
 import com.management.library.service.result.newbook.dto.NewBookResultCreateDto;
@@ -27,6 +27,7 @@ public class AdminNewBookRequestController {
 
   private final NewBookService newBookService;
   private final NewBookResultService newBookResultService;
+  private final NewBookTotalResponseService newBookTotalResponseService;
 
   // 신간 요구사항 조회
   @GetMapping
@@ -37,12 +38,10 @@ public class AdminNewBookRequestController {
 
   // 신간 요구사항 세부 조회
   @GetMapping("/{requestId}")
-  public NewBookRequestControllerDto.Response getNewBookRequestDetail(
-      @PathVariable("requestId") Long requestId
-  ) {
-    NewBookRequestServiceDto.Response response = newBookService.getNewBookRequestDetail(requestId);
+  public NewBookTotalResponseDto getNewBookRequestDetail(
+      @PathVariable("requestId") Long requestId) {
 
-    return NewBookRequestControllerDto.Response.of(response);
+    return newBookTotalResponseService.getNewBookTotalResponse(requestId);
   }
 
   // 신간 요구사항에 대한 답변 작성
