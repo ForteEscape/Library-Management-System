@@ -42,7 +42,7 @@ public class BookReview extends BaseEntity {
   private int rate;
 
   @Builder
-  public BookReview(Long id, Member member, Book book, String reviewTitle, String content,
+  private BookReview(Long id, Member member, Book book, String reviewTitle, String content,
       int rate) {
     this.id = id;
     this.member = member;
@@ -50,6 +50,10 @@ public class BookReview extends BaseEntity {
     this.reviewTitle = reviewTitle;
     this.content = content;
     this.rate = rate;
+  }
+
+  public static BookReview of(){
+    return null;
   }
 
   /**
