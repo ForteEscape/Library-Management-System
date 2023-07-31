@@ -47,7 +47,9 @@ public class Rental extends BaseEntity {
   @JoinColumn(name = "book_id")
   private Book book;
 
+  @Column(nullable = false)
   private LocalDate rentalStartDate;
+  @Column(nullable = false)
   private LocalDate rentalEndDate;
 
   @Enumerated(EnumType.STRING)
@@ -80,8 +82,7 @@ public class Rental extends BaseEntity {
   }
 
   /**
-   * 도서 대여 기한 연장
-   * 해당 대여 데이터가 연장 가능한 데이터인지는 service 에서 검증하도록 한다.
+   * 도서 대여 기한 연장 해당 대여 데이터가 연장 가능한 데이터인지는 service 에서 검증하도록 한다.
    */
   public void extendRentalEndDate() {
     this.extendStatus = UNAVAILABLE;
@@ -89,12 +90,11 @@ public class Rental extends BaseEntity {
   }
 
   /**
-   * 도서 대여 상태 변경
-   * 반납 시 사용되는 로직으로 해당 대여가 정상 반납인지, 연체인지는 service 에서 검증하도록 한다.
+   * 도서 대여 상태 변경 반납 시 사용되는 로직으로 해당 대여가 정상 반납인지, 연체인지는 service 에서 검증하도록 한다.
    *
    * @param rentalStatus 바꿀 대여 상태 정보
    */
-  public void changeRentalStatus(RentalStatus rentalStatus){
+  public void changeRentalStatus(RentalStatus rentalStatus) {
     this.rentalStatus = rentalStatus;
   }
 }

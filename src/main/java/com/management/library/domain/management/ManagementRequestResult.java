@@ -38,11 +38,13 @@ public class ManagementRequestResult extends BaseEntity {
   @JoinColumn(name = "management_request_id")
   private ManagementRequest managementRequest;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "administrator_id")
   private Administrator administrator;
 
+  @Column(nullable = false)
   private String resultPostTitle;
+  @Column(nullable = false)
   private String resultPostContent;
 
   @Enumerated(EnumType.STRING)

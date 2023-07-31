@@ -40,7 +40,9 @@ public class NewBookRequestResult extends BaseEntity {
   @JoinColumn(name = "administrator_id")
   private Administrator administrator;
 
+  @Column(nullable = false)
   private String resultPostTitle;
+  @Column(nullable = false)
   private String resultPostContent;
 
   @Enumerated(EnumType.STRING)

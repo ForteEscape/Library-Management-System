@@ -38,13 +38,17 @@ public class Member extends BaseEntity implements UserDetails {
   @Column(name = "member_id")
   private Long id;
 
+  @Column(nullable = false)
   private String name;
+  @Column(nullable = false)
   private String password;
+  @Column(nullable = false)
   private String birthdayCode;
 
   @Embedded
+  @Column(nullable = false)
   private Address address;
-  @Column(name = "member_code", unique = true)
+  @Column(name = "member_code", unique = true, nullable = false)
   private String memberCode;
 
   @Enumerated(EnumType.STRING)

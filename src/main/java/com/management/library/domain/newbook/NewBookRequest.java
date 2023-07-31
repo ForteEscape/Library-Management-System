@@ -1,6 +1,6 @@
 package com.management.library.domain.newbook;
 
-import static com.management.library.domain.type.RequestStatus.*;
+import static com.management.library.domain.type.RequestStatus.AWAIT;
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.member.Member;
@@ -38,7 +38,9 @@ public class NewBookRequest extends BaseEntity {
   @JoinColumn(name = "member_id")
   private Member member;
 
+  @Column(nullable = false)
   private String requestBookTitle;
+  @Column(nullable = false)
   private String requestContent;
 
   @Enumerated(EnumType.STRING)

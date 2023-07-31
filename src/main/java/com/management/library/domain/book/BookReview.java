@@ -2,6 +2,7 @@ package com.management.library.domain.book;
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.member.Member;
+import com.management.library.service.review.dto.BookReviewServiceDto.Request;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -37,23 +38,31 @@ public class BookReview extends BaseEntity {
   @JoinColumn(name = "book_id")
   private Book book;
 
+  @Column(nullable = false)
   private String reviewTitle;
-  private String content;
+  @Column(nullable = false)
+  private String reviewContent;
   private int rate;
 
   @Builder
-  private BookReview(Long id, Member member, Book book, String reviewTitle, String content,
+  private BookReview(Long id, Member member, Book book, String reviewTitle, String reviewContent,
       int rate) {
     this.id = id;
     this.member = member;
     this.book = book;
     this.reviewTitle = reviewTitle;
-    this.content = content;
+    this.reviewContent = reviewContent;
     this.rate = rate;
   }
 
-  public static BookReview of(){
-    return null;
+  public static BookReview of(Request reviewRequest, Member member, Book book){
+    return BookReview.builder()
+        .member(member)
+        .book(book)
+        .reviewTitle(reviewRequest.getReviewTitle())
+        .reviewContent(reviewRequest.getReviewContent())
+        .rate(reviewRequest.getReviewRate())
+        .build();
   }
 
   /**
@@ -65,6 +74,6 @@ public class BookReview extends BaseEntity {
    */
   public void changeReviewTitleAndContent(String reviewTitle, String content){
     this.reviewTitle = reviewTitle;
-    this.content = content;
+    this.reviewContent = content;
   }
 }
