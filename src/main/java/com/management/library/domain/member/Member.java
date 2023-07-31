@@ -5,7 +5,7 @@ import static com.management.library.service.member.dto.MemberCreateServiceDto.R
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
-import com.management.library.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Embedded;

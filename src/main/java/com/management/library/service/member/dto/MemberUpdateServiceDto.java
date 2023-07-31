@@ -1,4 +1,4 @@
-package com.management.library.dto;
+package com.management.library.service.member.dto;
 
 import com.management.library.controller.member.dto.MemberUpdateControllerDto;
 import lombok.Builder;

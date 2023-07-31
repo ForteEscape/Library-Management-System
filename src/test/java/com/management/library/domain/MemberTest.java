@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;

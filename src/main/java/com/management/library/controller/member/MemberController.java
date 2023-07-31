@@ -3,7 +3,7 @@ package com.management.library.controller.member;
 import com.management.library.controller.admin.dto.MemberRentalDto;
 import com.management.library.controller.member.dto.MemberUpdateControllerDto;
 import com.management.library.dto.BookRentalSearchCond;
-import com.management.library.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import com.management.library.service.member.MemberService;
 import com.management.library.service.query.ManagementTotalResponseService;
 import com.management.library.service.query.MemberTotalInfoService;
@@ -60,8 +60,8 @@ public class MemberController {
 
   // 회원 비밀번호 변경
   @PostMapping("/change-password")
-  public void changeMemberPassword(@RequestBody PasswordChangeDto request, Principal principal) {
-
+  public String changeMemberPassword(@RequestBody PasswordChangeDto request, Principal principal) {
+    return memberService.changePassword(principal.getName(), request);
   }
 
   // 회원 대여 기록 조회

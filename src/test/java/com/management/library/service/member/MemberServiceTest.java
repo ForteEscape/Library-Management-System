@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.AbstractContainerBaseTest;
 import com.management.library.domain.member.Member;
-import com.management.library.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.book.BookRepository;

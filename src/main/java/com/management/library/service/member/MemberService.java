@@ -8,7 +8,7 @@ import static com.management.library.exception.ErrorCode.PASSWORD_NOT_MATCH;
 import com.management.library.controller.admin.dto.MemberSearchCond;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.InvalidAccessException;
 import com.management.library.exception.NoSuchElementExistsException;
