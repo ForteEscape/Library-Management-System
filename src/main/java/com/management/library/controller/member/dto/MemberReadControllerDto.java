@@ -13,12 +13,19 @@ public class MemberReadControllerDto {
   private String name;
   private String memberCode;
   private String birthdayCode;
+  private String legion;
+  private String city;
+  private String street;
 
   @Builder
-  private MemberReadControllerDto(String name, String memberCode, String birthdayCode) {
+  private MemberReadControllerDto(String name, String memberCode, String birthdayCode, String legion,
+      String city, String street) {
     this.name = name;
     this.memberCode = memberCode;
     this.birthdayCode = birthdayCode;
+    this.legion = legion;
+    this.city = city;
+    this.street = street;
   }
 
   public static MemberReadControllerDto of(MemberReadServiceDto member){
@@ -26,6 +33,9 @@ public class MemberReadControllerDto {
         .name(member.getName())
         .memberCode(member.getMemberCode())
         .birthdayCode(member.getBirthdayCode())
+        .legion(member.getLegion())
+        .city(member.getCity())
+        .street(member.getStreet())
         .build();
   }
 }

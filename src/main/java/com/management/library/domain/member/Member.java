@@ -5,7 +5,7 @@ import static com.management.library.service.member.dto.MemberCreateServiceDto.R
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
-import com.management.library.dto.MemberUpdateDto;
+import com.management.library.dto.MemberUpdateServiceDto;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -79,7 +79,7 @@ public class Member extends BaseEntity implements UserDetails {
    *
    * @param request 변경 정보 DTO
    */
-  public void changeMemberData(MemberUpdateDto.Request request) {
+  public void changeMemberData(MemberUpdateServiceDto request) {
     this.name = request.getName();
     this.address = Address.of(request.getLegion(), request.getCity(), request.getStreet());
   }
