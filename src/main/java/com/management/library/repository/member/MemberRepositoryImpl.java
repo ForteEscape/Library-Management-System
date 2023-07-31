@@ -46,7 +46,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 MemberReadServiceDto.class,
                 member.name,
                 member.memberCode,
-                member.birthdayCode
+                member.birthdayCode,
+                member.address.legion,
+                member.address.city,
+                member.address.street
             )
         )
         .from(member)
