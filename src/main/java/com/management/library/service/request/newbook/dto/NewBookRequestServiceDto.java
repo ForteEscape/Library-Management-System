@@ -1,5 +1,6 @@
 package com.management.library.service.request.newbook.dto;
 
+import com.management.library.controller.request.newbook.dto.NewBookRequestControllerDto;
 import com.management.library.domain.newbook.NewBookRequest;
 import com.management.library.domain.type.RequestStatus;
 import lombok.Builder;
@@ -21,6 +22,13 @@ public class NewBookRequestServiceDto {
     private Request(String requestBookTitle, String requestContent) {
       this.requestBookTitle = requestBookTitle;
       this.requestContent = requestContent;
+    }
+
+    public static Request of(NewBookRequestControllerDto.Request request) {
+      return Request.builder()
+          .requestBookTitle(request.getRequestBookTitle())
+          .requestContent(request.getRequestContent())
+          .build();
     }
   }
 

@@ -1,4 +1,4 @@
-package com.management.library.controller.request.newbook;
+package com.management.library.controller.request.newbook.dto;
 
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto;

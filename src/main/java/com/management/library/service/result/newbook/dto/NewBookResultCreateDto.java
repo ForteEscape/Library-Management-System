@@ -1,6 +1,6 @@
 package com.management.library.service.result.newbook.dto;
 
-import com.management.library.controller.result.newbook.dto.NewBookResultControllerDto;
+import com.management.library.controller.request.newbook.dto.NewBookResultControllerDto;
 import com.management.library.domain.newbook.NewBookRequestResult;
 import com.management.library.domain.type.RequestStatus;
 import lombok.Builder;
