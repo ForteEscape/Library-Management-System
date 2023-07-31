@@ -1,6 +1,5 @@
 package com.management.library.service.member;
 
-import static com.management.library.domain.type.BookStatus.AVAILABLE;
 import static com.management.library.exception.ErrorCode.MEMBER_ALREADY_EXISTS;
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,12 +7,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.AbstractContainerBaseTest;
-import com.management.library.domain.book.Book;
-import com.management.library.domain.book.BookInfo;
 import com.management.library.domain.member.Member;
-import com.management.library.domain.rental.Rental;
-import com.management.library.domain.type.ExtendStatus;
-import com.management.library.domain.type.RentalStatus;
+import com.management.library.dto.MemberUpdateServiceDto;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.book.BookRepository;
@@ -22,7 +17,7 @@ import com.management.library.repository.rental.BookRentalRepository;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
 import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
 import com.management.library.service.member.dto.MemberReadServiceDto;
-import java.time.LocalDate;
+import com.management.library.service.query.dto.PasswordChangeDto;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -35,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 @Slf4j
@@ -50,6 +46,8 @@ class MemberServiceTest extends AbstractContainerBaseTest {
   private BookRepository bookRepository;
   @Autowired
   private RedisTemplate<String, String> redisTemplate;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @AfterEach
   void tearDown() {
@@ -197,7 +195,78 @@ class MemberServiceTest extends AbstractContainerBaseTest {
 
   }
 
-  private static Request createRequest(String name, String birthdayCode, String legion, String city,
+  @DisplayName("회원의 패스워드를 변경할 수 있다.")
+  @Test
+  public void changeMemberPassword() throws Exception {
+    // given
+    Request memberRequest = createRequest("kim", "980101", "legion", "city", "street");
+    Response member = memberService.createMember(memberRequest);
+
+    PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+        .currentPassword("980101!@#")
+        .newPassword("12345")
+        .build();
+
+    // when
+    String result = memberService.changePassword(member.getMemberCode(), passwordChangeDto);
+
+    // then
+    Member changedMember = memberRepository.findByMemberCode(member.getMemberCode()).get();
+    assertThat(result).isEqualTo("success");
+    assertThat(passwordEncoder.matches("12345", changedMember.getPassword())).isTrue();
+  }
+
+  @DisplayName("회원의 패스워드를 초기화 할 수 있다.")
+  @Test
+  public void initMemberPassword() throws Exception {
+    // given
+    Request memberRequest = createRequest("kim", "980101", "legion", "city", "street");
+    Response member = memberService.createMember(memberRequest);
+
+    PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+        .currentPassword("980101!@#")
+        .newPassword("12345")
+        .build();
+
+    memberService.changePassword(member.getMemberCode(), passwordChangeDto);
+    Member member1 = memberRepository.findByMemberCode(member.getMemberCode()).get();
+
+    // when
+    String initPassword = memberService.initMemberPassword(member1.getId());
+
+    // then
+    Member result = memberRepository.findByMemberCode(member.getMemberCode()).get();
+    assertThat(initPassword).isEqualTo("980101!@#");
+    assertThat(passwordEncoder.matches("980101!@#", result.getPassword())).isTrue();
+  }
+
+  @DisplayName("회원의 정보(주소지, 이름) 를 바꿀 수 있다.")
+  @Test
+  public void updateMemberData() throws Exception {
+    // given
+    Request memberRequest = createRequest("kim", "980101", "legion", "city", "street");
+    Response member = memberService.createMember(memberRequest);
+
+    MemberUpdateServiceDto updateDto = MemberUpdateServiceDto.builder()
+        .name("park")
+        .legion("legion2")
+        .city("city2")
+        .street("street2")
+        .build();
+    // when
+    String result = memberService.updateMemberData(updateDto, member.getMemberCode());
+
+    // then
+    MemberReadServiceDto memberData = memberService.getMemberData(member.getMemberCode());
+    assertThat(result).isEqualTo("success");
+    assertThat(memberData)
+        .extracting("name", "birthdayCode", "legion", "city", "street")
+        .contains(
+            "park", "980101", "legion2", "city2", "street2"
+        );
+  }
+
+  private Request createRequest(String name, String birthdayCode, String legion, String city,
       String street) {
     return Request.builder()
         .name(name)
@@ -207,39 +276,4 @@ class MemberServiceTest extends AbstractContainerBaseTest {
         .street(street)
         .build();
   }
-
-  private Book createBook(String title, String author, String publisher, String location,
-      int publishedYear, int typeCode) {
-    BookInfo bookInfo = createBookInfo(title, author, publisher, location, publishedYear);
-
-    return Book.builder()
-        .bookInfo(bookInfo)
-        .bookStatus(AVAILABLE)
-        .typeCode(typeCode)
-        .build();
-  }
-
-  private BookInfo createBookInfo(String title, String author, String publisher, String location,
-      int publishedYear) {
-    return BookInfo.builder()
-        .title(title)
-        .author(author)
-        .publisher(publisher)
-        .location(location)
-        .publishedYear(publishedYear)
-        .build();
-  }
-
-  private static Rental createRental(Book book, Member member, RentalStatus rentalStatus,
-      LocalDate rentalStartDate, ExtendStatus extendStatus) {
-    return Rental.builder()
-        .book(book)
-        .member(member)
-        .rentalStatus(rentalStatus)
-        .rentalStartDate(rentalStartDate)
-        .rentalEndDate(rentalStartDate.plusDays(14))
-        .extendStatus(extendStatus)
-        .build();
-  }
-
 }
