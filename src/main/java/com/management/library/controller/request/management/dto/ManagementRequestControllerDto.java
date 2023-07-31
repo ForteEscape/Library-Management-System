@@ -1,4 +1,4 @@
-package com.management.library.controller.request.management;
+package com.management.library.controller.request.management.dto;
 
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto;
@@ -13,6 +13,7 @@ public class ManagementRequestControllerDto {
   @Setter
   @NoArgsConstructor
   public static class Request {
+
     private String title;
     private String content;
 
@@ -26,6 +27,7 @@ public class ManagementRequestControllerDto {
   @Setter
   @NoArgsConstructor
   public static class Response {
+
     private Long id;
     private String title;
     private String content;
@@ -42,7 +44,7 @@ public class ManagementRequestControllerDto {
       this.requestStatus = requestStatus;
     }
 
-    public static Response of(ManagementRequestServiceDto.Response response){
+    public static Response of(ManagementRequestServiceDto.Response response) {
       return Response.builder()
           .id(response.getId())
           .title(response.getTitle())

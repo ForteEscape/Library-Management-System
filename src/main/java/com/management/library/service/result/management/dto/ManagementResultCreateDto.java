@@ -1,6 +1,6 @@
 package com.management.library.service.result.management.dto;
 
-import com.management.library.controller.result.management.dto.ManagementResultControllerDto;
+import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
 import com.management.library.domain.management.ManagementRequestResult;
 import com.management.library.domain.type.RequestStatus;
 import lombok.Builder;

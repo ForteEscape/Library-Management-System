@@ -1,4 +1,4 @@
-package com.management.library.controller.result.management.dto;
+package com.management.library.controller.request.management.dto;
 
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.result.management.dto.ManagementResultCreateDto;
