@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.*;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.book.BookInfo;
 import com.management.library.domain.book.BookReview;
+import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
+import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.BookStatus;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,45 +24,11 @@ class BookReviewTest {
   private EntityManager em;
 
   @Test
-  @DisplayName("책 리뷰 엔티티 저장 테스트")
-  void bookReviewTest() {
-    // given
-    Member memberA = Member.builder()
-        .name("memberA")
-        .build();
-
-    em.persist(memberA);
-
-    Book book = Book.builder()
-        .bookInfo(new BookInfo("bookA", "author", "publisher", "4f", 2002))
-        .bookStatus(BookStatus.AVAILABLE)
-        .build();
-
-    em.persist(book);
-
-    BookReview bookReview = BookReview.builder()
-        .reviewTitle("review")
-        .content("content")
-        .book(book)
-        .member(memberA)
-        .build();
-
-    em.persist(bookReview);
-
-    // when
-    BookReview bookReview1 = em.find(BookReview.class, bookReview.getId());
-
-    // then
-    assertThat(bookReview1).isEqualTo(bookReview);
-  }
-
-  @Test
   @DisplayName("등록된 리뷰 수정 테스트")
-  void changeReviewAndContentTest(){
+  void changeReviewAndContentTest() {
     // given
-    Member memberA = Member.builder()
-        .name("memberA")
-        .build();
+    Address address = getAddress("legion", "city", "street");
+    Member memberA = getMember("kim", address, "10000001", "980101", Authority.ROLE_MEMBER, "1234");
 
     em.persist(memberA);
 
@@ -73,7 +41,7 @@ class BookReviewTest {
 
     BookReview bookReview = BookReview.builder()
         .reviewTitle("review")
-        .content("content")
+        .reviewContent("content")
         .book(book)
         .member(memberA)
         .build();
@@ -94,7 +62,27 @@ class BookReviewTest {
 
     // then
     assertThat(result.getReviewTitle()).isEqualTo("review Title2");
-    assertThat(result.getContent()).isEqualTo("review content2");
+    assertThat(result.getReviewContent()).isEqualTo("review content2");
     assertThat(result.getRate()).isEqualTo(bookReview.getRate());
+  }
+
+  private Address getAddress(String legion, String city, String street) {
+    return Address.builder()
+        .legion(legion)
+        .city(city)
+        .street(street)
+        .build();
+  }
+
+  private static Member getMember(String name, Address address, String memberCode,
+      String birthdayCode, Authority authority, String password) {
+    return Member.builder()
+        .name(name)
+        .address(address)
+        .memberCode(memberCode)
+        .birthdayCode(birthdayCode)
+        .authority(authority)
+        .password(password)
+        .build();
   }
 }
