@@ -105,6 +105,8 @@ public class MemberService {
     return memberRepository.findAll(cond, pageable);
   }
 
+  // redis 에서 해당 회원과 관련된 데이터도 삭제해야함
+  // on-delete 설정 필요
   @Transactional
   public String deleteMemberData(Long memberId){
     memberRepository.deleteById(memberId);
