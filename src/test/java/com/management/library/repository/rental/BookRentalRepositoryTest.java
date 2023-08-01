@@ -496,6 +496,52 @@ class BookRentalRepositoryTest {
 
   }
 
+  @DisplayName("회원 번호와 도서 재목을 이용하여 반납된 대여를 조회할 수 있다.")
+  @Test
+  public void findByMemberCodeAndBookTitle() throws Exception {
+    // given
+    Member member1 = createMember("kim", "123456");
+    Member member2 = createMember("kim", "123457");
+
+    memberRepository.saveAll(List.of(member1, member2));
+
+    Book book1 = createBook("jpa", "kim", "publisher", "location1", 2017, 130);
+    Book book2 = createBook("jpa2", "kim", "publisher", "location1", 2020, 130);
+    Book book3 = createBook("spring", "kim", "publisher2", "location2", 2017, 135);
+    Book book4 = createBook("spring2", "kim", "publisher2", "location2", 2020, 135);
+    Book book5 = createBook("docker", "kim", "publisher3", "location3", 2017, 140);
+    Book book6 = createBook("docker2", "kim", "publisher3", "location3", 2020, 140);
+
+    bookRepository.saveAll(List.of(book1, book2, book3, book4, book5, book6));
+
+    LocalDate rentalDate1 = LocalDate.of(2023, 6, 21);
+    LocalDate rentalDate2 = LocalDate.of(2023, 7, 1);
+    LocalDate rentalDate3 = LocalDate.of(2023, 7, 21);
+
+    Rental rental1 = createRental(book1, member1, RETURNED, rentalDate1, UNAVAILABLE);
+    Rental rental2 = createRental(book2, member1, RETURNED, rentalDate1, UNAVAILABLE);
+    Rental rental3 = createRental(book3, member1, RETURNED, rentalDate2, UNAVAILABLE);
+    Rental rental4 = createRental(book4, member2, RETURNED, rentalDate2, UNAVAILABLE);
+    Rental rental5 = createRental(book5, member2, PROCEEDING, rentalDate3, UNAVAILABLE);
+    Rental rental6 = createRental(book6, member2, PROCEEDING, rentalDate3, UNAVAILABLE);
+
+    bookRentalRepository.saveAll(List.of(rental1, rental2, rental3, rental4, rental5, rental6));
+
+    // when
+    Rental rental = bookRentalRepository.findByMemberCodeAndBookTitle(member1.getMemberCode(),
+            "jpa")
+        .orElseThrow(() -> new NoSuchElementExistsException(ErrorCode.RENTAL_NOT_EXISTS));
+
+    // then
+    assertThat(rental.getMember().getMemberCode()).isEqualTo("123456");
+    assertThat(rental.getBook().getBookInfo().getTitle()).isEqualTo("jpa");
+    assertThat(rental)
+        .extracting("rentalStartDate", "rentalEndDate", "extendStatus", "rentalStatus")
+        .contains(
+            rentalDate1, rentalDate1.plusDays(14), UNAVAILABLE, RETURNED
+        );
+  }
+
 
   private static Rental createRental(Book book, Member member, RentalStatus rentalStatus,
       LocalDate rentalStartDate, ExtendStatus extendStatus) {

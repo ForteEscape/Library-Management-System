@@ -1,6 +1,6 @@
 package com.management.library.domain;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.book.Book;
 import com.management.library.domain.book.BookInfo;
@@ -9,6 +9,7 @@ import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
 import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.BookStatus;
+import com.management.library.service.review.dto.BookReviewUpdateDto.Request;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,12 @@ class BookReviewTest {
 
     // when
     BookReview bookReview1 = em.find(BookReview.class, bookReview.getId());
-    bookReview1.changeReviewTitleAndContent("review Title2", "review content2");
+    Request updateRequest = Request.builder()
+        .updateReviewTitle("review Title2")
+        .updateReviewContent("review content2")
+        .build();
+
+    bookReview1.changeReviewTitleAndContent(updateRequest);
 
     em.flush();
     em.clear();
