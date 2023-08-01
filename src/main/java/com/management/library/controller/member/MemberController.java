@@ -3,8 +3,8 @@ package com.management.library.controller.member;
 import com.management.library.controller.admin.dto.MemberRentalDto;
 import com.management.library.controller.member.dto.MemberUpdateControllerDto;
 import com.management.library.dto.BookRentalSearchCond;
-import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import com.management.library.service.member.MemberService;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import com.management.library.service.query.ManagementTotalResponseService;
 import com.management.library.service.query.MemberTotalInfoService;
 import com.management.library.service.query.NewBookTotalResponseService;
@@ -19,6 +19,9 @@ import com.management.library.service.request.management.ManagementService;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto;
 import com.management.library.service.request.newbook.NewBookService;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto;
+import com.management.library.service.review.BookReviewService;
+import com.management.library.service.review.dto.BookReviewDetailDto;
+import com.management.library.service.review.dto.BookReviewOverviewDto;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,6 +43,7 @@ public class MemberController {
   private final RentalService rentalService;
   private final NewBookService newBookService;
   private final ManagementService managementService;
+  private final BookReviewService bookReviewService;
   private final ManagementTotalResponseService managementTotalResponseService;
   private final NewBookTotalResponseService newBookTotalResponseService;
   private final MemberTotalInfoService memberTotalInfoService;
@@ -83,6 +87,17 @@ public class MemberController {
   public RentalDurationExtendDto extendMemberRental(@PathVariable("rentalId") Long rentalId,
       Principal principal) {
     return rentalService.extendRentalDuration(principal.getName(), rentalId);
+  }
+
+  // 회원 리뷰 조회
+  @GetMapping("/reviews")
+  public Page<BookReviewOverviewDto> getMemberReviews(Principal principal, Pageable pageable) {
+    return bookReviewService.getMemberReviewDataList(principal.getName(), pageable);
+  }
+
+  @GetMapping("/reviews/{reviewId}")
+  public BookReviewDetailDto getMemberReviewDetail(@PathVariable("reviewId") Long reviewId) {
+    return bookReviewService.getMemberReviewData(reviewId);
   }
 
   // 회원 신간 요청 기록 조회

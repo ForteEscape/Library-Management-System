@@ -28,4 +28,9 @@ public class BookController {
   public BookServiceResponseDto getBook(@PathVariable("bookId") Long bookId) {
     return bookService.getBookData(bookId);
   }
+
+  @GetMapping("/{bookId}/reviews")
+  public void getBookReviews(@PathVariable("bookId") Long bookId, Pageable pageable){
+
+  }
 }
