@@ -12,7 +12,7 @@ public class BookReviewServiceDto {
   @Getter
   @Setter
   @NoArgsConstructor
-  public static class Request{
+  public static class Request {
 
     private String reviewTitle;
     private String reviewContent;
@@ -25,15 +25,19 @@ public class BookReviewServiceDto {
       this.reviewRate = reviewRate;
     }
 
-    public static Request of(BookReviewControllerDto.Request request){
-      return null;
+    public static Request of(BookReviewControllerDto.Request request) {
+      return Request.builder()
+          .reviewTitle(request.getReviewTitle())
+          .reviewContent(request.getReviewContent())
+          .reviewRate(request.getReviewRate())
+          .build();
     }
   }
 
   @Getter
   @Setter
   @NoArgsConstructor
-  public static class Response{
+  public static class Response {
 
     private Long id;
     private String reviewTitle;
@@ -48,7 +52,7 @@ public class BookReviewServiceDto {
       this.reviewRate = reviewRate;
     }
 
-    public static Response of(BookReview review){
+    public static Response of(BookReview review) {
       return Response.builder()
           .id(review.getId())
           .reviewTitle(review.getReviewTitle())

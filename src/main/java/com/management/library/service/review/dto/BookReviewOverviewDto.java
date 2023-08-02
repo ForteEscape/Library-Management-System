@@ -11,12 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookReviewOverviewDto {
 
+  private Long id;
   private String bookTitle;
   private String reviewTitle;
   private int rate;
 
   @Builder
-  private BookReviewOverviewDto(String bookTitle, String reviewTitle, int rate) {
+  private BookReviewOverviewDto(Long id, String bookTitle, String reviewTitle, int rate) {
+    this.id = id;
     this.bookTitle = bookTitle;
     this.reviewTitle = reviewTitle;
     this.rate = rate;
@@ -24,6 +26,7 @@ public class BookReviewOverviewDto {
 
   public static BookReviewOverviewDto of(BookReview review) {
     return BookReviewOverviewDto.builder()
+        .id(review.getId())
         .bookTitle(review.getBook().getBookInfo().getTitle())
         .reviewTitle(review.getReviewTitle())
         .rate(review.getRate())

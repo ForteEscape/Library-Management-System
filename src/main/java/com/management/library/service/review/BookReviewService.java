@@ -72,6 +72,7 @@ public class BookReviewService {
         rental.getBook().getBookInfo().getTitle());
 
     // todo: 등록한 평점을 도서 평점 평균에 반영해야 한다.
+    bookReviewRedisService.addReviewRate(bookTitle, reviewRequest.getReviewRate());
 
     BookReview review = BookReview.of(reviewRequest, member, rental.getBook());
     BookReview savedReview = bookReviewRepository.save(review);
@@ -118,15 +119,20 @@ public class BookReviewService {
   }
 
   /**
-   * 특정 회원이 등록한 리뷰 중 단건 조회
+   * 리뷰 단건 조회
    *
    * @param reviewId 리뷰 id
    * @return 상세 리뷰 정보
    */
-  public BookReviewDetailDto getMemberReviewData(Long reviewId) {
+  public BookReviewDetailDto getReviewData(Long reviewId) {
     BookReview bookReview = bookReviewRepository.findReviewAndBookById(reviewId)
         .orElseThrow(() -> new NoSuchElementExistsException(REVIEW_NOT_EXISTS));
 
     return BookReviewDetailDto.of(bookReview);
+  }
+
+  // 특정 도서의 리뷰 내역 조회
+  public Page<BookReviewOverviewDto> getBookReviewList(Long bookId, Pageable pageable){
+    return bookReviewRepository.findReviewByBookTitle(bookId, pageable);
   }
 }

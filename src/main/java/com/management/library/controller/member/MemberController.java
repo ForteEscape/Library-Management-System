@@ -2,6 +2,7 @@ package com.management.library.controller.member;
 
 import com.management.library.controller.admin.dto.MemberRentalDto;
 import com.management.library.controller.member.dto.MemberUpdateControllerDto;
+import com.management.library.controller.review.dto.ReviewUpdateControllerDto;
 import com.management.library.dto.BookRentalSearchCond;
 import com.management.library.service.member.MemberService;
 import com.management.library.service.member.dto.MemberUpdateServiceDto;
@@ -22,6 +23,8 @@ import com.management.library.service.request.newbook.dto.NewBookRequestServiceD
 import com.management.library.service.review.BookReviewService;
 import com.management.library.service.review.dto.BookReviewDetailDto;
 import com.management.library.service.review.dto.BookReviewOverviewDto;
+import com.management.library.service.review.dto.BookReviewUpdateDto.Request;
+import com.management.library.service.review.dto.BookReviewUpdateDto.Response;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -97,7 +100,17 @@ public class MemberController {
 
   @GetMapping("/reviews/{reviewId}")
   public BookReviewDetailDto getMemberReviewDetail(@PathVariable("reviewId") Long reviewId) {
-    return bookReviewService.getMemberReviewData(reviewId);
+    return bookReviewService.getReviewData(reviewId);
+  }
+
+  // 회원 리뷰 수정
+  @PutMapping("/reviews/{reviewId}")
+  public ReviewUpdateControllerDto.Response updateMemberReviewDetail(
+      @RequestBody ReviewUpdateControllerDto.Request request,
+      @PathVariable("reviewId") Long reviewId
+  ){
+    Response response = bookReviewService.updateReview(Request.of(request), reviewId);
+    return ReviewUpdateControllerDto.Response.of(response);
   }
 
   // 회원 신간 요청 기록 조회

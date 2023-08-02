@@ -4,6 +4,9 @@ import com.management.library.controller.book.dto.BookSearchCond;
 import com.management.library.service.book.BookService;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceResponseDto;
+import com.management.library.service.review.BookReviewService;
+import com.management.library.service.review.dto.BookReviewDetailDto;
+import com.management.library.service.review.dto.BookReviewOverviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
 
   private final BookService bookService;
+  private final BookReviewService bookReviewService;
 
   @GetMapping
-  public Page<BookServiceCreateDto.Response> getBookList(BookSearchCond cond, Pageable pageable){
+  public Page<BookServiceCreateDto.Response> getBookList(BookSearchCond cond, Pageable pageable) {
     return bookService.searchBook(cond, pageable);
   }
 
@@ -29,8 +33,19 @@ public class BookController {
     return bookService.getBookData(bookId);
   }
 
+  // 해당 도서의 리뷰를 조회
   @GetMapping("/{bookId}/reviews")
-  public void getBookReviews(@PathVariable("bookId") Long bookId, Pageable pageable){
+  public Page<BookReviewOverviewDto> getBookReviews(@PathVariable("bookId") Long bookId,
+      Pageable pageable) {
+    return bookReviewService.getBookReviewList(bookId, pageable);
+  }
 
+  // 도서 리뷰 상세 조회
+  @GetMapping("/{bookId}/reviews/{bookReviewId}")
+  public BookReviewDetailDto getBookReviewDetail(
+      @PathVariable("bookId") Long bookId,
+      @PathVariable("bookReviewId") Long bookReviewId
+  ){
+    return bookReviewService.getReviewData(bookReviewId);
   }
 }

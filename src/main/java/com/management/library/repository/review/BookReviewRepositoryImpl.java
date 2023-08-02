@@ -55,4 +55,25 @@ public class BookReviewRepositoryImpl implements BookReviewRepositoryCustom{
 
     return Optional.ofNullable(result);
   }
+
+  @Override
+  public Page<BookReviewOverviewDto> findReviewByBookTitle(Long bookId, Pageable pageable) {
+    List<BookReview> contents = queryFactory.selectFrom(bookReview)
+        .join(bookReview.book, book).fetchJoin()
+        .where(bookReview.book.id.eq(bookId))
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize())
+        .fetch();
+
+    List<BookReviewOverviewDto> result = contents.stream()
+        .map(BookReviewOverviewDto::of)
+        .collect(Collectors.toList());
+
+    JPAQuery<Long> countQuery = queryFactory.select(bookReview.count())
+        .from(bookReview)
+        .join(bookReview.book, book)
+        .where(bookReview.book.id.eq(bookId));
+
+    return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+  }
 }

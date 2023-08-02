@@ -11,4 +11,6 @@ public interface BookReviewRepositoryCustom {
   Page<BookReviewOverviewDto> findByMemberCode(String memberCode, Pageable pageable);
 
   Optional<BookReview> findReviewAndBookById(Long id);
+
+  Page<BookReviewOverviewDto> findReviewByBookTitle(Long bookId, Pageable pageable);
 }
