@@ -50,4 +50,15 @@ public class ManagementResultService {
   public Page<Response> getResultByAdminEmail(String adminEmail, Pageable pageable){
     return resultRepository.findByAdminEmail(adminEmail, pageable);
   }
+
+  public Response getResultByRequestId(Long requestId){
+    ManagementRequestResult managementRequestResult = resultRepository.findByRequestId(requestId)
+        .orElse(null);
+
+    if (managementRequestResult == null){
+      return null;
+    }
+
+    return Response.of(managementRequestResult);
+  }
 }

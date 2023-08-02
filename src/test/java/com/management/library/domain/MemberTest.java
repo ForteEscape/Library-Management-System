@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.dto.MemberUpdateDto.Request;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ class MemberTest {
         .name("memberA")
         .password("1234")
         .birthdayCode("980506")
-        .address(new Address("서울", "강변", "강변길"))
+        .address(Address.of("서울", "강변", "강변길"))
         .memberCode("123456")
         .build();
 
@@ -54,7 +54,7 @@ class MemberTest {
         .name("memberA")
         .password("1234")
         .birthdayCode("980506")
-        .address(new Address("서울", "강변", "강변길"))
+        .address(Address.of("서울", "강변", "강변길"))
         .memberCode("123456")
         .build();
 
@@ -84,7 +84,7 @@ class MemberTest {
         .name("memberA")
         .password("1234")
         .birthdayCode("980506")
-        .address(new Address("서울", "강변", "강변길"))
+        .address(Address.of("서울", "강변", "강변길"))
         .memberCode("123456")
         .build();
 
@@ -93,7 +93,7 @@ class MemberTest {
     em.flush();
     em.clear();
 
-    Request request = Request.builder()
+    MemberUpdateServiceDto request = MemberUpdateServiceDto.builder()
         .name("memberB")
         .legion("부산")
         .city("사상구")

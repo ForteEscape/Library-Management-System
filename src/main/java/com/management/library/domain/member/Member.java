@@ -1,8 +1,11 @@
 package com.management.library.domain.member;
 
+import static com.management.library.domain.type.Authority.ROLE_MEMBER;
+import static com.management.library.service.member.dto.MemberCreateServiceDto.Request;
+
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
-import com.management.library.dto.MemberUpdateDto;
+import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -35,20 +38,24 @@ public class Member extends BaseEntity implements UserDetails {
   @Column(name = "member_id")
   private Long id;
 
+  @Column(nullable = false)
   private String name;
+  @Column(nullable = false)
   private String password;
+  @Column(nullable = false)
   private String birthdayCode;
 
   @Embedded
+  @Column(nullable = false)
   private Address address;
-  @Column(name = "member_code", unique = true)
+  @Column(name = "member_code", unique = true, nullable = false)
   private String memberCode;
 
   @Enumerated(EnumType.STRING)
   private Authority authority;
 
   @Builder
-  public Member(Long id, String name, String password, String birthdayCode, Address address,
+  private Member(Long id, String name, String password, String birthdayCode, Address address,
       String memberCode, Authority authority) {
     this.id = id;
     this.name = name;
@@ -59,14 +66,26 @@ public class Member extends BaseEntity implements UserDetails {
     this.authority = authority;
   }
 
+  public static Member of(Request request, String memberCode, String password,
+      Address address) {
+    return Member.builder()
+        .name(request.getName())
+        .birthdayCode(request.getBirthdayCode())
+        .address(address)
+        .authority(ROLE_MEMBER)
+        .memberCode(memberCode)
+        .password(password)
+        .build();
+  }
+
   /**
    * 회원 엔티티 데이터 변경
    *
    * @param request 변경 정보 DTO
    */
-  public void changeMemberData(MemberUpdateDto.Request request) {
+  public void changeMemberData(MemberUpdateServiceDto request) {
     this.name = request.getName();
-    this.address = new Address(request.getLegion(), request.getCity(), request.getStreet());
+    this.address = Address.of(request.getLegion(), request.getCity(), request.getStreet());
   }
 
   /**

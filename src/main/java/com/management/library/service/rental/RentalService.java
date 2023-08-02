@@ -3,13 +3,14 @@ package com.management.library.service.rental;
 import static com.management.library.domain.type.BookStatus.RENTAL;
 import static com.management.library.domain.type.ExtendStatus.UNAVAILABLE;
 import static com.management.library.domain.type.RentalStatus.OVERDUE;
+import static com.management.library.domain.type.RentalStatus.PROCEEDING;
 import static com.management.library.domain.type.RentalStatus.RETURNED;
 import static com.management.library.exception.ErrorCode.BOOK_NOT_EXISTS;
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.management.library.exception.ErrorCode.MEMBER_STATUS_NOT_AVAILABLE;
 import static com.management.library.exception.ErrorCode.OVERDUE_RENTAL_EXISTS;
 import static com.management.library.exception.ErrorCode.RENTAL_ALREADY_EXTEND;
-import static com.management.library.exception.ErrorCode.RENTAL_IS_OVERDUE;
+import static com.management.library.exception.ErrorCode.RENTAL_STATUS_NOT_AVAILABLE;
 import static com.management.library.exception.ErrorCode.RENTAL_NOT_EXISTS;
 import static com.management.library.exception.ErrorCode.UNABLE_TO_BOOK_RENTAL;
 import static java.time.LocalDate.now;
@@ -100,8 +101,8 @@ public class RentalService {
     }
 
     // 연체 상태일 시 연장할 수 없다.
-    if (rental.getRentalStatus() == OVERDUE) {
-      throw new RentalException(RENTAL_IS_OVERDUE);
+    if (rental.getRentalStatus() != PROCEEDING) {
+      throw new RentalException(RENTAL_STATUS_NOT_AVAILABLE);
     }
 
     // 이미 연체된 대여가 존재할 시 연장할 수 없다.
@@ -160,5 +161,26 @@ public class RentalService {
     return rentalRepository.findAllWithPage(cond, pageable);
   }
 
+  /**
+   * 회원의 도서 대여 정보 기록 조회
+   *
+   * @param cond       대여 상태 필터 데이터
+   * @param memberCode 회원 번호
+   * @param pageable   페이지 정보
+   * @return 조회된 데이터 페이지
+   */
+  public Page<RentalServiceResponseDto> getMemberRentalData(
+      BookRentalSearchCond cond, String memberCode, Pageable pageable) {
+
+    return rentalRepository.findRentalPageByMemberCode(cond, memberCode, pageable);
+  }
+
+  // 회원 대여 상세 조회
+  public RentalServiceResponseDto getMemberRentalDetail(Long rentalId){
+    Rental rental = rentalRepository.findById(rentalId)
+        .orElseThrow(() -> new NoSuchElementExistsException(RENTAL_NOT_EXISTS));
+
+    return RentalServiceResponseDto.of(rental);
+  }
 
 }

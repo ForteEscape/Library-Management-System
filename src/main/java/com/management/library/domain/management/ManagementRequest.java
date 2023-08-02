@@ -1,6 +1,6 @@
 package com.management.library.domain.management;
 
-import static com.management.library.domain.type.RequestStatus.*;
+import static com.management.library.domain.type.RequestStatus.AWAIT;
 import static com.management.library.service.request.management.dto.ManagementRequestServiceDto.Request;
 
 import com.management.library.domain.BaseEntity;
@@ -37,7 +37,9 @@ public class ManagementRequest extends BaseEntity {
   @JoinColumn(name = "member_id")
   private Member member;
 
+  @Column(nullable = false)
   private String title;
+  @Column(nullable = false)
   private String content;
 
   @Enumerated(EnumType.STRING)

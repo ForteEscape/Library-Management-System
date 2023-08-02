@@ -1,6 +1,7 @@
 package com.management.library.service.request.management;
 
 import static com.management.library.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.management.library.exception.ErrorCode.REQUEST_NOT_EXISTS;
 import static com.management.library.service.request.management.dto.ManagementRequestServiceDto.Request;
 import static com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
 
@@ -50,5 +51,12 @@ public class ManagementService {
   // 관리자가 현재 올라온 모든 운영 개선 요청 사항을 조회할 수 있고, 요청 상태에 따라 필터링 할 수 있다.
   public Page<Response> getAllManagementRequest(RequestSearchCond cond, Pageable pageable){
     return managementRequestRepository.findAll(cond, pageable);
+  }
+
+  public Response getManagementRequestDetail(Long id){
+    ManagementRequest request = managementRequestRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementExistsException(REQUEST_NOT_EXISTS));
+
+    return Response.of(request);
   }
 }

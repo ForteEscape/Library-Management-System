@@ -23,10 +23,15 @@ public enum ErrorCode {
   BOOK_RENTAL_COUNT_EXCEED("도서는 최대 2개까지 대여가 가능합니다."),
   RENTAL_NOT_EXISTS("해당 대여 기록이 존재하지 않습니다,"),
   MEMBER_STATUS_NOT_AVAILABLE("대여를 할 수 없는 상태에서 연장을 할 수 없습니다."),
-  RENTAL_IS_OVERDUE("해당 대여는 연체된 상태입니다."),
+  RENTAL_STATUS_NOT_AVAILABLE("해당 대여는 연체되었거나 이미 반납된 상태입니다."),
   RENTAL_ALREADY_EXTEND("해당 대여는 이미 연장된 상태입니다."),
   ADMIN_NOT_EXISTS("해당 이메일로 가입된 관리자가 없습니다."),
-  OVERDUE_RENTAL_EXISTS("연체된 대여가 존재합니다.");
+  PASSWORD_NOT_MATCH("비밀번호가 틀립니다"),
+  REVIEW_ALREADY_EXISTS("해당 도서에 이미 리뷰를 수행했습니다"),
+  RENTAL_NOT_RETURNED("반납된 도서에만 리뷰를 수행할 수 있습니다"),
+  OVERDUE_RENTAL_EXISTS("연체된 대여가 존재합니다."),
+  REVIEW_NOT_EXISTS("리뷰가 존재하지 않습니다."),
+  RETURNED_RENTAL_NOT_EXISTS("조건에 맞는 반납된 대여가 존재하지 않습니다.");
 
   private final String description;
 }

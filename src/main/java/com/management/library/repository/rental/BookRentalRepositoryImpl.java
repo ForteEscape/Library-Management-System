@@ -3,6 +3,7 @@ package com.management.library.repository.rental;
 import static com.management.library.domain.book.QBook.*;
 import static com.management.library.domain.member.QMember.*;
 import static com.management.library.domain.rental.QRental.*;
+import static com.management.library.domain.type.RentalStatus.*;
 
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.RentalStatus;
@@ -102,10 +103,35 @@ public class BookRentalRepositoryImpl implements BookRentalRepositoryCustom {
         .join(rental.member, member).fetchJoin()
         .join(rental.book, book).fetchJoin()
         .where(
-            rentalStatusEq(RentalStatus.PROCEEDING).or(rentalStatusEq(RentalStatus.OVERDUE)),
+            rentalStatusEq(PROCEEDING).or(rentalStatusEq(OVERDUE)),
             member.memberCode.eq(memberCode),
             book.bookInfo.title.eq(bookTitle),
             book.bookInfo.author.eq(author)
+        )
+        .fetchOne();
+
+    return Optional.ofNullable(result);
+  }
+
+  @Override
+  public Optional<Rental> findByIdWithRental(Long rentalId) {
+    Rental result = queryFactory.selectFrom(rental)
+        .join(rental.book, book).fetchJoin()
+        .where(rental.id.eq(rentalId))
+        .fetchOne();
+
+    return Optional.ofNullable(result);
+  }
+
+  @Override
+  public Optional<Rental> findByMemberCodeAndBookTitle(String memberCode, String bookTitle) {
+    Rental result = queryFactory.selectFrom(rental)
+        .join(rental.book, book).fetchJoin()
+        .join(rental.member, member)
+        .where(
+            member.memberCode.eq(memberCode),
+            book.bookInfo.title.eq(bookTitle),
+            rental.rentalStatus.eq(RETURNED)
         )
         .fetchOne();
 

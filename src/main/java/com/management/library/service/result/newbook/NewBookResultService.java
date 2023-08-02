@@ -51,4 +51,15 @@ public class NewBookResultService {
   public Page<Response> getResultByAdminEmail(String adminEmail, Pageable pageable){
     return newBookRequestResultRepository.findByAdminId(adminEmail, pageable);
   }
+
+  public Response getResultByRequestId(Long requestId){
+    NewBookRequestResult newBookRequestResult = newBookRequestResultRepository.findByRequestId(
+            requestId).orElse(null);
+
+    if (newBookRequestResult == null){
+      return null;
+    }
+
+    return Response.of(newBookRequestResult);
+  }
 }

@@ -28,6 +28,7 @@ public class AdminCreateControllerDto {
   @Setter
   @NoArgsConstructor
   public static class Response {
+
     private Long id;
     private String name;
     private String email;
@@ -39,7 +40,7 @@ public class AdminCreateControllerDto {
       this.email = email;
     }
 
-    public static Response of(AdminCreateServiceDto.Response response){
+    public static Response of(AdminCreateServiceDto.Response response) {
       return Response.builder()
           .id(response.getId())
           .name(response.getName())

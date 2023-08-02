@@ -71,6 +71,16 @@ public class RentalRedisService {
     }
   }
 
+  public String getMemberRemainRentalCount(String memberCode){
+    Object data = redisTemplate.opsForHash().get(RENTAL_REDIS_KEY, memberCode);
+
+    if (data == null){
+      return INIT_AVAILABLE_COUNT;
+    }
+
+    return String.valueOf(data);
+  }
+
   public boolean checkMemberRentalPenalty(String memberCode) {
     String result = redisTemplate.opsForValue().get(PENALTY_MEMBER_KEY + memberCode);
 

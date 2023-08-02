@@ -1,5 +1,6 @@
 package com.management.library.service.result.newbook.dto;
 
+import com.management.library.controller.request.newbook.dto.NewBookResultControllerDto;
 import com.management.library.domain.newbook.NewBookRequestResult;
 import com.management.library.domain.type.RequestStatus;
 import lombok.Builder;
@@ -12,7 +13,8 @@ public class NewBookResultCreateDto {
   @Getter
   @Setter
   @NoArgsConstructor
-  public static class Request{
+  public static class Request {
+
     private String resultTitle;
     private String resultContent;
     private RequestStatus resultStatus;
@@ -23,12 +25,21 @@ public class NewBookResultCreateDto {
       this.resultContent = resultContent;
       this.resultStatus = resultStatus;
     }
+
+    public static Request of(NewBookResultControllerDto.Request request) {
+      return Request.builder()
+          .resultTitle(request.getResultTitle())
+          .resultContent(request.getResultContent())
+          .resultStatus(request.getResultStatus())
+          .build();
+    }
   }
 
   @Getter
   @Setter
   @NoArgsConstructor
-  public static class Response{
+  public static class Response {
+
     private Long id;
     private String newBookRequestTitle;
     private String adminName;
@@ -47,7 +58,7 @@ public class NewBookResultCreateDto {
       this.resultStatus = resultStatus;
     }
 
-    public static Response of(NewBookRequestResult result){
+    public static Response of(NewBookRequestResult result) {
       return Response.builder()
           .id(result.getId())
           .newBookRequestTitle(result.getNewBookRequest().getRequestBookTitle())

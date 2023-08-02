@@ -1,5 +1,6 @@
 package com.management.library.service.member.dto;
 
+import com.management.library.controller.member.dto.MemberControllerCreateDto;
 import com.management.library.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class MemberCreateServiceDto {
     private String street;
 
     @Builder
-    public Request(String name, String birthdayCode, String legion, String city, String street) {
+    private Request(String name, String birthdayCode, String legion, String city, String street) {
       this.name = name;
       this.birthdayCode = birthdayCode;
       this.legion = legion;
@@ -27,8 +28,14 @@ public class MemberCreateServiceDto {
       this.street = street;
     }
 
-    public static void of(){
-      // controller DTO -> service DTO
+    public static Request of(MemberControllerCreateDto.Request request){
+      return Request.builder()
+          .name(request.getName())
+          .birthdayCode(request.getBirthdayCode())
+          .legion(request.getLegion())
+          .city(request.getCity())
+          .street(request.getStreet())
+          .build();
     }
   }
 

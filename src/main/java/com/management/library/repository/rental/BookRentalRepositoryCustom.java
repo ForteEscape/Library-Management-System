@@ -18,4 +18,8 @@ public interface BookRentalRepositoryCustom {
   Page<RentalServiceResponseDto> findAllWithPage(BookRentalSearchCond cond, Pageable pageable);
 
   Optional<Rental> findByBookInfoAndStatus(String memberCode, String bookTitle, String author);
+
+  Optional<Rental> findByIdWithRental(Long rentalId);
+
+  Optional<Rental> findByMemberCodeAndBookTitle(String memberCode, String bookTitle);
 }
