@@ -66,6 +66,8 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
   private static final String RENTAL_REDIS_KEY = "rental-count";
   private static final String BOOK_RENTED_COUNT = "book-rented-count";
   private static final String REVIEW_CACHE_PREFIX = "review-member:";
+  private static final String BOOK_REVIEW_RATE = "book-review-rate";
+  private static final String BOOK_REVIEW_COUNT = "book-review-count";
 
   @AfterEach
   void tearDown() {
@@ -75,8 +77,10 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
     bookRepository.deleteAllInBatch();
 
     redisTemplate.delete("memberCode");
+    redisTemplate.delete(BOOK_REVIEW_RATE);
     redisTemplate.delete(RENTAL_REDIS_KEY);
     redisTemplate.delete(BOOK_RENTED_COUNT);
+    redisTemplate.delete(BOOK_REVIEW_COUNT);
 
     for (int i = 1; i < 100; i++) {
       String keyCode = String.valueOf(100000000 + i);
@@ -315,13 +319,87 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
         reviewRequest, member.getMemberCode());
 
     // when
-    BookReviewDetailDto response = bookReviewService.getMemberReviewData(review.getId());
+    BookReviewDetailDto response = bookReviewService.getReviewData(review.getId());
 
     // then
     assertThat(response)
         .extracting("bookTitle", "reviewTitle", "reviewContent", "rate")
         .contains(
             "book1", "review", "reviewContent", 5
+        );
+  }
+
+  @DisplayName("도서의 이름으로 리뷰를 조회할 수 있다.")
+  @Test
+  public void getBookReviewList() throws Exception {
+    // given
+    Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
+    Request memberRequest2 = createMemberRequest("ju", "980101", "legion", "city", "street");
+    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
+    MemberCreateServiceDto.Response member2 = memberService.createMember(memberRequest2);
+
+    BookServiceCreateDto.Request bookRequest1 = createBookRequest("book1", "park", "publisher",
+        2015, "location", 130);
+    BookServiceCreateDto.Request bookRequest2 = createBookRequest("book2", "lee", "publisher", 2015,
+        "location", 130);
+    BookServiceCreateDto.Request bookRequest3 = createBookRequest("book3", "han", "publisher", 2015,
+        "location", 130);
+    Response newBook1 = bookService.createNewBook(bookRequest1);
+    Response newBook2 = bookService.createNewBook(bookRequest2);
+    Response newBook3 = bookService.createNewBook(bookRequest3);
+
+    LocalDate rentedDate = LocalDate.now().minusDays(2);
+    LocalDate rentedDate2 = LocalDate.now().minusDays(1);
+
+    RentalBookInfoDto rentalData1 = createRentalData(newBook1);
+    rentalService.createBookRental(member.getMemberCode(), rentalData1, rentedDate);
+
+    RentalBookInfoDto rentalData2 = createRentalData(newBook2);
+    rentalService.createBookRental(member.getMemberCode(), rentalData2, rentedDate);
+
+    rentalService.returnBook(member.getMemberCode(), bookRequest1.getTitle(),
+        bookRequest1.getAuthor());
+
+    rentalService.returnBook(member.getMemberCode(), bookRequest2.getTitle(),
+        bookRequest2.getAuthor());
+
+    RentalBookInfoDto rentalData3 = createRentalData(newBook3);
+    rentalService.createBookRental(member.getMemberCode(), rentalData3, rentedDate2);
+
+    rentalService.returnBook(member.getMemberCode(), bookRequest3.getTitle(),
+        bookRequest3.getAuthor());
+
+    // 회원 2의 대여
+    rentalService.createBookRental(member2.getMemberCode(), rentalData1, rentedDate);
+    rentalService.returnBook(member2.getMemberCode(), rentalData1.getBookTitle(),
+        rentalData1.getAuthor());
+
+    BookReviewServiceDto.Request reviewRequest1 = createReviewRequest("review1", "reviewContent1",
+        5);
+    BookReviewServiceDto.Request reviewRequest2 = createReviewRequest("review2", "reviewContent2",
+        4);
+    BookReviewServiceDto.Request reviewRequest3 = createReviewRequest("review3", "reviewContent3",
+        5);
+    BookReviewServiceDto.Request reviewRequest4 = createReviewRequest("review4", "reviewContent4",
+        5);
+
+    bookReviewService.createReview("book1", reviewRequest1, member.getMemberCode());
+    bookReviewService.createReview("book2", reviewRequest2, member.getMemberCode());
+    bookReviewService.createReview("book3", reviewRequest3, member.getMemberCode());
+    bookReviewService.createReview("book1", reviewRequest4, member2.getMemberCode());
+
+    PageRequest pageRequest = PageRequest.of(0, 5);
+
+    // when
+    Page<BookReviewOverviewDto> result = bookReviewService.getBookReviewList(newBook1.getId(), pageRequest);
+    List<BookReviewOverviewDto> content = result.getContent();
+
+    // then
+    assertThat(content).hasSize(2)
+        .extracting("bookTitle", "reviewTitle", "rate")
+        .containsExactlyInAnyOrder(
+            tuple("book1", "review1", 5),
+            tuple("book1", "review4", 5)
         );
   }
 
