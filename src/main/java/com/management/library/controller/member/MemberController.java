@@ -98,6 +98,7 @@ public class MemberController {
     return bookReviewService.getMemberReviewDataList(principal.getName(), pageable);
   }
 
+  // 회원 리뷰 상세 조회
   @GetMapping("/reviews/{reviewId}")
   public BookReviewDetailDto getMemberReviewDetail(@PathVariable("reviewId") Long reviewId) {
     return bookReviewService.getReviewData(reviewId);
@@ -120,6 +121,7 @@ public class MemberController {
     return newBookService.getMemberNewBookRequest(principal.getName(), pageable);
   }
 
+  // 회원 신간 요청 상세 조회(결과까지 같이 조회)
   @GetMapping("/new-book-requests/{requestId}")
   public NewBookTotalResponseDto getMemberNewBookRequestDetail(
       @PathVariable("requestId") Long requestId) {
@@ -133,6 +135,7 @@ public class MemberController {
     return managementService.getMemberManagementRequest(principal.getName(), pageable);
   }
 
+  // 운영 개선 요청 상세 조회(결과까지 같이 조회)
   @GetMapping("/management-requests/{requestId}")
   public ManagementTotalResponseDto getMemberManagementRequestDetail(
       @PathVariable("requestId") Long requestId) {

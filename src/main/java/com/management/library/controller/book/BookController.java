@@ -1,12 +1,17 @@
 package com.management.library.controller.book;
 
 import com.management.library.controller.book.dto.BookSearchCond;
+import com.management.library.dto.ArrayResponseWrapper;
 import com.management.library.service.book.BookService;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceResponseDto;
+import com.management.library.service.book.recommend.BookRecommendService;
+import com.management.library.service.book.recommend.dto.BookRecommendResponseDto.RentedCount;
+import com.management.library.service.book.recommend.dto.BookRecommendResponseDto.ReviewRate;
 import com.management.library.service.review.BookReviewService;
 import com.management.library.service.review.dto.BookReviewDetailDto;
 import com.management.library.service.review.dto.BookReviewOverviewDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,12 +27,15 @@ public class BookController {
 
   private final BookService bookService;
   private final BookReviewService bookReviewService;
+  private final BookRecommendService bookRecommendService;
 
+  // 도서 조회
   @GetMapping
   public Page<BookServiceCreateDto.Response> getBookList(BookSearchCond cond, Pageable pageable) {
     return bookService.searchBook(cond, pageable);
   }
 
+  // 도서 상세 조회
   @GetMapping("/{bookId}")
   public BookServiceResponseDto getBook(@PathVariable("bookId") Long bookId) {
     return bookService.getBookData(bookId);
@@ -47,5 +55,29 @@ public class BookController {
       @PathVariable("bookReviewId") Long bookReviewId
   ){
     return bookReviewService.getReviewData(bookReviewId);
+  }
+
+  // 추천 도서 조회 - 대여 횟수 기준
+  @GetMapping("/recommend-books/rented-count")
+  public ArrayResponseWrapper<List<RentedCount>> getRecommendBookWithRentedCount(){
+    List<RentedCount> result = bookRecommendService.getRecommendBookListByRentalCount();
+
+    ArrayResponseWrapper<List<RentedCount>> response = new ArrayResponseWrapper<>();
+    response.setCount((long) result.size());
+    response.setData(result);
+
+    return response;
+  }
+
+  // 추천 도서 조회 - 도서 평점 기준
+  @GetMapping("/recommend-books/book-review-rate")
+  public ArrayResponseWrapper<List<ReviewRate>> getRecommendBookWithReviewRate(){
+    List<ReviewRate> result = bookRecommendService.getRecommendBookListByReviewRate();
+
+    ArrayResponseWrapper<List<ReviewRate>> response = new ArrayResponseWrapper<>();
+    response.setCount((long) result.size());
+    response.setData(result);
+
+    return response;
   }
 }

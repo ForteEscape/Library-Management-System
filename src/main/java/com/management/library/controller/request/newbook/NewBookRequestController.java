@@ -26,17 +26,20 @@ public class NewBookRequestController {
   private final NewBookService newBookService;
   private final NewBookTotalResponseService newBookTotalResponseService;
 
+  // 신간 요청 목록 조회
   @GetMapping
   public Page<Response> getNewBookRequestList(RequestSearchCond cond, Pageable pageable) {
     return newBookService.getAllNewBookRequest(cond, pageable);
   }
 
+  // 신간 요청 상세 조회
   @GetMapping("/{requestId}")
   public NewBookTotalResponseDto getNewBookRequestDetail(
       @PathVariable("requestId") Long requestId) {
     return newBookTotalResponseService.getNewBookTotalResponse(requestId);
   }
 
+  // 신간 요청 생성
   @PostMapping
   public NewBookRequestControllerDto.Response createNewBookRequest(
       @RequestBody NewBookRequestControllerDto.Request request,

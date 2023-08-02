@@ -27,18 +27,21 @@ public class ManagementRequestController {
   private final ManagementService managementService;
   private final ManagementTotalResponseService managementTotalResponseService;
 
+  // 운영 개선 사항 조회
   @GetMapping
   public Page<ManagementRequestServiceDto.Response> getManagementRequestList(RequestSearchCond cond,
       Pageable pageable) {
     return managementService.getAllManagementRequest(cond, pageable);
   }
 
+  // 운영 개선 사항 상세 조회
   @GetMapping("/{requestId}")
   public ManagementTotalResponseDto getManagementRequestDetail(
       @PathVariable("requestId") Long requestId) {
     return managementTotalResponseService.getManagementTotalData(requestId);
   }
 
+  // 운영 개선 사항 생성
   @PostMapping
   public Response createManagementRequest(@RequestBody Request request, Principal principal) {
     ManagementRequestServiceDto.Response response = managementService.createManagementRequest(
