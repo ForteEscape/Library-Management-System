@@ -7,7 +7,7 @@ import static com.management.library.domain.type.RentalStatus.*;
 
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.RentalStatus;
-import com.management.library.dto.BookRentalSearchCond;
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;

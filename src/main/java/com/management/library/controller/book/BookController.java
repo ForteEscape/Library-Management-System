@@ -1,7 +1,7 @@
 package com.management.library.controller.book;
 
 import com.management.library.controller.book.dto.BookSearchCond;
-import com.management.library.dto.ArrayResponseWrapper;
+import com.management.library.controller.dto.ArrayResponseWrapper;
 import com.management.library.service.book.BookService;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceResponseDto;

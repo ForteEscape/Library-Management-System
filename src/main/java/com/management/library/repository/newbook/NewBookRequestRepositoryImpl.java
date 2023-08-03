@@ -6,7 +6,7 @@ import static com.management.library.service.request.newbook.dto.NewBookRequestS
 
 import com.management.library.domain.newbook.NewBookRequest;
 import com.management.library.domain.type.RequestStatus;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;

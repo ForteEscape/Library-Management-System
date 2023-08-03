@@ -1,7 +1,7 @@
 package com.management.library.controller.admin;
 
 import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.service.query.ManagementTotalResponseService;
 import com.management.library.service.query.dto.ManagementTotalResponseDto;
 import com.management.library.service.request.management.ManagementService;

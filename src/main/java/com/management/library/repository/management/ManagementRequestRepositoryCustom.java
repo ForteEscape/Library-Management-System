@@ -2,7 +2,7 @@ package com.management.library.repository.management;
 
 import static com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
 
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

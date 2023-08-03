@@ -6,7 +6,7 @@ import static com.management.library.controller.admin.dto.AdminControllerCreateD
 import com.management.library.controller.admin.dto.AdminAllReplyDto;
 import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
 import com.management.library.controller.request.newbook.dto.NewBookResultControllerDto;
-import com.management.library.dto.PageInfo;
+import com.management.library.controller.dto.PageInfo;
 import com.management.library.service.admin.AdminService;
 import com.management.library.service.admin.dto.AdminCreateServiceDto;
 import com.management.library.service.result.management.ManagementResultService;

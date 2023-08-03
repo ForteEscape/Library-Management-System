@@ -11,7 +11,7 @@ import com.management.library.domain.member.Member;
 import com.management.library.domain.newbook.NewBookRequest;
 import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.RequestStatus;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.repository.member.MemberRepository;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Response;
 import java.util.List;

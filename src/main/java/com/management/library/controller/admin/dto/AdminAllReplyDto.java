@@ -1,6 +1,6 @@
 package com.management.library.controller.admin.dto;
 
-import com.management.library.dto.PageInfo;
+import com.management.library.controller.dto.PageInfo;
 import lombok.Getter;
 import lombok.Setter;
 

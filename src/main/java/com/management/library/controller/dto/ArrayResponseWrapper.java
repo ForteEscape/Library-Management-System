@@ -1,4 +1,4 @@
-package com.management.library.dto;
+package com.management.library.controller.dto;
 
 import lombok.Getter;
 import lombok.Setter;

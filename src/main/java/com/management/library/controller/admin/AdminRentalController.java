@@ -3,7 +3,7 @@ package com.management.library.controller.admin;
 import com.management.library.controller.admin.dto.RentalRequestDto;
 import com.management.library.controller.admin.dto.RentalResponseDto;
 import com.management.library.controller.admin.dto.ReturnBookDataDto;
-import com.management.library.dto.BookRentalSearchCond;
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.service.rental.RentalService;
 import com.management.library.service.rental.dto.RentalBookInfoDto;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;

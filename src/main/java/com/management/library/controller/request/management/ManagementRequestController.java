@@ -3,7 +3,7 @@ package com.management.library.controller.request.management;
 import static com.management.library.controller.request.management.dto.ManagementRequestControllerDto.Request;
 import static com.management.library.controller.request.management.dto.ManagementRequestControllerDto.Response;
 
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.service.query.ManagementTotalResponseService;
 import com.management.library.service.query.dto.ManagementTotalResponseDto;
 import com.management.library.service.request.management.ManagementService;

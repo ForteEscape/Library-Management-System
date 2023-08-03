@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.AbstractContainerBaseTest;
 import com.management.library.domain.newbook.NewBookRequest;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.exception.RequestLimitExceededException;
 import com.management.library.repository.newbook.NewBookRequestRepository;

@@ -1,7 +1,7 @@
 package com.management.library.controller.request.newbook;
 
 import com.management.library.controller.request.newbook.dto.NewBookRequestControllerDto;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.service.query.NewBookTotalResponseService;
 import com.management.library.service.query.dto.NewBookTotalResponseDto;
 import com.management.library.service.request.newbook.NewBookService;

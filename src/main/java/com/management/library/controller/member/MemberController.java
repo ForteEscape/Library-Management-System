@@ -3,7 +3,7 @@ package com.management.library.controller.member;
 import com.management.library.controller.admin.dto.MemberRentalResponseDto;
 import com.management.library.controller.member.dto.MemberUpdateControllerDto;
 import com.management.library.controller.review.dto.ReviewUpdateControllerDto;
-import com.management.library.dto.BookRentalSearchCond;
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.service.member.MemberService;
 import com.management.library.service.member.dto.MemberUpdateServiceDto;
 import com.management.library.service.query.ManagementTotalResponseService;

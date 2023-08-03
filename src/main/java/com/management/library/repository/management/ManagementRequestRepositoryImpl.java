@@ -5,7 +5,7 @@ import static com.management.library.domain.member.QMember.member;
 
 import com.management.library.domain.management.ManagementRequest;
 import com.management.library.domain.type.RequestStatus;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
