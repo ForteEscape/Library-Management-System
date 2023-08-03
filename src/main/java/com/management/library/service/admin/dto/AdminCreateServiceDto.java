@@ -1,6 +1,6 @@
 package com.management.library.service.admin.dto;
 
-import com.management.library.controller.admin.dto.AdminCreateControllerDto;
+import com.management.library.controller.admin.dto.AdminControllerCreateDto;
 import com.management.library.domain.admin.Administrator;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class AdminCreateServiceDto {
       this.password = password;
     }
 
-    public static Request of(AdminCreateControllerDto.Request request){
+    public static Request of(AdminControllerCreateDto.Request request){
       return Request.builder()
           .name(request.getName())
           .email(request.getEmail())

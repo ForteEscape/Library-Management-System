@@ -1,6 +1,6 @@
 package com.management.library.controller.member;
 
-import com.management.library.controller.admin.dto.MemberRentalDto;
+import com.management.library.controller.admin.dto.MemberRentalResponseDto;
 import com.management.library.controller.member.dto.MemberUpdateControllerDto;
 import com.management.library.controller.review.dto.ReviewUpdateControllerDto;
 import com.management.library.dto.BookRentalSearchCond;
@@ -81,8 +81,8 @@ public class MemberController {
 
   // 회원 대여 기록 상세 조회
   @GetMapping("/rentals/{rentalId}")
-  public MemberRentalDto getMemberRentalDetail(@PathVariable("rentalId") Long rentalId) {
-    return MemberRentalDto.of(rentalService.getMemberRentalDetail(rentalId));
+  public MemberRentalResponseDto getMemberRentalDetail(@PathVariable("rentalId") Long rentalId) {
+    return MemberRentalResponseDto.of(rentalService.getMemberRentalDetail(rentalId));
   }
 
   //회원 대여 기간 연장
