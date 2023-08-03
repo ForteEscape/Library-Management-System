@@ -2,9 +2,9 @@ package com.management.library.controller.admin;
 
 import com.management.library.controller.dto.PageInfo;
 import com.management.library.controller.dto.RequestAllDto;
-import com.management.library.controller.request.management.dto.ManagementRequestControllerDto;
-import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
 import com.management.library.controller.dto.RequestSearchCond;
+import com.management.library.controller.request.management.dto.ManagementRequestOverviewDto;
+import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
 import com.management.library.service.query.ManagementTotalResponseService;
 import com.management.library.service.query.dto.ManagementTotalResponseDto;
 import com.management.library.service.request.management.ManagementService;
@@ -44,9 +44,8 @@ public class AdminManagementController {
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
         (int) resultPage.getTotalElements(), resultPage.getTotalPages());
 
-    List<Response> contents = resultPage.getContent();
-    List<ManagementRequestControllerDto.Response> result = contents.stream()
-        .map(ManagementRequestControllerDto.Response::of)
+    List<ManagementRequestOverviewDto> result = resultPage.getContent().stream()
+        .map(ManagementRequestOverviewDto::of)
         .collect(Collectors.toList());
 
     return new ResponseEntity<>(

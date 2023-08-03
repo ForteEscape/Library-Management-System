@@ -3,7 +3,7 @@ package com.management.library.controller.admin;
 import com.management.library.controller.dto.PageInfo;
 import com.management.library.controller.dto.RequestAllDto;
 import com.management.library.controller.dto.RequestSearchCond;
-import com.management.library.controller.request.newbook.dto.NewBookRequestControllerDto;
+import com.management.library.controller.request.newbook.dto.NewBookRequestOverviewDto;
 import com.management.library.controller.request.newbook.dto.NewBookResultControllerDto;
 import com.management.library.service.query.NewBookTotalResponseService;
 import com.management.library.service.query.dto.NewBookTotalResponseDto;
@@ -44,8 +44,8 @@ public class AdminNewBookRequestController {
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageNumber(),
         (int) resultPage.getTotalElements(), resultPage.getTotalPages());
 
-    List<NewBookRequestControllerDto.Response> result = resultPage.getContent().stream()
-        .map(NewBookRequestControllerDto.Response::of)
+    List<NewBookRequestOverviewDto> result = resultPage.getContent().stream()
+        .map(NewBookRequestOverviewDto::of)
         .collect(Collectors.toList());
 
     return new ResponseEntity<>(
