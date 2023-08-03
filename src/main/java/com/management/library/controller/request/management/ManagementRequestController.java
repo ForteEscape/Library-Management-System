@@ -14,6 +14,7 @@ import com.management.library.service.request.management.dto.ManagementRequestSe
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,7 +62,8 @@ public class ManagementRequestController {
 
   // 운영 개선 사항 생성
   @PostMapping
-  public Response createManagementRequest(@RequestBody Request request, Principal principal) {
+  public Response createManagementRequest(@RequestBody @Valid Request request,
+      Principal principal) {
     ManagementRequestServiceDto.Response response = managementService.createManagementRequest(
         ManagementRequestServiceDto.Request.of(request), principal.getName());
 

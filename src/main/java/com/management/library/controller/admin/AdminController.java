@@ -16,6 +16,7 @@ import com.management.library.service.result.newbook.dto.NewBookResultCreateDto;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class AdminController {
   private final NewBookResultService newBookResultService;
 
   @PostMapping
-  public Response createAdmin(@RequestBody Request request) {
+  public Response createAdmin(@RequestBody @Valid Request request) {
     AdminServiceCreateDto.Response admin = adminService.createAdmin(
         AdminServiceCreateDto.Request.of(request));
 

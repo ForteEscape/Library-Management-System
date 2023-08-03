@@ -7,6 +7,7 @@ import com.management.library.service.query.MemberTotalInfoService;
 import com.management.library.service.query.dto.MemberTotalInfoDto;
 import com.management.library.service.query.dto.PasswordChangeDto;
 import java.security.Principal;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class MemberController {
 
   // 회원 정보 변경
   @PutMapping
-  public String updateMemberData(@RequestBody MemberControllerUpdateDto request,
+  public String updateMemberData(@RequestBody @Valid MemberControllerUpdateDto request,
       Principal principal) {
 
     return memberService.updateMemberData(MemberServiceUpdateDto.of(request), principal.getName());
@@ -39,7 +40,7 @@ public class MemberController {
 
   // 회원 비밀번호 변경
   @PostMapping("/change-password")
-  public String changeMemberPassword(@RequestBody PasswordChangeDto request, Principal principal) {
+  public String changeMemberPassword(@RequestBody @Valid PasswordChangeDto request, Principal principal) {
     return memberService.changePassword(principal.getName(), request);
   }
 }

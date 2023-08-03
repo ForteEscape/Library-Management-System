@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,7 @@ public class AdminRentalController {
   // 도서 대여 생성
   @PostMapping
   public RentalResponseDto createRental(
-      @RequestBody RentalRequestDto request,
+      @RequestBody @Valid RentalRequestDto request,
       Principal principal
   ) {
     RentalServiceResponseDto bookRental = rentalService.createBookRental(principal.getName(),

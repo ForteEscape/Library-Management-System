@@ -2,6 +2,7 @@ package com.management.library.controller.request.management.dto;
 
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto;
+import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,9 @@ public class ManagementRequestControllerDto {
   @NoArgsConstructor
   public static class Request {
 
+    @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String title;
+    @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String content;
 
     public Request(String title, String content) {

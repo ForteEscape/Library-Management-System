@@ -1,6 +1,8 @@
 package com.management.library.controller.member.dto;
 
 import com.management.library.service.member.dto.MemberServiceCreateDto;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +14,16 @@ public class MemberControllerCreateDto {
   @Setter
   @NoArgsConstructor
   public static class Request{
+    @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String name;
+    @Size(max = 6, min = 6, message = "생년월일은 6자리로 제한됩니다.")
+    @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String birthdayCode;
+    @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String legion;
+    @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String city;
+    @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String street;
 
     @Builder

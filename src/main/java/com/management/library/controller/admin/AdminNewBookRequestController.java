@@ -15,6 +15,7 @@ import com.management.library.service.result.newbook.dto.NewBookResultCreateDto.
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,7 +67,7 @@ public class AdminNewBookRequestController {
   @PostMapping("/{requestId}/result")
   public NewBookResultControllerDto.Response createNewBookRequestResult(
       @PathVariable("requestId") Long requestId,
-      @RequestBody NewBookResultControllerDto.Request request,
+      @RequestBody @Valid NewBookResultControllerDto.Request request,
       Principal principal
   ) {
 

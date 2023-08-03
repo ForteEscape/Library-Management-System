@@ -12,6 +12,7 @@ import com.management.library.service.query.MemberTotalInfoService;
 import com.management.library.service.query.dto.MemberTotalInfoDto;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,7 @@ public class AdminMemberController {
   // 회원 생성
   @PostMapping
   public MemberControllerCreateDto.Response createMember(
-      @RequestBody MemberControllerCreateDto.Request request
+      @RequestBody @Valid MemberControllerCreateDto.Request request
   ) {
     MemberServiceCreateDto.Response response = memberService.createMember(
         MemberServiceCreateDto.Request.of(request));

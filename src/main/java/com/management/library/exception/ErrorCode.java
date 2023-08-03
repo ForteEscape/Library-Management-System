@@ -31,7 +31,8 @@ public enum ErrorCode {
   RENTAL_NOT_RETURNED("반납된 도서에만 리뷰를 수행할 수 있습니다"),
   OVERDUE_RENTAL_EXISTS("연체된 대여가 존재합니다."),
   REVIEW_NOT_EXISTS("리뷰가 존재하지 않습니다."),
-  RETURNED_RENTAL_NOT_EXISTS("조건에 맞는 반납된 대여가 존재하지 않습니다.");
+  RETURNED_RENTAL_NOT_EXISTS("조건에 맞는 반납된 대여가 존재하지 않습니다."),
+  VALIDATION_FAILED("입력값 검증에 실패하였습니다.");
 
   private final String description;
 }

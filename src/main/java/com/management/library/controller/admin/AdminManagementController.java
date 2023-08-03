@@ -14,6 +14,7 @@ import com.management.library.service.result.management.dto.ManagementResultCrea
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,7 +67,7 @@ public class AdminManagementController {
   @PostMapping("/{requestId}/result")
   public ManagementResultControllerDto.Response createManagementRequestResult(
       @PathVariable("requestId") Long requestId,
-      @RequestBody ManagementResultControllerDto.Request request,
+      @RequestBody @Valid ManagementResultControllerDto.Request request,
       Principal principal
   ) {
 
