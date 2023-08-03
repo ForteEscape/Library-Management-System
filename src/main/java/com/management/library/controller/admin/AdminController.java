@@ -8,7 +8,7 @@ import com.management.library.controller.request.management.dto.ManagementResult
 import com.management.library.controller.request.newbook.dto.NewBookResultControllerDto;
 import com.management.library.controller.dto.PageInfo;
 import com.management.library.service.admin.AdminService;
-import com.management.library.service.admin.dto.AdminCreateServiceDto;
+import com.management.library.service.admin.dto.AdminServiceCreateDto;
 import com.management.library.service.result.management.ManagementResultService;
 import com.management.library.service.result.management.dto.ManagementResultCreateDto;
 import com.management.library.service.result.newbook.NewBookResultService;
@@ -42,8 +42,8 @@ public class AdminController {
 
   @PostMapping
   public Response createAdmin(@RequestBody Request request) {
-    AdminCreateServiceDto.Response admin = adminService.createAdmin(
-        AdminCreateServiceDto.Request.of(request));
+    AdminServiceCreateDto.Response admin = adminService.createAdmin(
+        AdminServiceCreateDto.Request.of(request));
 
     return Response.of(admin);
   }

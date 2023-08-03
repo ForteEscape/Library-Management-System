@@ -18,7 +18,7 @@ import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.exception.RequestLimitExceededException;
 import com.management.library.repository.newbook.NewBookRequestRepository;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
 import com.management.library.service.request.RedisRequestService;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +61,10 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createNewBookRequest() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
     Request newBookRequest = createNewBookRequest("신", "신을 요청합니다");
 
     // when
@@ -83,10 +83,10 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createNewBookRequestExceedLimit() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
     for (int i = 0; i < 5; i++){
       String bookName = "book" + (i + 1);
@@ -110,13 +110,13 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberNewBookRequest() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response member1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response member2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response member1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response member2 = memberService.createMember(memberRequest2);
 
     // member1의 신간 도서 요청 등록
     for (int i = 0; i < 3; i++){
@@ -153,13 +153,13 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllNewBookRequest() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response member1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response member2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response member1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response member2 = memberService.createMember(memberRequest2);
 
     // member1의 신간 도서 요청 등록
     for (int i = 0; i < 3; i++){
@@ -198,13 +198,13 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllNewBookRequestWithAccepted() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response member1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response member2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response member1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response member2 = memberService.createMember(memberRequest2);
 
     List<Response> response = new ArrayList<>();
 
@@ -257,13 +257,13 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllNewBookRequestWithRefused() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response member1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response member2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response member1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response member2 = memberService.createMember(memberRequest2);
 
     List<Response> response = new ArrayList<>();
 
@@ -316,13 +316,13 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllNewBookRequestWithAwait() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980505", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response member1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response member2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response member1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response member2 = memberService.createMember(memberRequest2);
 
     // member1의 신간 도서 요청 등록
     for (int i = 0; i < 3; i++){
@@ -365,9 +365,9 @@ class NewBookServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private static MemberCreateServiceDto.Request createMemberRequest(String name,
+  private static MemberServiceCreateDto.Request createMemberRequest(String name,
       String birthdayCode, String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)

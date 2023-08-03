@@ -1,6 +1,6 @@
 package com.management.library.controller.member.dto;
 
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +16,7 @@ public class MemberOverviewDto {
     this.name = name;
   }
 
-  public static MemberOverviewDto of(MemberReadServiceDto data){
+  public static MemberOverviewDto of(MemberServiceReadDto data){
     return new MemberOverviewDto(data.getId(), data.getName());
   }
 }

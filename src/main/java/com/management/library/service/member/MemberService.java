@@ -8,16 +8,16 @@ import static com.management.library.exception.ErrorCode.PASSWORD_NOT_MATCH;
 import com.management.library.controller.admin.dto.MemberSearchCond;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.service.member.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberServiceUpdateDto;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.InvalidAccessException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.member.MemberRepository;
 import com.management.library.service.Generator;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
-import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
-import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto.Request;
+import com.management.library.service.member.dto.MemberServiceCreateDto.Response;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import com.management.library.service.query.dto.PasswordChangeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class MemberService {
    * @return 회원 가입 완료된 회원의 결과 DTO
    */
   @Transactional
-  public MemberCreateServiceDto.Response createMember(MemberCreateServiceDto.Request request) {
+  public MemberServiceCreateDto.Response createMember(MemberServiceCreateDto.Request request) {
     String memberCode = String.valueOf(redisService.getMemberCode());
 
     if (isMemberPresent(request)) {
@@ -87,21 +87,21 @@ public class MemberService {
    * @param memberCode 회원 번호
    * @return 조회된 회원 DTO
    */
-  public MemberReadServiceDto getMemberData(String memberCode) {
+  public MemberServiceReadDto getMemberData(String memberCode) {
     Member member = memberRepository.findByMemberCode(memberCode)
         .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
 
-    return MemberReadServiceDto.of(member);
+    return MemberServiceReadDto.of(member);
   }
 
-  public MemberReadServiceDto getMemberData(Long id){
+  public MemberServiceReadDto getMemberData(Long id){
     Member member = memberRepository.findById(id)
         .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
 
-    return MemberReadServiceDto.of(member);
+    return MemberServiceReadDto.of(member);
   }
 
-  public Page<MemberReadServiceDto> getMemberDataList(MemberSearchCond cond, Pageable pageable){
+  public Page<MemberServiceReadDto> getMemberDataList(MemberSearchCond cond, Pageable pageable){
     return memberRepository.findAll(cond, pageable);
   }
 
@@ -141,7 +141,7 @@ public class MemberService {
   }
 
   @Transactional
-  public String updateMemberData(MemberUpdateServiceDto request, String memberCode) {
+  public String updateMemberData(MemberServiceUpdateDto request, String memberCode) {
     Member member = memberRepository.findByMemberCode(memberCode)
         .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
 

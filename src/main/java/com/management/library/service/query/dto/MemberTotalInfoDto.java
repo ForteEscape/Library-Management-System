@@ -1,6 +1,6 @@
 package com.management.library.service.query.dto;
 
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +38,7 @@ public class MemberTotalInfoDto {
     this.rentalStatus = rentalStatus;
   }
 
-  public static MemberTotalInfoDto of(MemberReadServiceDto basicInfo, String managementCount,
+  public static MemberTotalInfoDto of(MemberServiceReadDto basicInfo, String managementCount,
       String newBookCount, String remainRentalCount, String rentalStatus) {
     return MemberTotalInfoDto.builder()
         .name(basicInfo.getName())

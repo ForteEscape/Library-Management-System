@@ -14,7 +14,7 @@ import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import com.management.library.service.book.recommend.dto.BookRecommendResponseDto.RentedCount;
 import com.management.library.service.book.recommend.dto.BookRecommendResponseDto.ReviewRate;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
 import com.management.library.service.rental.RentalService;
 import com.management.library.service.rental.dto.RentalBookInfoDto;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
@@ -90,13 +90,13 @@ class BookRecommendServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getRecommendBookListByRentalCount() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("ju", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("ju", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response createdMember1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response createdMember2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response createdMember1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember2 = memberService.createMember(memberRequest2);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -160,13 +160,13 @@ class BookRecommendServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getRecommendBookListByRentalCountWithEmpty() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("ju", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("ju", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response createdMember1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response createdMember2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response createdMember1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember2 = memberService.createMember(memberRequest2);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -196,16 +196,16 @@ class BookRecommendServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getRecommendBookByBookRate() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("ju", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("ju", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest3 = createMemberRequest("gang", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest3 = createMemberRequest("gang", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response createdMember1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response createdMember2 = memberService.createMember(memberRequest2);
-    MemberCreateServiceDto.Response createdMember3 = memberService.createMember(memberRequest3);
+    MemberServiceCreateDto.Response createdMember1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response createdMember3 = memberService.createMember(memberRequest3);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -303,9 +303,9 @@ class BookRecommendServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private MemberCreateServiceDto.Request createMemberRequest(String name,
+  private MemberServiceCreateDto.Request createMemberRequest(String name,
       String birthdayCode, String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)

@@ -17,8 +17,8 @@ import com.management.library.service.book.BookService;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
-import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto.Request;
 import com.management.library.service.rental.RentalService;
 import com.management.library.service.rental.dto.RentalBookInfoDto;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
@@ -93,7 +93,7 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
   public void createReview() throws Exception {
     // given
     Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
-    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response member = memberService.createMember(memberRequest);
 
     BookServiceCreateDto.Request bookRequest = createBookRequest("book1", "park", "publisher", 2015,
         "location", 130);
@@ -126,7 +126,7 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
   public void createReviewWithoutRental() throws Exception {
     // given
     Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
-    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response member = memberService.createMember(memberRequest);
 
     BookServiceCreateDto.Request bookRequest = createBookRequest("book1", "park", "publisher", 2015,
         "location", 130);
@@ -155,7 +155,7 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
   public void createReviewWithTwice() throws Exception {
     // given
     Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
-    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response member = memberService.createMember(memberRequest);
 
     BookServiceCreateDto.Request bookRequest = createBookRequest("book1", "park", "publisher", 2015,
         "location", 130);
@@ -191,7 +191,7 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
   public void updateReview() throws Exception {
     // given
     Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
-    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response member = memberService.createMember(memberRequest);
 
     BookServiceCreateDto.Request bookRequest = createBookRequest("book1", "park", "publisher", 2015,
         "location", 130);
@@ -231,7 +231,7 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
   public void getReviewListByMemberCode() throws Exception {
     // given
     Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
-    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response member = memberService.createMember(memberRequest);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("book1", "park", "publisher",
         2015, "location", 130);
@@ -300,7 +300,7 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
   public void getMemberReviewData() throws Exception {
     // given
     Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
-    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response member = memberService.createMember(memberRequest);
 
     BookServiceCreateDto.Request bookRequest = createBookRequest("book1", "park", "publisher", 2015,
         "location", 130);
@@ -335,8 +335,8 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
     // given
     Request memberRequest = createMemberRequest("kim", "980101", "legion", "city", "street");
     Request memberRequest2 = createMemberRequest("ju", "980101", "legion", "city", "street");
-    MemberCreateServiceDto.Response member = memberService.createMember(memberRequest);
-    MemberCreateServiceDto.Response member2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response member = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response member2 = memberService.createMember(memberRequest2);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("book1", "park", "publisher",
         2015, "location", 130);
@@ -410,9 +410,9 @@ class BookReviewServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private MemberCreateServiceDto.Request createMemberRequest(String name,
+  private MemberServiceCreateDto.Request createMemberRequest(String name,
       String birthdayCode, String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)

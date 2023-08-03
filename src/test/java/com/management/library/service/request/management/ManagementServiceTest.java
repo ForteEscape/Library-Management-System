@@ -16,7 +16,7 @@ import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.exception.RequestLimitExceededException;
 import com.management.library.repository.management.ManagementRequestRepository;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
 import com.management.library.service.request.RedisRequestService;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Request;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto.Response;
@@ -61,8 +61,8 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createManagementRequest() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Response memberResponse = memberService.createMember(request1);
+    MemberServiceCreateDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Response memberResponse = memberService.createMember(request1);
 
     Request managementRequest = getManagementRequest("title1", "content1");
 
@@ -82,8 +82,8 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createManagementRequestWithSixTimes() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Response memberResponse = memberService.createMember(request1);
+    MemberServiceCreateDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Response memberResponse = memberService.createMember(request1);
 
     Request managementRequest = getManagementRequest("title1", "content1");
 
@@ -106,8 +106,8 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberManageRequest() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Response memberResponse = memberService.createMember(request1);
+    MemberServiceCreateDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Response memberResponse = memberService.createMember(request1);
 
     Request managementRequest1 = getManagementRequest("title1", "content1");
     Request managementRequest2 = getManagementRequest("title2", "content2");
@@ -138,10 +138,10 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllManageRequest() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Response memberResponse1 = memberService.createMember(request1);
-    MemberCreateServiceDto.Response memberResponse2 = memberService.createMember(request2);
+    MemberServiceCreateDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Response memberResponse1 = memberService.createMember(request1);
+    MemberServiceCreateDto.Response memberResponse2 = memberService.createMember(request2);
 
     Request managementRequest1 = getManagementRequest("title1", "content1");
     Request managementRequest2 = getManagementRequest("title2", "content2");
@@ -185,10 +185,10 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllManageRequestWithAccepted() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Response memberResponse1 = memberService.createMember(request1);
-    MemberCreateServiceDto.Response memberResponse2 = memberService.createMember(request2);
+    MemberServiceCreateDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Response memberResponse1 = memberService.createMember(request1);
+    MemberServiceCreateDto.Response memberResponse2 = memberService.createMember(request2);
 
     List<Request> managementRequestList = new ArrayList<>();
     for (int i = 1; i <= 5; i++) {
@@ -235,10 +235,10 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllManageRequestWithRefused() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Response memberResponse1 = memberService.createMember(request1);
-    MemberCreateServiceDto.Response memberResponse2 = memberService.createMember(request2);
+    MemberServiceCreateDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Response memberResponse1 = memberService.createMember(request1);
+    MemberServiceCreateDto.Response memberResponse2 = memberService.createMember(request2);
 
     List<Request> managementRequestList = new ArrayList<>();
     for (int i = 1; i <= 5; i++) {
@@ -285,10 +285,10 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getAllManageRequestWithAwait() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
-    MemberCreateServiceDto.Response memberResponse1 = memberService.createMember(request1);
-    MemberCreateServiceDto.Response memberResponse2 = memberService.createMember(request2);
+    MemberServiceCreateDto.Request request1 = createRequest("kim", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Request request2 = createRequest("park", "980101", "경상남도", "김해시", "삼계로");
+    MemberServiceCreateDto.Response memberResponse1 = memberService.createMember(request1);
+    MemberServiceCreateDto.Response memberResponse2 = memberService.createMember(request2);
 
     List<Request> managementRequestList = new ArrayList<>();
     for (int i = 1; i <= 5; i++) {
@@ -339,9 +339,9 @@ class ManagementServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private static MemberCreateServiceDto.Request createRequest(String name, String birthdayCode,
+  private static MemberServiceCreateDto.Request createRequest(String name, String birthdayCode,
       String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)

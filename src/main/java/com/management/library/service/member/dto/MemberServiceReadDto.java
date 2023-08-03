@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberReadServiceDto {
+public class MemberServiceReadDto {
 
   private Long id;
   private String name;
@@ -20,7 +20,7 @@ public class MemberReadServiceDto {
   private String street;
 
   @Builder
-  private MemberReadServiceDto(Long id, String name, String memberCode, String birthdayCode,
+  private MemberServiceReadDto(Long id, String name, String memberCode, String birthdayCode,
       String legion, String city, String street) {
     this.id = id;
     this.name = name;
@@ -31,8 +31,8 @@ public class MemberReadServiceDto {
     this.street = street;
   }
 
-  public static MemberReadServiceDto of(Member member) {
-    return MemberReadServiceDto.builder()
+  public static MemberServiceReadDto of(Member member) {
+    return MemberServiceReadDto.builder()
         .id(member.getId())
         .name(member.getName())
         .memberCode(member.getMemberCode())

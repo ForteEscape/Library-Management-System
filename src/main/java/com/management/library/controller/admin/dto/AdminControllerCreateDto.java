@@ -1,6 +1,6 @@
 package com.management.library.controller.admin.dto;
 
-import com.management.library.service.admin.dto.AdminCreateServiceDto;
+import com.management.library.service.admin.dto.AdminServiceCreateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,7 @@ public class AdminControllerCreateDto {
       this.email = email;
     }
 
-    public static Response of(AdminCreateServiceDto.Response response) {
+    public static Response of(AdminServiceCreateDto.Response response) {
       return Response.builder()
           .id(response.getId())
           .name(response.getName())

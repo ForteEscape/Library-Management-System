@@ -1,8 +1,8 @@
 package com.management.library.controller.member;
 
-import com.management.library.controller.member.dto.MemberUpdateControllerDto;
+import com.management.library.controller.member.dto.MemberControllerUpdateDto;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberServiceUpdateDto;
 import com.management.library.service.query.MemberTotalInfoService;
 import com.management.library.service.query.dto.MemberTotalInfoDto;
 import com.management.library.service.query.dto.PasswordChangeDto;
@@ -31,10 +31,10 @@ public class MemberController {
 
   // 회원 정보 변경
   @PutMapping
-  public String updateMemberData(@RequestBody MemberUpdateControllerDto request,
+  public String updateMemberData(@RequestBody MemberControllerUpdateDto request,
       Principal principal) {
 
-    return memberService.updateMemberData(MemberUpdateServiceDto.of(request), principal.getName());
+    return memberService.updateMemberData(MemberServiceUpdateDto.of(request), principal.getName());
   }
 
   // 회원 비밀번호 변경

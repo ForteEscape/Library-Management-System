@@ -1,7 +1,7 @@
 package com.management.library.service.query;
 
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import com.management.library.service.query.dto.MemberTotalInfoDto;
 import com.management.library.service.rental.RentalRedisService;
 import com.management.library.service.request.RedisRequestService;
@@ -19,7 +19,7 @@ public class MemberTotalInfoService {
   private final MemberService memberService;
 
   public MemberTotalInfoDto getMemberTotalInfo(String memberCode) {
-    MemberReadServiceDto memberData = memberService.getMemberData(memberCode);
+    MemberServiceReadDto memberData = memberService.getMemberData(memberCode);
     String managementRequestCount = redisRequestService.getManagementRequestCount(memberCode);
     String newBookRequestCount = redisRequestService.getNewBookRequestCount(memberCode);
     String memberRemainRentalCount = rentalRedisService.getMemberRemainRentalCount(memberCode);

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
-import com.management.library.service.member.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberServiceUpdateDto;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +93,7 @@ class MemberTest {
     em.flush();
     em.clear();
 
-    MemberUpdateServiceDto request = MemberUpdateServiceDto.builder()
+    MemberServiceUpdateDto request = MemberServiceUpdateDto.builder()
         .name("memberB")
         .legion("부산")
         .city("사상구")

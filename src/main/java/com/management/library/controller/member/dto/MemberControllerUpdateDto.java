@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberUpdateControllerDto {
+public class MemberControllerUpdateDto {
 
   private String name;
   private String legion;
@@ -17,7 +17,7 @@ public class MemberUpdateControllerDto {
   private String street;
 
   @Builder
-  private MemberUpdateControllerDto(String name, String legion, String city, String street) {
+  private MemberControllerUpdateDto(String name, String legion, String city, String street) {
     this.name = name;
     this.legion = legion;
     this.city = city;

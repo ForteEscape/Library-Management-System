@@ -16,9 +16,9 @@ import com.management.library.repository.member.MemberRepository;
 import com.management.library.repository.newbook.NewBookRequestRepository;
 import com.management.library.repository.newbook.NewBookRequestResultRepository;
 import com.management.library.service.admin.AdminService;
-import com.management.library.service.admin.dto.AdminCreateServiceDto;
+import com.management.library.service.admin.dto.AdminServiceCreateDto;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
 import com.management.library.service.request.RedisRequestService;
 import com.management.library.service.request.newbook.NewBookService;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto;
@@ -76,12 +76,12 @@ class NewBookResultServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createResult() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
-    AdminCreateServiceDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
-    AdminCreateServiceDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
+    AdminServiceCreateDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
+    AdminServiceCreateDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
     adminService.createAdmin(admin1);
     adminService.createAdmin(admin2);
 
@@ -108,12 +108,12 @@ class NewBookResultServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createResultTwice() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
-    AdminCreateServiceDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
-    AdminCreateServiceDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
+    AdminServiceCreateDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
+    AdminServiceCreateDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
     adminService.createAdmin(admin1);
     adminService.createAdmin(admin2);
 
@@ -147,12 +147,12 @@ class NewBookResultServiceTest extends AbstractContainerBaseTest {
     ExecutorService executorService = Executors.newFixedThreadPool(2);
     CountDownLatch latch = new CountDownLatch(2);
 
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
-    AdminCreateServiceDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
-    AdminCreateServiceDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
+    AdminServiceCreateDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
+    AdminServiceCreateDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
     adminService.createAdmin(admin1);
     adminService.createAdmin(admin2);
 
@@ -203,15 +203,15 @@ class NewBookResultServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getResultByAdminEmail() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980101", "경남",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980101", "경남",
         "김해", "삼계로");
-    MemberCreateServiceDto.Response savedMember1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response savedMember2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response savedMember1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response savedMember2 = memberService.createMember(memberRequest2);
 
-    AdminCreateServiceDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
-    AdminCreateServiceDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
+    AdminServiceCreateDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
+    AdminServiceCreateDto.Request admin2 = createAdminRequest("admin2", "admin2@test.com", "1234");
     adminService.createAdmin(admin1);
     adminService.createAdmin(admin2);
 
@@ -278,9 +278,9 @@ class NewBookResultServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private MemberCreateServiceDto.Request createMemberRequest(String name, String birthdayCode,
+  private MemberServiceCreateDto.Request createMemberRequest(String name, String birthdayCode,
       String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)
@@ -289,9 +289,9 @@ class NewBookResultServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private static AdminCreateServiceDto.Request createAdminRequest(String name, String email,
+  private static AdminServiceCreateDto.Request createAdminRequest(String name, String email,
       String password) {
-    return AdminCreateServiceDto.Request.builder()
+    return AdminServiceCreateDto.Request.builder()
         .name(name)
         .email(email)
         .password(password)

@@ -1,6 +1,6 @@
 package com.management.library.controller.member.dto;
 
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ public class MemberReadControllerDto {
     this.street = street;
   }
 
-  public static MemberReadControllerDto of(MemberReadServiceDto member){
+  public static MemberReadControllerDto of(MemberServiceReadDto member){
     return MemberReadControllerDto.builder()
         .name(member.getName())
         .memberCode(member.getMemberCode())

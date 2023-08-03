@@ -6,8 +6,8 @@ import com.management.library.controller.dto.PageInfo;
 import com.management.library.controller.member.dto.MemberControllerCreateDto;
 import com.management.library.controller.member.dto.MemberOverviewDto;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import com.management.library.service.query.MemberTotalInfoService;
 import com.management.library.service.query.dto.MemberTotalInfoDto;
 import java.util.List;
@@ -38,8 +38,8 @@ public class AdminMemberController {
   public MemberControllerCreateDto.Response createMember(
       @RequestBody MemberControllerCreateDto.Request request
   ) {
-    MemberCreateServiceDto.Response response = memberService.createMember(
-        MemberCreateServiceDto.Request.of(request));
+    MemberServiceCreateDto.Response response = memberService.createMember(
+        MemberServiceCreateDto.Request.of(request));
 
     return MemberControllerCreateDto.Response.of(response);
   }
@@ -47,7 +47,7 @@ public class AdminMemberController {
   // 회원 전체 조회
   @GetMapping
   public ResponseEntity getMemberList(MemberSearchCond cond, Pageable pageable) {
-    Page<MemberReadServiceDto> resultPage = memberService.getMemberDataList(cond, pageable);
+    Page<MemberServiceReadDto> resultPage = memberService.getMemberDataList(cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
         (int) resultPage.getTotalElements(), resultPage.getTotalPages());
 

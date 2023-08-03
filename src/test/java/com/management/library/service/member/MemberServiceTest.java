@@ -8,15 +8,15 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.management.library.AbstractContainerBaseTest;
 import com.management.library.domain.member.Member;
-import com.management.library.service.member.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberServiceUpdateDto;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.book.BookRepository;
 import com.management.library.repository.member.MemberRepository;
 import com.management.library.repository.rental.BookRentalRepository;
-import com.management.library.service.member.dto.MemberCreateServiceDto.Request;
-import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto.Request;
+import com.management.library.service.member.dto.MemberServiceCreateDto.Response;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import com.management.library.service.query.dto.PasswordChangeDto;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -164,7 +164,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     }
 
     // when
-    MemberReadServiceDto memberData = memberService.getMemberData("100000002");
+    MemberServiceReadDto memberData = memberService.getMemberData("100000002");
 
     // then
     assertThat(memberData)
@@ -247,7 +247,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     Request memberRequest = createRequest("kim", "980101", "legion", "city", "street");
     Response member = memberService.createMember(memberRequest);
 
-    MemberUpdateServiceDto updateDto = MemberUpdateServiceDto.builder()
+    MemberServiceUpdateDto updateDto = MemberServiceUpdateDto.builder()
         .name("park")
         .legion("legion2")
         .city("city2")
@@ -257,7 +257,7 @@ class MemberServiceTest extends AbstractContainerBaseTest {
     String result = memberService.updateMemberData(updateDto, member.getMemberCode());
 
     // then
-    MemberReadServiceDto memberData = memberService.getMemberData(member.getMemberCode());
+    MemberServiceReadDto memberData = memberService.getMemberData(member.getMemberCode());
     assertThat(result).isEqualTo("success");
     assertThat(memberData)
         .extracting("name", "birthdayCode", "legion", "city", "street")

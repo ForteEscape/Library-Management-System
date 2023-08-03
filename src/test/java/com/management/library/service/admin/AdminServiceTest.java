@@ -10,8 +10,8 @@ import com.management.library.domain.admin.Administrator;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.admin.AdministratorRepository;
-import com.management.library.service.admin.dto.AdminCreateServiceDto;
-import com.management.library.service.admin.dto.AdminCreateServiceDto.Request;
+import com.management.library.service.admin.dto.AdminServiceCreateDto;
+import com.management.library.service.admin.dto.AdminServiceCreateDto.Request;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +39,7 @@ class AdminServiceTest {
     Request request3 = getAdmin("admin3", "admin3@test.com", "12345");
 
     List<Request> requestList = List.of(request1, request2, request3);
-    List<AdminCreateServiceDto.Response> result = new ArrayList<>();
+    List<AdminServiceCreateDto.Response> result = new ArrayList<>();
     // when
     for (Request request : requestList) {
       result.add(adminService.createAdmin(request));

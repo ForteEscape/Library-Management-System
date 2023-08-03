@@ -1,6 +1,6 @@
 package com.management.library.service.member.dto;
 
-import com.management.library.controller.member.dto.MemberUpdateControllerDto;
+import com.management.library.controller.member.dto.MemberControllerUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberUpdateServiceDto {
+public class MemberServiceUpdateDto {
 
   private String name;
   private String legion;
@@ -17,15 +17,15 @@ public class MemberUpdateServiceDto {
   private String street;
 
   @Builder
-  private MemberUpdateServiceDto(String name, String legion, String city, String street) {
+  private MemberServiceUpdateDto(String name, String legion, String city, String street) {
     this.name = name;
     this.legion = legion;
     this.city = city;
     this.street = street;
   }
 
-  public static MemberUpdateServiceDto of(MemberUpdateControllerDto request) {
-    return MemberUpdateServiceDto.builder()
+  public static MemberServiceUpdateDto of(MemberControllerUpdateDto request) {
+    return MemberServiceUpdateDto.builder()
         .name(request.getName())
         .legion(request.getLegion())
         .city(request.getCity())
