@@ -7,7 +7,7 @@ import static com.management.library.service.request.newbook.dto.NewBookRequestS
 
 import com.management.library.domain.member.Member;
 import com.management.library.domain.newbook.NewBookRequest;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.member.MemberRepository;
 import com.management.library.repository.newbook.NewBookRequestRepository;

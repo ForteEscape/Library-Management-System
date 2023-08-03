@@ -13,7 +13,7 @@ import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceCreateDto.Request;
 import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
 import com.management.library.service.query.dto.MemberTotalInfoDto;
 import com.management.library.service.rental.RentalService;
 import com.management.library.service.rental.dto.RentalBookInfoDto;
@@ -97,9 +97,9 @@ class MemberTotalInfoServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberTotalInfo() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
     // when
     MemberTotalInfoDto memberData = memberTotalInfoService.getMemberTotalInfo(
@@ -118,9 +118,9 @@ class MemberTotalInfoServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberTotalInfoWithCorrectData() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
     ManagementRequestServiceDto.Request managementCreateRequest = createManagementRequest("title1",
         "content1");
@@ -146,9 +146,9 @@ class MemberTotalInfoServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberTotalInfoWithRentalData() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
     ManagementRequestServiceDto.Request managementCreateRequest = createManagementRequest("title1",
         "content1");
@@ -180,9 +180,9 @@ class MemberTotalInfoServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberTotalInfoWithRentalCountZero() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
-    MemberCreateServiceDto.Response savedMember = memberService.createMember(memberRequest);
+    MemberServiceCreateDto.Response savedMember = memberService.createMember(memberRequest);
 
     ManagementRequestServiceDto.Request managementCreateRequest = createManagementRequest("title1",
         "content1");
@@ -214,9 +214,9 @@ class MemberTotalInfoServiceTest extends AbstractContainerBaseTest {
         );
   }
 
-  private MemberCreateServiceDto.Request createMemberRequest(String name, String birthdayCode,
+  private MemberServiceCreateDto.Request createMemberRequest(String name, String birthdayCode,
       String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)

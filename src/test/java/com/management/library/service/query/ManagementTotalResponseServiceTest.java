@@ -11,10 +11,10 @@ import com.management.library.repository.management.ManagementRequestRepository;
 import com.management.library.repository.management.ManagementRequestResultRepository;
 import com.management.library.repository.member.MemberRepository;
 import com.management.library.service.admin.AdminService;
-import com.management.library.service.admin.dto.AdminCreateServiceDto;
+import com.management.library.service.admin.dto.AdminServiceCreateDto;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
-import com.management.library.service.member.dto.MemberCreateServiceDto.Response;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto.Response;
 import com.management.library.service.query.dto.ManagementResultDto;
 import com.management.library.service.query.dto.ManagementTotalResponseDto;
 import com.management.library.service.request.RedisRequestService;
@@ -75,12 +75,12 @@ class ManagementTotalResponseServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createTotalResponse() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
     Response savedMember = memberService.createMember(memberRequest);
 
-    AdminCreateServiceDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
-    AdminCreateServiceDto.Response admin = adminService.createAdmin(admin1);
+    AdminServiceCreateDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
+    AdminServiceCreateDto.Response admin = adminService.createAdmin(admin1);
 
     ManagementRequestServiceDto.Request managementCreateRequest = createManagementRequest("title1",
         "content1");
@@ -116,12 +116,12 @@ class ManagementTotalResponseServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createTotalResponseWithResultIsNull() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
+    MemberServiceCreateDto.Request memberRequest = createMemberRequest("kim", "980101", "경남", "김해",
         "삼계로");
     Response savedMember = memberService.createMember(memberRequest);
 
-    AdminCreateServiceDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
-    AdminCreateServiceDto.Response admin = adminService.createAdmin(admin1);
+    AdminServiceCreateDto.Request admin1 = createAdminRequest("admin1", "admin1@test.com", "1234");
+    AdminServiceCreateDto.Response admin = adminService.createAdmin(admin1);
 
     ManagementRequestServiceDto.Request managementCreateRequest = createManagementRequest("title1",
         "content1");
@@ -159,9 +159,9 @@ class ManagementTotalResponseServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private MemberCreateServiceDto.Request createMemberRequest(String name, String birthdayCode,
+  private MemberServiceCreateDto.Request createMemberRequest(String name, String birthdayCode,
       String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)
@@ -170,9 +170,9 @@ class ManagementTotalResponseServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private static AdminCreateServiceDto.Request createAdminRequest(String name, String email,
+  private static AdminServiceCreateDto.Request createAdminRequest(String name, String email,
       String password) {
-    return AdminCreateServiceDto.Request.builder()
+    return AdminServiceCreateDto.Request.builder()
         .name(name)
         .email(email)
         .password(password)

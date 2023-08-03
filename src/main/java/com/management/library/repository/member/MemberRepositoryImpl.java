@@ -5,7 +5,7 @@ import static com.querydsl.core.types.Projections.constructor;
 
 import com.management.library.controller.admin.dto.MemberSearchCond;
 import com.management.library.domain.member.Member;
-import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.member.dto.MemberServiceReadDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -41,9 +41,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
   }
 
   @Override
-  public Page<MemberReadServiceDto> findAll(MemberSearchCond cond, Pageable pageable) {
-    List<MemberReadServiceDto> result = queryFactory.select(constructor(
-                MemberReadServiceDto.class,
+  public Page<MemberServiceReadDto> findAll(MemberSearchCond cond, Pageable pageable) {
+    List<MemberServiceReadDto> result = queryFactory.select(constructor(
+                MemberServiceReadDto.class,
                 member.name,
                 member.memberCode,
                 member.birthdayCode,

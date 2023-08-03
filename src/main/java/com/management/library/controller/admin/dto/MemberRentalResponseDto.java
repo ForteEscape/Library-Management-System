@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberRentalDto {
+public class MemberRentalResponseDto {
 
   private String bookName;
   private LocalDate rentalStartDate;
@@ -21,7 +21,7 @@ public class MemberRentalDto {
   private RentalStatus rentalStatus;
 
   @Builder
-  public MemberRentalDto(String bookName, LocalDate rentalStartDate,
+  public MemberRentalResponseDto(String bookName, LocalDate rentalStartDate,
       LocalDate rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
     this.bookName = bookName;
     this.rentalStartDate = rentalStartDate;
@@ -30,8 +30,8 @@ public class MemberRentalDto {
     this.rentalStatus = rentalStatus;
   }
 
-  public static MemberRentalDto of(RentalServiceResponseDto rental) {
-    return MemberRentalDto.builder()
+  public static MemberRentalResponseDto of(RentalServiceResponseDto rental) {
+    return MemberRentalResponseDto.builder()
         .bookName(rental.getBookName())
         .rentalStartDate(rental.getRentalStartDate())
         .rentalEndDate(rental.getRentalEndDate())

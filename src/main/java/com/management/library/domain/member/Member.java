@@ -1,11 +1,11 @@
 package com.management.library.domain.member;
 
 import static com.management.library.domain.type.Authority.ROLE_MEMBER;
-import static com.management.library.service.member.dto.MemberCreateServiceDto.Request;
+import static com.management.library.service.member.dto.MemberServiceCreateDto.Request;
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
-import com.management.library.service.member.dto.MemberUpdateServiceDto;
+import com.management.library.service.member.dto.MemberServiceUpdateDto;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -83,7 +83,7 @@ public class Member extends BaseEntity implements UserDetails {
    *
    * @param request 변경 정보 DTO
    */
-  public void changeMemberData(MemberUpdateServiceDto request) {
+  public void changeMemberData(MemberServiceUpdateDto request) {
     this.name = request.getName();
     this.address = Address.of(request.getLegion(), request.getCity(), request.getStreet());
   }

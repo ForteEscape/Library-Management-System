@@ -2,7 +2,7 @@ package com.management.library.domain.admin;
 
 import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
-import com.management.library.service.admin.dto.AdminCreateServiceDto;
+import com.management.library.service.admin.dto.AdminServiceCreateDto;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +47,7 @@ public class Administrator extends BaseEntity implements UserDetails {
     this.authority = authority;
   }
 
-  public static Administrator of(AdminCreateServiceDto.Request request){
+  public static Administrator of(AdminServiceCreateDto.Request request){
     return Administrator.builder()
         .name(request.getName())
         .email(request.getEmail())

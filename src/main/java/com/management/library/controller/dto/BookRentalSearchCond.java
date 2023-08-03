@@ -1,4 +1,4 @@
-package com.management.library.dto;
+package com.management.library.controller.dto;
 
 import com.management.library.domain.type.RentalStatus;
 import lombok.AllArgsConstructor;

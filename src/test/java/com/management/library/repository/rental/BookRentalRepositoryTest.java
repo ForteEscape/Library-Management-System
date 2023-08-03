@@ -17,7 +17,7 @@ import com.management.library.domain.type.Authority;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
-import com.management.library.dto.BookRentalSearchCond;
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.exception.ErrorCode;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.book.BookRepository;

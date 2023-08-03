@@ -20,7 +20,7 @@ import com.management.library.domain.book.Book;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.domain.type.ExtendStatus;
-import com.management.library.dto.BookRentalSearchCond;
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.exception.RentalException;
 import com.management.library.repository.book.BookRepository;
 import com.management.library.repository.member.MemberRepository;
@@ -30,7 +30,7 @@ import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceCreateDto.Request;
 import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import com.management.library.service.member.MemberService;
-import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
 import com.management.library.service.rental.dto.RentalBookInfoDto;
 import com.management.library.service.rental.dto.RentalDurationExtendDto;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
@@ -92,9 +92,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createBookRental() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -129,9 +129,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createBookRentalTriple() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -168,9 +168,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createBookRentalWithPenalty() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -197,9 +197,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void createBookRentalWithOverdueRental() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -233,9 +233,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void extendRentalDuration() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -263,9 +263,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void extendRentalDurationWhenMemberRentalUnavailable() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -295,9 +295,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void extendRentalDurationWithOverdue() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -327,9 +327,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void extendRentalDurationWithAlreadyExtend() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -358,9 +358,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void extendRentalDurationOverdueRentalExists() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -397,9 +397,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void returnBook() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -433,9 +433,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void returnBookWithOverdue() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -475,9 +475,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void returnBookWithOverdueInPenalty() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Response createdMember = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember = memberService.createMember(memberRequest1);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -533,13 +533,13 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getRentalData() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response createdMember1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response createdMember2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response createdMember1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember2 = memberService.createMember(memberRequest2);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -596,13 +596,13 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getRentalDataWithReturned() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response createdMember1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response createdMember2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response createdMember1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember2 = memberService.createMember(memberRequest2);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -663,13 +663,13 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getRentalDataWithOverdue() throws Exception {
     // given
-    MemberCreateServiceDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest1 = createMemberRequest("kim", "980101", "경상남도",
         "김해시", "삼계로");
-    MemberCreateServiceDto.Request memberRequest2 = createMemberRequest("park", "980101", "경상남도",
+    MemberServiceCreateDto.Request memberRequest2 = createMemberRequest("park", "980101", "경상남도",
         "김해시", "삼계로");
 
-    MemberCreateServiceDto.Response createdMember1 = memberService.createMember(memberRequest1);
-    MemberCreateServiceDto.Response createdMember2 = memberService.createMember(memberRequest2);
+    MemberServiceCreateDto.Response createdMember1 = memberService.createMember(memberRequest1);
+    MemberServiceCreateDto.Response createdMember2 = memberService.createMember(memberRequest2);
 
     BookServiceCreateDto.Request bookRequest1 = createBookRequest("jpa", "park", "publisher", 2015,
         "location", 835);
@@ -730,9 +730,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberRentalData() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
+    MemberServiceCreateDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
         "삼계로");
-    MemberCreateServiceDto.Response member = memberService.createMember(request1);
+    MemberServiceCreateDto.Response member = memberService.createMember(request1);
 
     Request bookRequest1 = createBookRequest("jpa1", "kim", "publisher", 2017, "location", 130);
     Request bookRequest2 = createBookRequest("spring", "park", "publisher1", 2017, "location1",
@@ -779,9 +779,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberRentalDataOnProceeding() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
+    MemberServiceCreateDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
         "삼계로");
-    MemberCreateServiceDto.Response member = memberService.createMember(request1);
+    MemberServiceCreateDto.Response member = memberService.createMember(request1);
 
     Request bookRequest1 = createBookRequest("jpa1", "kim", "publisher", 2017, "location", 130);
     Request bookRequest2 = createBookRequest("spring", "park", "publisher1", 2017, "location1",
@@ -828,9 +828,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
   @Test
   public void getMemberRentalDataOnReturned() throws Exception {
     // given
-    MemberCreateServiceDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
+    MemberServiceCreateDto.Request request1 = createMemberRequest("kim", "980101", "경상남도", "김해시",
         "삼계로");
-    MemberCreateServiceDto.Response member = memberService.createMember(request1);
+    MemberServiceCreateDto.Response member = memberService.createMember(request1);
 
     Request bookRequest1 = createBookRequest("jpa1", "kim", "publisher", 2017, "location", 130);
     Request bookRequest2 = createBookRequest("spring", "park", "publisher1", 2017, "location1",
@@ -879,9 +879,9 @@ class RentalServiceTest extends AbstractContainerBaseTest {
         .build();
   }
 
-  private MemberCreateServiceDto.Request createMemberRequest(String name,
+  private MemberServiceCreateDto.Request createMemberRequest(String name,
       String birthdayCode, String legion, String city, String street) {
-    return MemberCreateServiceDto.Request.builder()
+    return MemberServiceCreateDto.Request.builder()
         .name(name)
         .birthdayCode(birthdayCode)
         .legion(legion)

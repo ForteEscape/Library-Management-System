@@ -16,26 +16,30 @@ public class RentalServiceResponseDto {
 
   private Long id;
   private String bookName;
+  private String memberCode;
   private LocalDate rentalStartDate;
   private LocalDate rentalEndDate;
   private ExtendStatus extendStatus;
   private RentalStatus rentalStatus;
 
   @Builder
-  public RentalServiceResponseDto(Long id, String bookName, LocalDate rentalStartDate,
-      LocalDate rentalEndDate, ExtendStatus extendStatus, RentalStatus rentalStatus) {
+  public RentalServiceResponseDto(Long id, String bookName, String memberCode,
+      LocalDate rentalStartDate, LocalDate rentalEndDate, ExtendStatus extendStatus,
+      RentalStatus rentalStatus) {
     this.id = id;
     this.bookName = bookName;
+    this.memberCode = memberCode;
     this.rentalStartDate = rentalStartDate;
     this.rentalEndDate = rentalEndDate;
     this.extendStatus = extendStatus;
     this.rentalStatus = rentalStatus;
   }
 
-  public static RentalServiceResponseDto of(Rental rental){
+  public static RentalServiceResponseDto of(Rental rental) {
     return RentalServiceResponseDto.builder()
         .id(rental.getId())
         .bookName(rental.getBook().getBookInfo().getTitle())
+        .memberCode(rental.getMember().getMemberCode())
         .rentalStartDate(rental.getRentalStartDate())
         .rentalEndDate(rental.getRentalEndDate())
         .extendStatus(rental.getExtendStatus())

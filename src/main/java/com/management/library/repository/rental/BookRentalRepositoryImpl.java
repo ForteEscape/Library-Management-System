@@ -7,7 +7,7 @@ import static com.management.library.domain.type.RentalStatus.*;
 
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.RentalStatus;
-import com.management.library.dto.BookRentalSearchCond;
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -78,6 +78,7 @@ public class BookRentalRepositoryImpl implements BookRentalRepositoryCustom {
       Pageable pageable) {
     List<Rental> result = queryFactory.selectFrom(rental)
         .join(rental.book, book).fetchJoin()
+        .join(rental.member, member).fetchJoin()
         .where(rentalStatusEq(cond.getRentalStatus()))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())

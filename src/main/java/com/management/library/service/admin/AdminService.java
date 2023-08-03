@@ -2,8 +2,8 @@ package com.management.library.service.admin;
 
 import static com.management.library.exception.ErrorCode.ADMIN_ALREADY_EXISTS;
 import static com.management.library.exception.ErrorCode.ADMIN_NOT_EXISTS;
-import static com.management.library.service.admin.dto.AdminCreateServiceDto.Request;
-import static com.management.library.service.admin.dto.AdminCreateServiceDto.Response;
+import static com.management.library.service.admin.dto.AdminServiceCreateDto.Request;
+import static com.management.library.service.admin.dto.AdminServiceCreateDto.Response;
 
 import com.management.library.domain.admin.Administrator;
 import com.management.library.exception.DuplicateException;

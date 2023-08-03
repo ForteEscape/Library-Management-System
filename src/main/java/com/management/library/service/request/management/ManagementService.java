@@ -7,7 +7,7 @@ import static com.management.library.service.request.management.dto.ManagementRe
 
 import com.management.library.domain.management.ManagementRequest;
 import com.management.library.domain.member.Member;
-import com.management.library.dto.RequestSearchCond;
+import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.repository.management.ManagementRequestRepository;
 import com.management.library.repository.member.MemberRepository;

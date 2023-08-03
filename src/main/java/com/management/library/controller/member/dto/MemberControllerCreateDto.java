@@ -1,6 +1,6 @@
 package com.management.library.controller.member.dto;
 
-import com.management.library.service.member.dto.MemberCreateServiceDto;
+import com.management.library.service.member.dto.MemberServiceCreateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,7 +52,7 @@ public class MemberControllerCreateDto {
       this.password = password;
     }
 
-    public static Response of(MemberCreateServiceDto.Response response){
+    public static Response of(MemberServiceCreateDto.Response response){
       return Response.builder()
           .name(response.getName())
           .birthdayCode(response.getBirthdayCode())

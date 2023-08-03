@@ -2,6 +2,7 @@ package com.management.library.controller.admin;
 
 import com.management.library.controller.book.dto.BookControllerCreateDto;
 import com.management.library.controller.book.dto.BookControllerUpdateDto;
+import com.management.library.controller.book.dto.BookInfoResponseDto;
 import com.management.library.service.book.BookService;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceResponseDto;
@@ -36,8 +37,10 @@ public class AdminBookController {
 
   // 도서 조회
   @GetMapping("/{bookId}")
-  public BookServiceResponseDto getBookDetail(@PathVariable("bookId") Long bookId) {
-    return bookService.getBookData(bookId);
+  public BookInfoResponseDto getBookDetail(@PathVariable("bookId") Long bookId) {
+    BookServiceResponseDto bookData = bookService.getBookData(bookId);
+
+    return BookInfoResponseDto.of(bookData);
   }
 
   // 도서 수정

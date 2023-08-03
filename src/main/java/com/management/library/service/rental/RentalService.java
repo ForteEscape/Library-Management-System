@@ -20,7 +20,7 @@ import com.management.library.domain.member.Member;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.BookStatus;
 import com.management.library.domain.type.RentalStatus;
-import com.management.library.dto.BookRentalSearchCond;
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.exception.NoSuchElementExistsException;
 import com.management.library.exception.RentalException;
 import com.management.library.repository.book.BookRepository;
@@ -176,11 +176,10 @@ public class RentalService {
   }
 
   // 회원 대여 상세 조회
-  public RentalServiceResponseDto getMemberRentalDetail(Long rentalId){
+  public RentalServiceResponseDto getRentalDetail(Long rentalId){
     Rental rental = rentalRepository.findById(rentalId)
         .orElseThrow(() -> new NoSuchElementExistsException(RENTAL_NOT_EXISTS));
 
     return RentalServiceResponseDto.of(rental);
   }
-
 }

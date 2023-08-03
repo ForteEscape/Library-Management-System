@@ -1,6 +1,6 @@
 package com.management.library.domain.member;
 
-import static com.management.library.service.member.dto.MemberCreateServiceDto.Request;
+import static com.management.library.service.member.dto.MemberServiceCreateDto.Request;
 
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class MemberCreateServiceDto {
+public class MemberServiceCreateDto {
 
   @Getter
   @Setter
