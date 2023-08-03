@@ -82,7 +82,7 @@ public class MemberController {
   // 회원 대여 기록 상세 조회
   @GetMapping("/rentals/{rentalId}")
   public MemberRentalResponseDto getMemberRentalDetail(@PathVariable("rentalId") Long rentalId) {
-    return MemberRentalResponseDto.of(rentalService.getMemberRentalDetail(rentalId));
+    return MemberRentalResponseDto.of(rentalService.getRentalDetail(rentalId));
   }
 
   //회원 대여 기간 연장

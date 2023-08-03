@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MemberReadServiceDto {
 
+  private Long id;
   private String name;
   private String memberCode;
   private String birthdayCode;
@@ -19,8 +20,9 @@ public class MemberReadServiceDto {
   private String street;
 
   @Builder
-  private MemberReadServiceDto(String name, String memberCode, String birthdayCode, String legion,
-      String city, String street) {
+  private MemberReadServiceDto(Long id, String name, String memberCode, String birthdayCode,
+      String legion, String city, String street) {
+    this.id = id;
     this.name = name;
     this.memberCode = memberCode;
     this.birthdayCode = birthdayCode;
@@ -29,8 +31,9 @@ public class MemberReadServiceDto {
     this.street = street;
   }
 
-  public static MemberReadServiceDto of(Member member){
+  public static MemberReadServiceDto of(Member member) {
     return MemberReadServiceDto.builder()
+        .id(member.getId())
         .name(member.getName())
         .memberCode(member.getMemberCode())
         .birthdayCode(member.getBirthdayCode())

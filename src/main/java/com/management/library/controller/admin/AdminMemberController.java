@@ -1,14 +1,22 @@
 package com.management.library.controller.admin;
 
 import com.management.library.controller.admin.dto.MemberSearchCond;
+import com.management.library.controller.dto.MemberAllDto;
+import com.management.library.controller.dto.PageInfo;
 import com.management.library.controller.member.dto.MemberControllerCreateDto;
-import com.management.library.controller.member.dto.MemberReadControllerDto;
+import com.management.library.controller.member.dto.MemberOverviewDto;
 import com.management.library.service.member.MemberService;
 import com.management.library.service.member.dto.MemberCreateServiceDto;
 import com.management.library.service.member.dto.MemberReadServiceDto;
+import com.management.library.service.query.MemberTotalInfoService;
+import com.management.library.service.query.dto.MemberTotalInfoDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminMemberController {
 
   private final MemberService memberService;
+  private final MemberTotalInfoService memberTotalInfoService;
 
   // 회원 생성
   @PostMapping
@@ -37,14 +46,27 @@ public class AdminMemberController {
 
   // 회원 전체 조회
   @GetMapping
-  public Page<MemberReadServiceDto> getMemberList(MemberSearchCond cond, Pageable pageable) {
-    return memberService.getMemberDataList(cond, pageable);
+  public ResponseEntity getMemberList(MemberSearchCond cond, Pageable pageable) {
+    Page<MemberReadServiceDto> resultPage = memberService.getMemberDataList(cond, pageable);
+    PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
+        (int) resultPage.getTotalElements(), resultPage.getTotalPages());
+
+    List<MemberOverviewDto> result = resultPage.getContent().stream()
+        .map(MemberOverviewDto::of)
+        .collect(Collectors.toList());
+
+    return new ResponseEntity<>(
+        new MemberAllDto<>(result, pageInfo),
+        HttpStatus.OK
+    );
   }
 
   // 회원 상세 정보 조회
   @GetMapping("/{memberId}")
-  public MemberReadControllerDto getMemberDetail(@PathVariable("memberId") Long memberId) {
-    return MemberReadControllerDto.of(memberService.getMemberData(memberId));
+  public MemberTotalInfoDto getMemberDetail(@PathVariable("memberId") Long memberId) {
+    String memberCode = memberService.getMemberData(memberId).getMemberCode();
+
+    return memberTotalInfoService.getMemberTotalInfo(memberCode);
   }
 
   // 회원 삭제
