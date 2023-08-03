@@ -1,5 +1,8 @@
 package com.management.library.controller.admin;
 
+import com.management.library.controller.dto.PageInfo;
+import com.management.library.controller.dto.RequestAllDto;
+import com.management.library.controller.request.management.dto.ManagementRequestControllerDto;
 import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
 import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.service.query.ManagementTotalResponseService;
@@ -9,9 +12,13 @@ import com.management.library.service.request.management.dto.ManagementRequestSe
 import com.management.library.service.result.management.ManagementResultService;
 import com.management.library.service.result.management.dto.ManagementResultCreateDto;
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +37,22 @@ public class AdminManagementController {
 
   // 운영 개선 요구사항 조회
   @GetMapping
-  public Page<Response> getManagementRequest(RequestSearchCond cond,
+  public ResponseEntity getManagementRequest(RequestSearchCond cond,
       Pageable pageable) {
-    return managementService.getAllManagementRequest(cond, pageable);
+
+    Page<Response> resultPage = managementService.getAllManagementRequest(cond, pageable);
+    PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
+        (int) resultPage.getTotalElements(), resultPage.getTotalPages());
+
+    List<Response> contents = resultPage.getContent();
+    List<ManagementRequestControllerDto.Response> result = contents.stream()
+        .map(ManagementRequestControllerDto.Response::of)
+        .collect(Collectors.toList());
+
+    return new ResponseEntity<>(
+        new RequestAllDto<>(result, pageInfo),
+        HttpStatus.OK
+    );
   }
 
   // 운영 개선 요구사항 상세 조회
