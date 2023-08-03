@@ -7,6 +7,7 @@ import com.management.library.service.book.BookService;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceResponseDto;
 import com.management.library.service.book.dto.BookServiceUpdateDto;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class AdminBookController {
   // 도서 등록
   @PostMapping
   public BookControllerCreateDto.Response createBook(
-      @RequestBody BookControllerCreateDto.Request request
+      @RequestBody @Valid BookControllerCreateDto.Request request
   ) {
     BookServiceCreateDto.Response newBook = bookService.createNewBook(
         BookServiceCreateDto.Request.of(request));
@@ -47,7 +48,7 @@ public class AdminBookController {
   @PutMapping("/{bookId}")
   public BookControllerUpdateDto.Response updateBook(
       @PathVariable("bookId") Long bookId,
-      @RequestBody BookControllerUpdateDto.Request request
+      @RequestBody @Valid BookControllerUpdateDto.Request request
   ) {
     BookServiceUpdateDto.Response response = bookService.updateBookData(bookId,
         BookServiceUpdateDto.Request.of(request));

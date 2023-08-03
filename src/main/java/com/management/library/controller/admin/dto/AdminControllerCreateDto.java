@@ -1,6 +1,7 @@
 package com.management.library.controller.admin.dto;
 
 import com.management.library.service.admin.dto.AdminServiceCreateDto;
+import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,11 @@ public class AdminControllerCreateDto {
   @NoArgsConstructor
   public static class Request {
 
+    @NotBlank(message = "해당 요소는 비어있으면 안됩니다.")
     private String email;
+    @NotBlank(message = "해당 요소는 비어있으면 안됩니다.")
     private String name;
+    @NotBlank(message = "해당 요소는 비어있으면 안됩니다.")
     private String password;
 
     public Request(String email, String name, String password) {

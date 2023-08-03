@@ -13,6 +13,7 @@ import com.management.library.service.request.newbook.dto.NewBookRequestServiceD
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,7 +61,7 @@ public class NewBookRequestController {
   // 신간 요청 생성
   @PostMapping
   public NewBookRequestControllerDto.Response createNewBookRequest(
-      @RequestBody NewBookRequestControllerDto.Request request,
+      @RequestBody @Valid NewBookRequestControllerDto.Request request,
       Principal principal
   ) {
 

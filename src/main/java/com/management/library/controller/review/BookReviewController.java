@@ -5,6 +5,7 @@ import com.management.library.service.review.BookReviewService;
 import com.management.library.service.review.dto.BookReviewServiceDto.Request;
 import com.management.library.service.review.dto.BookReviewServiceDto.Response;
 import java.security.Principal;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class BookReviewController {
   // 리뷰 등록
   @PostMapping
   public BookReviewControllerDto.Response createBookReview(
-      @RequestBody BookReviewControllerDto.Request request,
+      @RequestBody @Valid BookReviewControllerDto.Request request,
       Principal principal
   ) {
     Response review = bookReviewService.createReview(request.getBookTitle(), Request.of(request),

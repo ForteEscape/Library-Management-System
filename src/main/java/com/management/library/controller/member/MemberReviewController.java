@@ -10,6 +10,7 @@ import com.management.library.service.review.dto.BookReviewUpdateDto.Request;
 import com.management.library.service.review.dto.BookReviewUpdateDto.Response;
 import java.security.Principal;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +55,7 @@ public class MemberReviewController {
   // 회원 리뷰 수정
   @PutMapping("/{reviewId}")
   public ReviewUpdateControllerDto.Response updateMemberReviewDetail(
-      @RequestBody ReviewUpdateControllerDto.Request request,
+      @RequestBody @Valid ReviewUpdateControllerDto.Request request,
       @PathVariable("reviewId") Long reviewId
   ){
     Response response = bookReviewService.updateReview(Request.of(request), reviewId);

@@ -1,6 +1,9 @@
 package com.management.library.controller.review.dto;
 
 import com.management.library.service.review.dto.BookReviewServiceDto;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +15,15 @@ public class BookReviewControllerDto {
   @Setter
   @NoArgsConstructor
   public static class Request{
+
+    @NotBlank(message = "해당 요소는 비어있으면 안됩니다.")
     private String bookTitle;
+    @NotBlank(message = "해당 요소는 비어있으면 안됩니다.")
     private String reviewTitle;
+    @NotBlank(message = "해당 요소는 비어있으면 안됩니다.")
     private String reviewContent;
+    @Max(value = 5, message = "평점은 최대 5까지 지정할 수 있습니다.")
+    @Min(value = 1, message = "평점은 최소 1까지 지정할 수 있습니다.")
     private int reviewRate;
 
     @Builder
