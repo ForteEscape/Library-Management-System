@@ -1,8 +1,12 @@
 package com.management.library.controller.admin;
 
-import static com.management.library.controller.admin.dto.AdminCreateControllerDto.Request;
-import static com.management.library.controller.admin.dto.AdminCreateControllerDto.Response;
+import static com.management.library.controller.admin.dto.AdminControllerCreateDto.Request;
+import static com.management.library.controller.admin.dto.AdminControllerCreateDto.Response;
 
+import com.management.library.controller.admin.dto.AdminAllReplyDto;
+import com.management.library.controller.request.management.dto.ManagementResultControllerDto;
+import com.management.library.controller.request.newbook.dto.NewBookResultControllerDto;
+import com.management.library.dto.PageInfo;
 import com.management.library.service.admin.AdminService;
 import com.management.library.service.admin.dto.AdminCreateServiceDto;
 import com.management.library.service.result.management.ManagementResultService;
@@ -10,9 +14,13 @@ import com.management.library.service.result.management.dto.ManagementResultCrea
 import com.management.library.service.result.newbook.NewBookResultService;
 import com.management.library.service.result.newbook.dto.NewBookResultCreateDto;
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,15 +49,46 @@ public class AdminController {
   }
 
   @GetMapping("/my-management-results")
-  public Page<ManagementResultCreateDto.Response> getManagementResult(Principal principal,
-      Pageable pageable) {
-    return managementResultService.getResultByAdminEmail(principal.getName(), pageable);
+  public ResponseEntity getManagementResult(
+      Principal principal, Pageable pageable) {
+
+    Page<ManagementResultCreateDto.Response> resultPage = managementResultService.getResultByAdminEmail(
+        principal.getName(), pageable);
+    List<ManagementResultCreateDto.Response> content = resultPage.getContent();
+
+    List<ManagementResultControllerDto.Response> result = content.stream()
+        .map(ManagementResultControllerDto.Response::of)
+        .collect(Collectors.toList());
+
+    PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
+        (int) resultPage.getTotalElements(), resultPage.getTotalPages());
+
+    return new ResponseEntity<>(
+        new AdminAllReplyDto<>(result, pageInfo),
+        HttpStatus.OK
+    );
   }
 
   @GetMapping("/my-new-book-results")
-  public Page<NewBookResultCreateDto.Response> getNewBookResult(Principal principal,
+  public ResponseEntity getNewBookResult(Principal principal,
       Pageable pageable) {
-    return newBookResultService.getResultByAdminEmail(principal.getName(), pageable);
+
+    Page<NewBookResultCreateDto.Response> resultPage = newBookResultService.getResultByAdminEmail(
+        principal.getName(), pageable);
+
+    PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
+        (int) resultPage.getTotalElements(), resultPage.getTotalPages());
+
+    List<NewBookResultCreateDto.Response> content = resultPage.getContent();
+
+    List<NewBookResultControllerDto.Response> result = content.stream()
+        .map(NewBookResultControllerDto.Response::of)
+        .collect(Collectors.toList());
+
+    return new ResponseEntity<>(
+        new AdminAllReplyDto<>(result, pageInfo),
+        HttpStatus.OK
+    );
   }
 
 }
