@@ -1,18 +1,16 @@
-package com.management.library.service.rental.dto;
+package com.management.library.controller.dto;
 
-import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
+import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class RentalServiceResponseDto {
+public class AdminRentalControllerResponseDto {
 
   private Long id;
   private String bookName;
@@ -23,7 +21,7 @@ public class RentalServiceResponseDto {
   private RentalStatus rentalStatus;
 
   @Builder
-  public RentalServiceResponseDto(Long id, String bookName, String memberCode,
+  private AdminRentalControllerResponseDto(Long id, String bookName, String memberCode,
       LocalDate rentalStartDate, LocalDate rentalEndDate, ExtendStatus extendStatus,
       RentalStatus rentalStatus) {
     this.id = id;
@@ -35,15 +33,15 @@ public class RentalServiceResponseDto {
     this.rentalStatus = rentalStatus;
   }
 
-  public static RentalServiceResponseDto of(Rental rental) {
-    return RentalServiceResponseDto.builder()
-        .id(rental.getId())
-        .bookName(rental.getBook().getBookInfo().getTitle())
-        .memberCode(rental.getMember().getMemberCode())
-        .rentalStartDate(rental.getRentalStartDate())
-        .rentalEndDate(rental.getRentalEndDate())
-        .extendStatus(rental.getExtendStatus())
-        .rentalStatus(rental.getRentalStatus())
+  public static AdminRentalControllerResponseDto of(RentalServiceResponseDto response) {
+    return AdminRentalControllerResponseDto.builder()
+        .id(response.getId())
+        .bookName(response.getBookName())
+        .memberCode(response.getMemberCode())
+        .rentalStartDate(response.getRentalStartDate())
+        .rentalEndDate(response.getRentalEndDate())
+        .extendStatus(response.getExtendStatus())
+        .rentalStatus(response.getRentalStatus())
         .build();
   }
 }

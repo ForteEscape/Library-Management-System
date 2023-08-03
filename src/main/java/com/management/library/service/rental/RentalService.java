@@ -176,11 +176,10 @@ public class RentalService {
   }
 
   // 회원 대여 상세 조회
-  public RentalServiceResponseDto getMemberRentalDetail(Long rentalId){
+  public RentalServiceResponseDto getRentalDetail(Long rentalId){
     Rental rental = rentalRepository.findById(rentalId)
         .orElseThrow(() -> new NoSuchElementExistsException(RENTAL_NOT_EXISTS));
 
     return RentalServiceResponseDto.of(rental);
   }
-
 }

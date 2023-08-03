@@ -78,6 +78,7 @@ public class BookRentalRepositoryImpl implements BookRentalRepositoryCustom {
       Pageable pageable) {
     List<Rental> result = queryFactory.selectFrom(rental)
         .join(rental.book, book).fetchJoin()
+        .join(rental.member, member).fetchJoin()
         .where(rentalStatusEq(cond.getRentalStatus()))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
