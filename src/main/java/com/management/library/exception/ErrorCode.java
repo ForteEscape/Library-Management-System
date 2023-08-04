@@ -32,7 +32,8 @@ public enum ErrorCode {
   OVERDUE_RENTAL_EXISTS("연체된 대여가 존재합니다."),
   REVIEW_NOT_EXISTS("리뷰가 존재하지 않습니다."),
   RETURNED_RENTAL_NOT_EXISTS("조건에 맞는 반납된 대여가 존재하지 않습니다."),
-  VALIDATION_FAILED("입력값 검증에 실패하였습니다.");
+  VALIDATION_FAILED("입력값 검증에 실패하였습니다."),
+  DATA_NOT_EXISTS("데이터가 존재하지 않습니다.");
 
   private final String description;
 }

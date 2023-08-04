@@ -15,4 +15,6 @@ public interface BookRepositoryCustom {
 
   Optional<Book> findByTitleAndAuthor(String title, String author);
 
+  Long countByBookUnavailableStatus();
+
 }
