@@ -18,5 +18,11 @@ spring:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
 
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
 logging.level:
   org.hibernate.SQL: debug
