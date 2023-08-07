@@ -30,14 +30,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-batch
 	implementation 'org.springframework.boot:spring-boot-starter-batch:2.5.1'
+
 	// https://mvnrepository.com/artifact/com.github.gavlyukovskiy/p6spy-spring-boot-starter
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+
 	// querydsl implementation
 	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
 	// https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
 	testImplementation 'org.testcontainers:junit-jupiter:1.17.2'
+
 	// https://mvnrepository.com/artifact/org.redisson/redisson
 	implementation 'org.redisson:redisson:3.17.7'
 

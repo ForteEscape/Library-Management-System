@@ -7,6 +7,9 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+  jwt:
+    secret: emVyb2Jhc2Utc3ByaW5nLWJvb3QtYXNzaWdubWVudC1kYXRhLXdpdGgtand0LXNlY3JldC1rZXk=
+
   jpa:
     hibernate:
       ddl-auto: create
