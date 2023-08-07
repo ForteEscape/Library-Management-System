@@ -8,6 +8,9 @@ import com.management.library.domain.book.BookReview;
 import com.management.library.service.review.dto.BookReviewOverviewDto;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,5 +78,16 @@ public class BookReviewRepositoryImpl implements BookReviewRepositoryCustom{
         .where(bookReview.book.id.eq(bookId));
 
     return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+  }
+
+  @Override
+  public Long countByReviewDate(LocalDate startDate, LocalDate endDate) {
+    return queryFactory.select(bookReview.count())
+        .from(bookReview)
+        .where(
+            bookReview.createdAt.after(LocalDateTime.of(startDate, LocalTime.MAX)),
+            bookReview.createdAt.before(LocalDateTime.of(endDate, LocalTime.MIN))
+        )
+        .fetchOne();
   }
 }

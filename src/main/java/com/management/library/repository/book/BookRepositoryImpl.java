@@ -5,6 +5,7 @@ import static com.querydsl.core.types.Projections.*;
 
 import com.management.library.domain.book.Book;
 import com.management.library.controller.book.dto.BookSearchCond;
+import com.management.library.domain.type.BookStatus;
 import com.management.library.service.book.dto.BookServiceCreateDto;
 import com.management.library.service.book.dto.BookServiceCreateDto.Response;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -114,6 +115,14 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
         .fetchOne();
 
     return Optional.ofNullable(result);
+  }
+
+  @Override
+  public Long countByBookUnavailableStatus() {
+    return queryFactory.select(book.count())
+        .from(book)
+        .where(book.bookStatus.eq(BookStatus.UNAVAILABLE))
+        .fetchOne();
   }
 
   private BooleanExpression bookPublisherEq(String publisherName) {

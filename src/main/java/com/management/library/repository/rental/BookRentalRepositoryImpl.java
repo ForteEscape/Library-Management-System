@@ -1,17 +1,22 @@
 package com.management.library.repository.rental;
 
-import static com.management.library.domain.book.QBook.*;
-import static com.management.library.domain.member.QMember.*;
-import static com.management.library.domain.rental.QRental.*;
-import static com.management.library.domain.type.RentalStatus.*;
+import static com.management.library.domain.book.QBook.book;
+import static com.management.library.domain.member.QMember.member;
+import static com.management.library.domain.rental.QRental.rental;
+import static com.management.library.domain.type.RentalStatus.OVERDUE;
+import static com.management.library.domain.type.RentalStatus.PROCEEDING;
+import static com.management.library.domain.type.RentalStatus.RETURNED;
 
+import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.RentalStatus;
-import com.management.library.controller.dto.BookRentalSearchCond;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -137,6 +142,17 @@ public class BookRentalRepositoryImpl implements BookRentalRepositoryCustom {
         .fetchOne();
 
     return Optional.ofNullable(result);
+  }
+
+  @Override
+  public Long countByRentalByDate(LocalDate startDate, LocalDate endDate) {
+    return queryFactory.select(rental.count())
+        .from(rental)
+        .where(
+            rental.createdAt.after(LocalDateTime.of(startDate, LocalTime.MAX)),
+            rental.createdAt.before(LocalDateTime.of(endDate, LocalTime.MIN))
+        )
+        .fetchOne();
   }
 
   private BooleanExpression rentalStatusEq(RentalStatus rentalStatus) {
