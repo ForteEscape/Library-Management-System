@@ -8,6 +8,7 @@ import static com.management.library.exception.ErrorCode.PASSWORD_NOT_MATCH;
 import com.management.library.controller.admin.dto.MemberSearchCond;
 import com.management.library.domain.member.Address;
 import com.management.library.domain.member.Member;
+import com.management.library.exception.LoginFailedException;
 import com.management.library.service.member.dto.MemberServiceUpdateDto;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.InvalidAccessException;
@@ -18,11 +19,15 @@ import com.management.library.service.member.dto.MemberServiceCreateDto;
 import com.management.library.service.member.dto.MemberServiceCreateDto.Request;
 import com.management.library.service.member.dto.MemberServiceCreateDto.Response;
 import com.management.library.service.member.dto.MemberServiceReadDto;
+import com.management.library.service.member.dto.MemberSignInResultDto;
 import com.management.library.service.query.dto.PasswordChangeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
   private final MemberRepository memberRepository;
   private final Generator<String> memberPasswordGenerator;
@@ -148,5 +153,22 @@ public class MemberService {
     member.changeMemberData(request);
 
     return "success";
+  }
+
+  public MemberSignInResultDto authenticate(String memberCode, String password){
+    Member member = memberRepository.findByMemberCode(memberCode)
+        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
+
+    if (!passwordEncoder.matches(password, member.getPassword())){
+      throw new LoginFailedException(PASSWORD_NOT_MATCH);
+    }
+
+    return new MemberSignInResultDto(memberCode, member.getAuthority());
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return memberRepository.findByMemberCode(username)
+        .orElseThrow(() -> new NoSuchElementExistsException(MEMBER_NOT_EXISTS));
   }
 }
