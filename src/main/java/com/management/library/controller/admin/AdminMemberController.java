@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class AdminMemberController {
   private final MemberTotalInfoService memberTotalInfoService;
 
   // 회원 생성
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   public MemberControllerCreateDto.Response createMember(
       @RequestBody @Valid MemberControllerCreateDto.Request request
@@ -46,8 +48,9 @@ public class AdminMemberController {
   }
 
   // 회원 전체 조회
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
-  public ResponseEntity getMemberList(MemberSearchCond cond, Pageable pageable) {
+  public ResponseEntity<?> getMemberList(MemberSearchCond cond, Pageable pageable) {
     Page<MemberServiceReadDto> resultPage = memberService.getMemberDataList(cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
         (int) resultPage.getTotalElements(), resultPage.getTotalPages());
@@ -63,6 +66,7 @@ public class AdminMemberController {
   }
 
   // 회원 상세 정보 조회
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{memberId}")
   public MemberTotalInfoDto getMemberDetail(@PathVariable("memberId") Long memberId) {
     String memberCode = memberService.getMemberData(memberId).getMemberCode();
@@ -71,12 +75,14 @@ public class AdminMemberController {
   }
 
   // 회원 삭제
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{memberId}")
   public String deleteMember(@PathVariable("memberId") Long memberId) {
     return memberService.deleteMemberData(memberId);
   }
 
   // 회원 패스워드 초기화
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/{memberId}/init-password")
   public String memberPasswordInit(@PathVariable("memberId") Long memberId) {
     return memberService.initMemberPassword(memberId);

@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +39,9 @@ public class AdminNewBookRequestController {
   private final NewBookTotalResponseService newBookTotalResponseService;
 
   // 신간 요구사항 조회
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
-  public ResponseEntity getNewBookRequests(RequestSearchCond cond,
+  public ResponseEntity<?> getNewBookRequests(RequestSearchCond cond,
       Pageable pageable) {
     Page<Response> resultPage = newBookService.getAllNewBookRequest(cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageNumber(),
@@ -56,6 +58,7 @@ public class AdminNewBookRequestController {
   }
 
   // 신간 요구사항 세부 조회
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{requestId}")
   public NewBookTotalResponseDto getNewBookRequestDetail(
       @PathVariable("requestId") Long requestId) {
@@ -64,6 +67,7 @@ public class AdminNewBookRequestController {
   }
 
   // 신간 요구사항에 대한 답변 작성
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/{requestId}/result")
   public NewBookResultControllerDto.Response createNewBookRequestResult(
       @PathVariable("requestId") Long requestId,

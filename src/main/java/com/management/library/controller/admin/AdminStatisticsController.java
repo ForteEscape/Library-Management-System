@@ -6,6 +6,7 @@ import com.management.library.service.statistics.StatisticsService;
 import com.management.library.service.statistics.dto.MonthlyResultDto;
 import com.management.library.service.statistics.dto.YearResultDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ public class AdminStatisticsController {
 
   private final StatisticsService statisticsService;
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/monthly-rentals")
   public AdminControllerMonthlyResultDto getMonthlyRentalStatistics(
       @RequestParam("year") int year,
@@ -28,6 +30,7 @@ public class AdminStatisticsController {
     return AdminControllerMonthlyResultDto.of(monthlyRentedCount);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/monthly-reviews")
   public AdminControllerMonthlyResultDto getMonthlyReviewStatistics(
       @RequestParam("year") int year,
@@ -38,6 +41,7 @@ public class AdminStatisticsController {
     return AdminControllerMonthlyResultDto.of(monthlyRentedCount);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/monthly-unavailable-books")
   public AdminControllerMonthlyResultDto getMonthlyBookUnavailableStatistics(
       @RequestParam("year") int year,
@@ -49,6 +53,7 @@ public class AdminStatisticsController {
     return AdminControllerMonthlyResultDto.of(monthlyRentedCount);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/yearly-rentals")
   public AdminControllerYearlyResultDto getYearlyRentalStatistics(@RequestParam("year") int year) {
     YearResultDto yearlyRentalData = statisticsService.getYearlyRentalCount(year);
@@ -56,6 +61,7 @@ public class AdminStatisticsController {
     return AdminControllerYearlyResultDto.of(yearlyRentalData);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/yearly-reviews")
   public AdminControllerYearlyResultDto getYearlyReviewStatistics(@RequestParam("year") int year) {
     YearResultDto yearlyRentalData = statisticsService.getYearlyReviewCount(year);
@@ -63,6 +69,7 @@ public class AdminStatisticsController {
     return AdminControllerYearlyResultDto.of(yearlyRentalData);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/yearly-unavailable-books")
   public AdminControllerYearlyResultDto getYearlyUnavailableBookStatistics(
       @RequestParam("year") int year) {

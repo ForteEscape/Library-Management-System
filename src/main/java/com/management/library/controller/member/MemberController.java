@@ -9,6 +9,7 @@ import com.management.library.service.query.dto.PasswordChangeDto;
 import java.security.Principal;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,12 +26,14 @@ public class MemberController {
   private final MemberTotalInfoService memberTotalInfoService;
 
   // 마이페이지
+  @PreAuthorize("hasRole('MEMBER')")
   @GetMapping
   public MemberTotalInfoDto getMemberData(Principal principal) {
     return memberTotalInfoService.getMemberTotalInfo(principal.getName());
   }
 
   // 회원 정보 변경
+  @PreAuthorize("hasRole('MEMBER')")
   @PutMapping
   public String updateMemberData(@RequestBody @Valid MemberControllerUpdateDto request,
       Principal principal) {
@@ -39,6 +42,7 @@ public class MemberController {
   }
 
   // 회원 비밀번호 변경
+  @PreAuthorize("hasRole('MEMBER')")
   @PostMapping("/change-password")
   public String changeMemberPassword(@RequestBody @Valid PasswordChangeDto request, Principal principal) {
     return memberService.changePassword(principal.getName(), request);

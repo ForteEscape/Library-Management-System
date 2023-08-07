@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,8 +32,9 @@ public class MemberReviewController {
   private final BookReviewService bookReviewService;
 
   // 회원 리뷰 조회
+  @PreAuthorize("hasRole('MEMBER')")
   @GetMapping
-  public ResponseEntity getMemberReviews(Principal principal, Pageable pageable) {
+  public ResponseEntity<?> getMemberReviews(Principal principal, Pageable pageable) {
     Page<BookReviewOverviewDto> resultPage = bookReviewService.getMemberReviewDataList(
         principal.getName(), pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
@@ -47,12 +49,14 @@ public class MemberReviewController {
   }
 
   // 회원 리뷰 상세 조회
+  @PreAuthorize("hasRole('MEMBER')")
   @GetMapping("/{reviewId}")
   public BookReviewDetailDto getMemberReviewDetail(@PathVariable("reviewId") Long reviewId) {
     return bookReviewService.getReviewData(reviewId);
   }
 
   // 회원 리뷰 수정
+  @PreAuthorize("hasRole('MEMBER')")
   @PutMapping("/{reviewId}")
   public ReviewUpdateControllerDto.Response updateMemberReviewDetail(
       @RequestBody @Valid ReviewUpdateControllerDto.Request request,

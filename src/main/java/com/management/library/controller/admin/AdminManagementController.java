@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +38,9 @@ public class AdminManagementController {
   private final ManagementTotalResponseService managementTotalResponseService;
 
   // 운영 개선 요구사항 조회
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
-  public ResponseEntity getManagementRequest(RequestSearchCond cond,
+  public ResponseEntity<?> getManagementRequest(RequestSearchCond cond,
       Pageable pageable) {
 
     Page<Response> resultPage = managementService.getAllManagementRequest(cond, pageable);
@@ -56,6 +58,7 @@ public class AdminManagementController {
   }
 
   // 운영 개선 요구사항 상세 조회
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{requestId}")
   public ManagementTotalResponseDto getManagementRequestDetail(
       @PathVariable("requestId") Long requestId) {
@@ -64,6 +67,7 @@ public class AdminManagementController {
   }
 
   // 운영 개선 요구사항 답변 등록
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/{requestId}/result")
   public ManagementResultControllerDto.Response createManagementRequestResult(
       @PathVariable("requestId") Long requestId,

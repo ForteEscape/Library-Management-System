@@ -38,7 +38,7 @@ public class BookController {
 
   // 도서 조회
   @GetMapping
-  public ResponseEntity getBookList(BookSearchCond cond, Pageable pageable) {
+  public ResponseEntity<?> getBookList(BookSearchCond cond, Pageable pageable) {
     Page<Response> resultPage = bookService.searchBook(cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
         (int) resultPage.getTotalElements(), resultPage.getTotalPages());
