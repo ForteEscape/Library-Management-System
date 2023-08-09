@@ -1,5 +1,10 @@
 # Library-Management-System(L.M.S)
 
+## Swagger 주소
+- api 명세의 경우 swagger 주소에서 확인해 주세요
+- http://54.180.77.6:8080/swagger-ui.html#/
+
+
 ## 1. 프로젝트 주제 설명
 - L.M.S는 1개 도서관을 운영하는데 필요한 기능들을 구현하여 웹 서비스로 제공하는 프로젝트입니다.
 - 회원이 사용할 수 있는 기능과 관리자가 사용할 수 있는 기능이 분리되어 있습니다.
@@ -12,11 +17,7 @@
 <img src="https://img.shields.io/badge/QueryDSL-003545?style=for-the-badge&logo=querydsl&logoColor=white">
 <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white">
 <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
-<img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white">
 <br>
-
-- ElasticSearch 는 프로젝트 전체 구현 완료 이후 여유가 될 시 적용할 예정입니다.
-- 멀티모듈화의 경우 프로젝트 구현 이후 리펙토링 수행 시 시도해 보려고 합니다.
 
 
 ## 3. 프로젝트 기능
@@ -33,7 +34,7 @@
 - 회원은 개인 상세페이지에서 다음과 같은 정보들을 확인할 수 있습니다.
   - 자신의 개인 정보(이름, 도서 회원 코드)
   - 자신이 현재 대여한 도서 목록
-    - 대여한 도서에 대한 연장 신청
+    - 대여한 도서에 대한 대여 기간 연장 신청
   - 현재 자신의 대여 가능 상태
   - 자신이 도서관에 요청한 요청 목록
   - 이번 달 남은 요청 가능 횟수
