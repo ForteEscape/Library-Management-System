@@ -139,6 +139,7 @@ public class BookRentalRepositoryImpl implements BookRentalRepositoryCustom {
             book.bookInfo.title.eq(bookTitle),
             rental.rentalStatus.eq(RETURNED)
         )
+        .limit(1L)
         .fetchOne();
 
     return Optional.ofNullable(result);
