@@ -1,16 +1,22 @@
 package com.management.library.controller.request.management;
 
-import static com.management.library.controller.request.management.dto.ManagementRequestControllerDto.Request;
-import static com.management.library.controller.request.management.dto.ManagementRequestControllerDto.Response;
+import static com.management.library.controller.request.management.dto.ManagementRequestControllerDto.ManagementCreateResponse;
 
 import com.management.library.controller.dto.PageInfo;
 import com.management.library.controller.dto.RequestSearchCond;
 import com.management.library.controller.dto.ReviewAllDto;
+import com.management.library.controller.request.management.dto.ManagementRequestControllerDto;
 import com.management.library.controller.request.management.dto.ManagementRequestOverviewDto;
 import com.management.library.service.query.ManagementTotalResponseService;
 import com.management.library.service.query.dto.ManagementTotalResponseDto;
 import com.management.library.service.request.management.ManagementService;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +34,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = {"운영 개선 요청 조회 api"})
+@ApiResponses({
+    @ApiResponse(code = 200, message = "Success"),
+    @ApiResponse(code = 400, message = "Bad Request"),
+    @ApiResponse(code = 500, message = "Internal Server Error")
+})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/management-requests")
@@ -38,6 +50,7 @@ public class ManagementRequestController {
 
   // 운영 개선 사항 조회
   @GetMapping
+  @ApiOperation(value = "운영 개선 사항 조회", notes = "운영 개선 사항들을 조회할 수 있다.")
   public ResponseEntity<?> getManagementRequestList(RequestSearchCond cond, Pageable pageable) {
     Page<ManagementRequestServiceDto.Response> resultPage = managementService.getAllManagementRequest(
         cond, pageable);
@@ -56,6 +69,10 @@ public class ManagementRequestController {
 
   // 운영 개선 사항 상세 조회
   @GetMapping("/{requestId}")
+  @ApiOperation(value = "운영 개선 사항 상세 조회", notes = "운영 개선 사항들을 상세하게 조회할 수 있다.")
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "requestId", value = "요청 id")
+  })
   public ManagementTotalResponseDto getManagementRequestDetail(
       @PathVariable("requestId") Long requestId) {
     return managementTotalResponseService.getManagementTotalData(requestId);
@@ -64,11 +81,15 @@ public class ManagementRequestController {
   // 운영 개선 사항 생성
   @PreAuthorize("hasRole('MEMBER')")
   @PostMapping
-  public Response createManagementRequest(@RequestBody @Valid Request request,
+  @ApiOperation(value = "운영 개선 사항 생성", notes = "운영 개선 요청 사항을 생성할 수 있다.")
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "name", value = "접속한 회원 정보")
+  })
+  public ManagementCreateResponse createManagementRequest(@RequestBody @Valid ManagementRequestControllerDto.ManagementCreateRequest managementCreateRequest,
       Principal principal) {
     ManagementRequestServiceDto.Response response = managementService.createManagementRequest(
-        ManagementRequestServiceDto.Request.of(request), principal.getName());
+        ManagementRequestServiceDto.Request.of(managementCreateRequest), principal.getName());
 
-    return Response.of(response);
+    return ManagementCreateResponse.of(response);
   }
 }

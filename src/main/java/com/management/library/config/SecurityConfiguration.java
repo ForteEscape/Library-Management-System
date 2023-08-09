@@ -30,7 +30,11 @@ public class SecurityConfiguration {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers("/**/sign-in").permitAll()
+        .antMatchers(
+            "/**/sign-in", "/css/**", "/js/**", "/images/**",
+            "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-resources/**",
+            "/swagger-ui/**"
+        ).permitAll()
         .and()
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -39,7 +43,9 @@ public class SecurityConfiguration {
 
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
-    return (web) -> web.ignoring().antMatchers("/h2-console/**");
+    return (web) -> web.ignoring().antMatchers(
+        "/h2-console/**"
+    );
   }
 
   @Bean

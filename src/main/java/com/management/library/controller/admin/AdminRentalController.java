@@ -12,6 +12,12 @@ import com.management.library.service.rental.RentalService;
 import com.management.library.service.rental.dto.RentalBookInfoDto;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import com.management.library.service.rental.dto.ReturnBookResponseDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +35,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = {"관리자 전용 대여 기능 api"})
+@ApiResponses({
+    @ApiResponse(code = 200, message = "Success"),
+    @ApiResponse(code = 400, message = "Bad Request"),
+    @ApiResponse(code = 500, message = "Internal Server Error")
+})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admins/rentals")
@@ -36,9 +48,9 @@ public class AdminRentalController {
 
   private final RentalService rentalService;
 
-  // 도서 대여 생성
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
+  @ApiOperation(value = "도서 대여 생성", notes = "새로운 도서 대여 정보를 생성한다.")
   public RentalResponseDto createRental(
       @RequestBody @Valid RentalRequestDto request
   ) {
@@ -48,9 +60,9 @@ public class AdminRentalController {
     return RentalResponseDto.of(bookRental);
   }
 
-  // 도서 대여 내역 조회
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
+  @ApiOperation(value = "도서 대여 내역 조회", notes = "도서 대여 내역을 조회할 수 있다.")
   public ResponseEntity<?> getRentalList(BookRentalSearchCond cond, Pageable pageable) {
     Page<RentalServiceResponseDto> resultPage = rentalService.getRentalData(cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
@@ -66,18 +78,21 @@ public class AdminRentalController {
     );
   }
 
-  // 도서 대여 내역 상세 조회
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{rentalId}")
+  @ApiOperation(value = "도서 대여 내역 상세 조회", notes = "특정 대여 내역을 조회할 수 있다.")
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "rentalId", value = "대여 id"),
+  })
   public AdminRentalControllerResponseDto getRentalDetail(@PathVariable("rentalId") Long rentalId) {
     RentalServiceResponseDto rentalDetail = rentalService.getRentalDetail(rentalId);
 
     return AdminRentalControllerResponseDto.of(rentalDetail);
   }
 
-  // 도서 반납
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/return")
+  @ApiOperation(value = "도서 반납", notes = "대여된 도서를 반납한다.")
   public ReturnBookResponseDto returnBook(@RequestBody ReturnBookDataDto request) {
     return rentalService.returnBook(request.getMemberCode(), request.getBookTitle(),
         request.getAuthor());

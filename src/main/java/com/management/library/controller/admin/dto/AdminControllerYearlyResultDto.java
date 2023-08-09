@@ -22,7 +22,7 @@ public class AdminControllerYearlyResultDto {
     this.result = result;
   }
 
-  public static AdminControllerYearlyResultDto of(YearResultDto result){
+  public static AdminControllerYearlyResultDto of(YearResultDto result) {
     List<AdminControllerMonthlyResultDto> data = result.getResult().stream()
         .map(AdminControllerMonthlyResultDto::of)
         .collect(Collectors.toList());

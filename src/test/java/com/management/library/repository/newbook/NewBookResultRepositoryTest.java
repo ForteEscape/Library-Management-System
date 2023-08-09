@@ -29,7 +29,7 @@ import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
 @Slf4j
-class NewBookRequestResultRepositoryTest {
+class NewBookResultRepositoryTest {
 
   @Autowired
   private NewBookRequestResultRepository newBookRequestResultRepository;

@@ -27,7 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
-class ManagementRequestResultRepositoryTest {
+class ManagementResultRepositoryTest {
 
   @Autowired
   private ManagementRequestRepository managementRequestRepository;

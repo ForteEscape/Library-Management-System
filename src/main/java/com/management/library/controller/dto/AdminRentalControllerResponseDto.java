@@ -3,6 +3,7 @@ package com.management.library.controller.dto;
 import com.management.library.domain.type.ExtendStatus;
 import com.management.library.domain.type.RentalStatus;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,12 +13,19 @@ import lombok.Setter;
 @Setter
 public class AdminRentalControllerResponseDto {
 
+  @ApiModelProperty(example = "1")
   private Long id;
+  @ApiModelProperty(example = "book1")
   private String bookName;
+  @ApiModelProperty(example = "100000001")
   private String memberCode;
+  @ApiModelProperty(example = "2023-08-09")
   private LocalDate rentalStartDate;
+  @ApiModelProperty(example = "2023-08-23")
   private LocalDate rentalEndDate;
+  @ApiModelProperty(example = "AVAILABLE")
   private ExtendStatus extendStatus;
+  @ApiModelProperty(example = "PROCEEDING")
   private RentalStatus rentalStatus;
 
   @Builder

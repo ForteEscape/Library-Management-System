@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BookSearchCond {
 
+
   private String bookTitle;
   private String bookAuthor;
   private String publisherName;

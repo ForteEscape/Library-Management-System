@@ -1,6 +1,6 @@
 package com.management.library.service.member.dto;
 
-import com.management.library.controller.member.dto.MemberControllerCreateDto;
+import com.management.library.controller.member.dto.MemberControllerCreateDto.MemberCreateRequest;
 import com.management.library.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,13 +28,13 @@ public class MemberServiceCreateDto {
       this.street = street;
     }
 
-    public static Request of(MemberControllerCreateDto.Request request){
+    public static Request of(MemberCreateRequest memberCreateRequest){
       return Request.builder()
-          .name(request.getName())
-          .birthdayCode(request.getBirthdayCode())
-          .legion(request.getLegion())
-          .city(request.getCity())
-          .street(request.getStreet())
+          .name(memberCreateRequest.getName())
+          .birthdayCode(memberCreateRequest.getBirthdayCode())
+          .legion(memberCreateRequest.getLegion())
+          .city(memberCreateRequest.getCity())
+          .street(memberCreateRequest.getStreet())
           .build();
     }
   }

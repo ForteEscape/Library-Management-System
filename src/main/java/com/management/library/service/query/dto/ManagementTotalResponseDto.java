@@ -2,6 +2,7 @@ package com.management.library.service.query.dto;
 
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ManagementTotalResponseDto {
 
+  @ApiModelProperty(example = "managementRequestTitle")
   private String requestTitle;
+  @ApiModelProperty(example = "managementRequestContent")
   private String requestContent;
+  @ApiModelProperty(example = "AWAIT")
   private RequestStatus requestStatus;
   private ManagementResultDto resultDto;
 
