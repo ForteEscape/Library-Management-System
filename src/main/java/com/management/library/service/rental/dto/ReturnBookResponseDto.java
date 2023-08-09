@@ -2,6 +2,7 @@ package com.management.library.service.rental.dto;
 
 import com.management.library.domain.rental.Rental;
 import com.management.library.domain.type.RentalStatus;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReturnBookResponseDto {
 
+  @ApiModelProperty(example = "book1")
   private String bookTitle;
+  @ApiModelProperty(example = "author1")
   private String author;
+  @ApiModelProperty(example = "RETURNED")
   private RentalStatus rentalStatus;
+  @ApiModelProperty(example = "NOT-OVERDUE")
   private String overdueDate;
 
   @Builder

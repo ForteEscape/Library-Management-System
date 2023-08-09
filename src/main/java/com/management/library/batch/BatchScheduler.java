@@ -27,8 +27,6 @@ public class BatchScheduler {
   public void runBatchJob()
       throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 
-    log.info("batch processing...");
-
     Map<String, JobParameter> jobParameterMap = new HashMap<>();
     JobParameters parameters = new JobParameters(jobParameterMap);
 

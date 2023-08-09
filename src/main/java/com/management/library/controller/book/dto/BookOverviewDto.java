@@ -1,6 +1,7 @@
 package com.management.library.controller.book.dto;
 
 import com.management.library.service.book.dto.BookServiceCreateDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,11 @@ import lombok.Setter;
 @Setter
 public class BookOverviewDto {
 
+  @ApiModelProperty(example = "1")
   private Long id;
+  @ApiModelProperty(example = "book1")
   private String bookTitle;
+  @ApiModelProperty(example = "author1")
   private String author;
 
   public BookOverviewDto(Long id, String bookTitle, String author) {

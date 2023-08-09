@@ -1,6 +1,6 @@
 package com.management.library.service.review.dto;
 
-import com.management.library.controller.review.dto.ReviewUpdateControllerDto;
+import com.management.library.controller.review.dto.ReviewUpdateControllerDto.BookReviewUpdateRequest;
 import com.management.library.domain.book.BookReview;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,10 +23,10 @@ public class BookReviewUpdateDto {
       this.updateReviewContent = updateReviewContent;
     }
 
-    public static Request of(ReviewUpdateControllerDto.Request request) {
+    public static Request of(BookReviewUpdateRequest bookReviewUpdateRequest) {
       return Request.builder()
-          .updateReviewTitle(request.getNewReviewTitle())
-          .updateReviewContent(request.getNewReviewContent())
+          .updateReviewTitle(bookReviewUpdateRequest.getNewReviewTitle())
+          .updateReviewContent(bookReviewUpdateRequest.getNewReviewContent())
           .build();
     }
   }

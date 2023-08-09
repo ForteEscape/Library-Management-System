@@ -2,6 +2,7 @@ package com.management.library.controller.member.dto;
 
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.request.management.dto.ManagementRequestServiceDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +11,13 @@ import lombok.Setter;
 @Setter
 public class MemberManagementRequestOverviewDto {
 
+  @ApiModelProperty(example = "1")
   private Long id;
+  @ApiModelProperty(example = "managementRequestTitle")
   private String title;
+  @ApiModelProperty(example = "managementRequestContent")
   private String content;
+  @ApiModelProperty(example = "AWAIT")
   private RequestStatus requestStatus;
 
   @Builder

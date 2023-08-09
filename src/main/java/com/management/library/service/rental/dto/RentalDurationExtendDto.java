@@ -1,5 +1,6 @@
 package com.management.library.service.rental.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RentalDurationExtendDto {
 
+  @ApiModelProperty(example = "2023-08-09")
   private LocalDate rentalStartDate;
+  @ApiModelProperty(example = "2023-08-30")
   private LocalDate rentalEndDate;
 
   @Builder

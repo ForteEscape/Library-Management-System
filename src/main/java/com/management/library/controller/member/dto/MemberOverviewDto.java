@@ -1,6 +1,7 @@
 package com.management.library.controller.member.dto;
 
 import com.management.library.service.member.dto.MemberServiceReadDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,9 @@ import lombok.Setter;
 @Setter
 public class MemberOverviewDto {
 
+  @ApiModelProperty(example = "1")
   private Long id;
+  @ApiModelProperty(example = "sehunkim")
   private String name;
 
   private MemberOverviewDto(Long id, String name) {

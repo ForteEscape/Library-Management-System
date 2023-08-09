@@ -10,6 +10,12 @@ import com.management.library.service.query.dto.NewBookTotalResponseDto;
 import com.management.library.service.request.newbook.NewBookService;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Request;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +33,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = {"신간 반입 요청 조회 api"})
+@ApiResponses({
+    @ApiResponse(code = 200, message = "Success"),
+    @ApiResponse(code = 400, message = "Bad Request"),
+    @ApiResponse(code = 500, message = "Internal Server Error")
+})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/new-book-requests")
@@ -37,6 +49,7 @@ public class NewBookRequestController {
 
   // 신간 요청 목록 조회
   @GetMapping
+  @ApiOperation(value = "신간 요청 목록 조회", notes = "신간 요청 목록들을 조회할 수 있다.")
   public ResponseEntity<?> getNewBookRequestList(RequestSearchCond cond, Pageable pageable) {
     Page<Response> resultPage = newBookService.getAllNewBookRequest(cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
@@ -54,6 +67,10 @@ public class NewBookRequestController {
 
   // 신간 요청 상세 조회
   @GetMapping("/{requestId}")
+  @ApiOperation(value = "신간 요청 상세 조회", notes = "신간 요청 세부사항을 조회할 수 있다.")
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "requestId", value = "요청 id")
+  })
   public NewBookTotalResponseDto getNewBookRequestDetail(
       @PathVariable("requestId") Long requestId) {
     return newBookTotalResponseService.getNewBookTotalResponse(requestId);
@@ -62,6 +79,10 @@ public class NewBookRequestController {
   // 신간 요청 생성
   @PreAuthorize("hasRole('MEMBER')")
   @PostMapping
+  @ApiOperation(value = "신간 요청 생성", notes = "신간 요청을 생성할 수 있다.")
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "name", value = "접속한 회원 정보")
+  })
   public NewBookRequestControllerDto.Response createNewBookRequest(
       @RequestBody @Valid NewBookRequestControllerDto.Request request,
       Principal principal

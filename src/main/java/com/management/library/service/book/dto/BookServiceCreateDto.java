@@ -1,6 +1,6 @@
 package com.management.library.service.book.dto;
 
-import com.management.library.controller.book.dto.BookControllerCreateDto;
+import com.management.library.controller.book.dto.BookControllerCreateDto.BookCreateRequest;
 import com.management.library.domain.book.Book;
 import com.management.library.domain.type.BookStatus;
 import lombok.Builder;
@@ -32,14 +32,14 @@ public class BookServiceCreateDto {
       this.typeCode = typeCode;
     }
 
-    public static Request of(BookControllerCreateDto.Request request){
+    public static Request of(BookCreateRequest bookCreateRequest){
       return Request.builder()
-          .title(request.getTitle())
-          .author(request.getAuthor())
-          .publisher(request.getPublisher())
-          .location(request.getLocation())
-          .publishedYear(request.getPublishedYear())
-          .typeCode(request.getTypeCode())
+          .title(bookCreateRequest.getTitle())
+          .author(bookCreateRequest.getAuthor())
+          .publisher(bookCreateRequest.getPublisher())
+          .location(bookCreateRequest.getLocation())
+          .publishedYear(bookCreateRequest.getPublishedYear())
+          .typeCode(bookCreateRequest.getTypeCode())
           .build();
     }
   }

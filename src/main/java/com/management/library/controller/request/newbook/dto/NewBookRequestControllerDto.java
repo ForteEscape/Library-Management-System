@@ -2,6 +2,7 @@ package com.management.library.controller.request.newbook.dto;
 
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.request.newbook.dto.NewBookRequestServiceDto;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +16,10 @@ public class NewBookRequestControllerDto {
   @NoArgsConstructor
   public static class Request {
 
+    @ApiModelProperty(example = "requestBookTitle")
     @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String requestBookTitle;
+    @ApiModelProperty(example = "requestBookContent")
     @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String requestContent;
 
@@ -32,10 +35,15 @@ public class NewBookRequestControllerDto {
   @NoArgsConstructor
   public static class Response {
 
+    @ApiModelProperty(example = "1")
     private Long id;
+    @ApiModelProperty(example = "sehunkim")
     private String memberName;
+    @ApiModelProperty(example = "requestBookTitle")
     private String requestBookTitle;
+    @ApiModelProperty(example = "requestBookContent")
     private String requestContent;
+    @ApiModelProperty(example = "AWAIT")
     private RequestStatus requestStatus;
 
     @Builder
