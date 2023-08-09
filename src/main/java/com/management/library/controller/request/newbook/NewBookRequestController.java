@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class NewBookRequestController {
 
   // 신간 요청 목록 조회
   @GetMapping
-  public ResponseEntity getNewBookRequestList(RequestSearchCond cond, Pageable pageable) {
+  public ResponseEntity<?> getNewBookRequestList(RequestSearchCond cond, Pageable pageable) {
     Page<Response> resultPage = newBookService.getAllNewBookRequest(cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
         (int) resultPage.getTotalElements(), resultPage.getTotalPages());
@@ -59,6 +60,7 @@ public class NewBookRequestController {
   }
 
   // 신간 요청 생성
+  @PreAuthorize("hasRole('MEMBER')")
   @PostMapping
   public NewBookRequestControllerDto.Response createNewBookRequest(
       @RequestBody @Valid NewBookRequestControllerDto.Request request,

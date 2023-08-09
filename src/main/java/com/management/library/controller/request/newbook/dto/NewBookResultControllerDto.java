@@ -3,7 +3,6 @@ package com.management.library.controller.request.newbook.dto;
 import com.management.library.domain.type.RequestStatus;
 import com.management.library.service.result.newbook.dto.NewBookResultCreateDto;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,6 @@ public class NewBookResultControllerDto {
     private String resultTitle;
     @NotBlank(message = "해당 부분은 비어있으면 안됩니다.")
     private String resultContent;
-    @NotEmpty(message = "해당 부분은 비어있으면 안됩니다.")
     private RequestStatus resultStatus;
 
     @Builder

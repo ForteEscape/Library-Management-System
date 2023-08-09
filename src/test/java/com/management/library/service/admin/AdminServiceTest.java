@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 
+import com.management.library.AbstractContainerBaseTest;
 import com.management.library.domain.admin.Administrator;
 import com.management.library.exception.DuplicateException;
 import com.management.library.exception.NoSuchElementExistsException;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-class AdminServiceTest {
+class AdminServiceTest extends AbstractContainerBaseTest {
 
   @Autowired
   private AdministratorRepository administratorRepository;

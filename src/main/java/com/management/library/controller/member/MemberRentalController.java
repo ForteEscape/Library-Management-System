@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +31,9 @@ public class MemberRentalController {
   private final RentalService rentalService;
 
   // 회원 대여 기록 조회
+  @PreAuthorize("hasRole('MEMBER')")
   @GetMapping
-  public ResponseEntity getMemberRentalData(BookRentalSearchCond cond, Pageable pageable,
+  public ResponseEntity<?> getMemberRentalData(BookRentalSearchCond cond, Pageable pageable,
       Principal principal) {
 
     Page<RentalServiceResponseDto> resultPage = rentalService.getMemberRentalData(cond,
@@ -50,12 +52,14 @@ public class MemberRentalController {
   }
 
   // 회원 대여 기록 상세 조회
+  @PreAuthorize("hasRole('MEMBER')")
   @GetMapping("/{rentalId}")
   public MemberRentalResponseDto getMemberRentalDetail(@PathVariable("rentalId") Long rentalId) {
     return MemberRentalResponseDto.of(rentalService.getRentalDetail(rentalId));
   }
 
   //회원 대여 기간 연장
+  @PreAuthorize("hasRole('MEMBER')")
   @PostMapping("/{rentalId}/extend-duration")
   public RentalDurationExtendDto extendMemberRental(@PathVariable("rentalId") Long rentalId,
       Principal principal) {

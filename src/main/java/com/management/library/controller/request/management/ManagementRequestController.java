@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class ManagementRequestController {
 
   // 운영 개선 사항 조회
   @GetMapping
-  public ResponseEntity getManagementRequestList(RequestSearchCond cond, Pageable pageable) {
+  public ResponseEntity<?> getManagementRequestList(RequestSearchCond cond, Pageable pageable) {
     Page<ManagementRequestServiceDto.Response> resultPage = managementService.getAllManagementRequest(
         cond, pageable);
     PageInfo pageInfo = new PageInfo(pageable.getPageNumber(), pageable.getPageSize(),
@@ -61,6 +62,7 @@ public class ManagementRequestController {
   }
 
   // 운영 개선 사항 생성
+  @PreAuthorize("hasRole('MEMBER')")
   @PostMapping
   public Response createManagementRequest(@RequestBody @Valid Request request,
       Principal principal) {

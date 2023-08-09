@@ -4,6 +4,7 @@ import com.management.library.domain.BaseEntity;
 import com.management.library.domain.type.Authority;
 import com.management.library.service.admin.dto.AdminServiceCreateDto;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -18,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -58,12 +60,14 @@ public class Administrator extends BaseEntity implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(this.authority.getRole());
+
+    return List.of(authority);
   }
 
   @Override
   public String getUsername() {
-    return null;
+    return this.email;
   }
 
   @Override

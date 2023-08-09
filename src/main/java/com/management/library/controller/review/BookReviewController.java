@@ -7,6 +7,7 @@ import com.management.library.service.review.dto.BookReviewServiceDto.Response;
 import java.security.Principal;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class BookReviewController {
   private final BookReviewService bookReviewService;
 
   // 리뷰 등록
+  @PreAuthorize("hasRole('MEMBER')")
   @PostMapping
   public BookReviewControllerDto.Response createBookReview(
       @RequestBody @Valid BookReviewControllerDto.Request request,

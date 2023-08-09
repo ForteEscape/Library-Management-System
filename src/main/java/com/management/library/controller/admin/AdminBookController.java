@@ -9,6 +9,7 @@ import com.management.library.service.book.dto.BookServiceResponseDto;
 import com.management.library.service.book.dto.BookServiceUpdateDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class AdminBookController {
   private final BookService bookService;
 
   // 도서 등록
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   public BookControllerCreateDto.Response createBook(
       @RequestBody @Valid BookControllerCreateDto.Request request
@@ -37,6 +39,7 @@ public class AdminBookController {
   }
 
   // 도서 조회
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{bookId}")
   public BookInfoResponseDto getBookDetail(@PathVariable("bookId") Long bookId) {
     BookServiceResponseDto bookData = bookService.getBookData(bookId);
@@ -45,6 +48,7 @@ public class AdminBookController {
   }
 
   // 도서 수정
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/{bookId}")
   public BookControllerUpdateDto.Response updateBook(
       @PathVariable("bookId") Long bookId,
@@ -57,6 +61,7 @@ public class AdminBookController {
   }
 
   // 도서 삭제
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/{bookId}")
   public String deleteBook(@PathVariable("bookId") Long bookId) {
     return bookService.deleteBookData(bookId);
