@@ -6,14 +6,14 @@ services:
     image: redis
     container_name: rediscache
     ports:
-    - 6380:6379
+      - 6380:6379
     networks:
       - spring-net
 
   spring-library-app:
     image: spring-library-app
     container_name: spring-library-app
-    build: ,
+    build: .
     restart: always
     environment:
       REDIS_HOST: rediscache

@@ -2,10 +2,10 @@ spring:
   profiles:
     active: local
   datasource:
-    url: jdbc:h2:tcp://localhost/~/library
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://svc.sel3.cloudtype.app:32084/library
+    username: root
+    password: root
 
   jwt:
     secret: emVyb2Jhc2Utc3ByaW5nLWJvb3QtYXNzaWdubWVudC1kYXRhLXdpdGgtand0LXNlY3JldC1rZXk=
@@ -20,6 +20,7 @@ spring:
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
+
 
   batch:
     job:

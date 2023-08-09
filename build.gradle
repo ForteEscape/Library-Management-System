@@ -31,6 +31,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-batch
 	implementation 'org.springframework.boot:spring-boot-starter-batch:2.5.1'
 
@@ -50,7 +52,6 @@ dependencies {
 	implementation 'org.redisson:redisson:3.17.7'
 
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
 
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0'
