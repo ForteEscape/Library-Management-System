@@ -46,7 +46,7 @@ public class AdminController {
   private final NewBookResultService newBookResultService;
   private final TokenProvider tokenProvider;
 
-  @PreAuthorize("hasRole('Authority.ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/sign-up")
   public Response createAdmin(@RequestBody @Valid Request request) {
     AdminServiceCreateDto.Response admin = adminService.createAdmin(

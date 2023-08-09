@@ -12,7 +12,6 @@ import com.management.library.service.rental.RentalService;
 import com.management.library.service.rental.dto.RentalBookInfoDto;
 import com.management.library.service.rental.dto.RentalServiceResponseDto;
 import com.management.library.service.rental.dto.ReturnBookResponseDto;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,10 +40,9 @@ public class AdminRentalController {
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   public RentalResponseDto createRental(
-      @RequestBody @Valid RentalRequestDto request,
-      Principal principal
+      @RequestBody @Valid RentalRequestDto request
   ) {
-    RentalServiceResponseDto bookRental = rentalService.createBookRental(principal.getName(),
+    RentalServiceResponseDto bookRental = rentalService.createBookRental(request.getMemberCode(),
         RentalBookInfoDto.of(request), LocalDate.now());
 
     return RentalResponseDto.of(bookRental);
