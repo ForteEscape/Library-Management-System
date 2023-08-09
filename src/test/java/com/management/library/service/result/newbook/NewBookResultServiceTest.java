@@ -37,7 +37,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @SpringBootTest
-class NewBookResultBookReviewBookReviewUpdateRequestServiceTest extends AbstractContainerBaseTest {
+class NewBookResultServiceTest extends AbstractContainerBaseTest {
 
   @Autowired
   private MemberRepository memberRepository;

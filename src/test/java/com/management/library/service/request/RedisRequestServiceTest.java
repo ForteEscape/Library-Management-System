@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
-class RedisAdminCreateBookCreateBookUpdateMemberCreateManagmentResultManagementCreateNewBookResultServiceTestBookReviewRequest extends AbstractContainerBaseTest {
+class RedisRequestServiceTest extends AbstractContainerBaseTest {
 
   @Autowired
   private RedisTemplate<String, String> redisTemplate;

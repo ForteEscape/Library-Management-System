@@ -18,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 @Slf4j
-class ManagementAdminCreateBookCreateRequestResultTest {
+class ManagementRequestResultTest {
 
   @PersistenceContext
   private EntityManager em;

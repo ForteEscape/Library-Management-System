@@ -23,7 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
-class NewBookAdminCreateBookCreateBookUpdateRequestRepositoryTest {
+class NewBookRequestRepositoryTest {
 
   @Autowired
   private NewBookRequestRepository newBookRequestRepository;
