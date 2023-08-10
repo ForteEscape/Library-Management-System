@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
   public ErrorResponseDto handleDuplicateException(DuplicateException e){
     return ErrorResponseDto.builder()
         .errorCode(e.getErrorCode())
-        .errorMessage(e.getMessage())
+        .errorMessage(e.getDescription())
         .build();
   }
 
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
   public ErrorResponseDto handleInvalidAccessException(InvalidAccessException e){
     return ErrorResponseDto.builder()
         .errorCode(e.getErrorCode())
-        .errorMessage(e.getMessage())
+        .errorMessage(e.getDescription())
         .build();
   }
 
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
   public ErrorResponseDto handleInvalidArgumentException(InvalidArgumentException e){
     return ErrorResponseDto.builder()
         .errorCode(e.getErrorCode())
-        .errorMessage(e.getMessage())
+        .errorMessage(e.getDescription())
         .build();
   }
 
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
   public ErrorResponseDto handleNoSuchElementException(NoSuchElementExistsException e){
     return ErrorResponseDto.builder()
         .errorCode(e.getErrorCode())
-        .errorMessage(e.getMessage())
+        .errorMessage(e.getDescription())
         .build();
   }
 
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
   public ErrorResponseDto handleRedisLockException(RedisLockException e){
     return ErrorResponseDto.builder()
         .errorCode(e.getErrorCode())
-        .errorMessage(e.getMessage())
+        .errorMessage(e.getDescription())
         .build();
   }
 
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
   public ErrorResponseDto handleRentalException(RentalException e){
     return ErrorResponseDto.builder()
         .errorCode(e.getErrorCode())
-        .errorMessage(e.getMessage())
+        .errorMessage(e.getDescription())
         .build();
   }
 
@@ -69,7 +69,16 @@ public class GlobalExceptionHandler {
   public ErrorResponseDto handleRequestLimitExceedException(RequestLimitExceededException e){
     return ErrorResponseDto.builder()
         .errorCode(e.getErrorCode())
-        .errorMessage(e.getMessage())
+        .errorMessage(e.getDescription())
+        .build();
+  }
+
+  @ExceptionHandler(LoginFailedException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponseDto loginFailedExceptionHandler(LoginFailedException e){
+    return ErrorResponseDto.builder()
+        .errorCode(e.getErrorCode())
+        .errorMessage(e.getDescription())
         .build();
   }
 

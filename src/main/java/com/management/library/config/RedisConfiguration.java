@@ -36,6 +36,7 @@ public class RedisConfiguration {
     RedisStandaloneConfiguration conf = new RedisStandaloneConfiguration();
     conf.setHostName(host);
     conf.setPort(port);
+    conf.setPassword("dev");
 
     return new LettuceConnectionFactory(conf);
   }
@@ -75,7 +76,8 @@ public class RedisConfiguration {
     RedissonClient redisson = null;
     Config config = new Config();
     config.useSingleServer()
-        .setAddress(REDISSON_HOST_PREFIX + host + ":" + port);
+        .setAddress(REDISSON_HOST_PREFIX + host + ":" + port)
+        .setPassword("dev");
 
     return Redisson.create(config);
   }
